@@ -1,0 +1,7 @@
+Reflex — Deterministic Edge Safety Envelope & Cloud Replay for Physical AI
+
+Copyright 2026 Nebius x NVIDIA Global AI Hackathon Team
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+It contains no third-party source code. Runtime dependencies are used under
+their own licences; see backend/uv.lock for the resolved dependency set.

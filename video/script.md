@@ -1,12 +1,28 @@
-# 2:50 Demo Video Script — Reflex — Deterministic Edge Safety Envelope & Cloud Replay for Physical AI
+# 2:50 demo video — shot list
 
-**Hard limit:** ≤ 3:00. **Target:** 2:50.
+**Hard limit:** ≤ 3:00. **Target:** 2:50. Physical AI requires **≥ 1:00 of footage of the hardware or key
+modules actually operating** (see `docs/SUBMISSION-CHECKLIST.md` §B).
 
-| Timecode | Visual Shot | Spoken Narrative (No marketing fluff) |
-|---|---|---|
-| `0:00 - 0:20` | Persona face or problem context (e.g. real marketplace listing / solder board / grid map) | State the one-sentence pain in the persona's words: *"Autonomous robotics developer deploying manipulators in human-collaborative spaces"* Highlight headline stat: 4% of field in Physical AI · 10 deterministic veto rules · 0 unmonitored actuators |
-| `0:20 - 0:50` | Live product demonstration | Paste real input -> Instant <8s verdict and primary action above fold. Show exact reason chips. |
-| `0:50 - 1:25` | Architecture & Nebius Token Factory | Show the 3 model tiers on screen (Nano, Super, Ultra). Highlight **Token Factory Sandbox verification with guest networking disabled**. |
-| `1:25 - 1:55` | The Proof & Empirical Study | Show results from Serverless Job batch study. Show Sandbox branching A/B chart (gate-on vs gate-off false accept delta). |
-| `1:55 - 2:25` | Real customer feedback & limitations | Quote real user interview. Flash `LIMITATIONS.md` with honest failure modes. Mention accessibility provisions. |
-| `2:25 - 2:50` | The Insider Insight | Summarize what was learned that someone outside the problem wouldn't know. Closing call to action. |
+**Rule for this file: every shot below must be filmable with what exists.** Anything that needs hardware or a
+component that is still missing is marked **[rig]** — it cannot appear in the submitted cut until it exists.
+An unbacked shot is the fastest way to lose the panel that scores honesty (`docs/JUDGING-RUBRIC.md` §3).
+
+Updated after Phase B: the ledger, the replay and the network-cut shots are now **filmable from the repo**
+(`make replay`, `runs/replay/`, and a local `curl` against `/v1/envelope/evaluate`) even though they still
+need hardware to be *physically* convincing. The shots that remain blocked are the ones that need a relay
+to click and a camera to see a block.
+
+| Timecode | Shot | What must be on screen | Spoken line |
+|---|---|---|---|
+| `0:00 – 0:20` | Persona and problem | Kai's cell: pusher, block, taped keep-out volume, relay module. No stock footage | State the pain in the persona's words: *"I can plan a robot's next action in two seconds. I can't tell anyone what I stopped it from doing, or prove the thing that stopped it can't be talked out of it."* |
+| `0:20 – 0:50` | The veto, live, one unbroken take | Left: camera. Right: terminal showing intended action → decision → actuator state | "The planner proposes the push. The block is inside the keep-out volume. The envelope vetoes. The relay opens. The actuator has no power." |
+| `0:50 – 1:20` | The ledger beats the relay **[rig for the click]** | `runs/sample_veto_ledger.jsonl`: one line landing with rule id, intended action, full rule trace, `sensor_snapshot_inline`. Relay click cut in if the rig exists | "Every refusal is written down — including the ones that allowed motion. This is the artifact a client or an insurer asks for." |
+| `1:20 – 1:50` | Replay compare: filmable today | `make replay` running; then two `runs/replay/rp_*.json` records side by side — `envelope_off` collides at the keep-out boundary, `envelope_on` never moves. Show the two `trajectory_sha256` values | "Same scene, same seed, two arms. This is what the veto prevented — and here is the arm where it did not." |
+| `1:50 – 2:15` | Network cut: filmable today | `POST /v1/envelope/evaluate` with `network.cloud_reachable=false`; `parameter_set` flips to `degraded`, `mode` shows SIMULATION; `make params` prints every stricter value | "Cut the network and the cell does not fail open. It switches to stricter limits and keeps operating." |
+| `2:15 – 2:35` | What is not done | `LIMITATIONS.md` on screen, with the real numbers (rules implemented, fixtures, measurements) | "Here is what isn't finished, with the count. That's the honest state of the build." |
+| `2:35 – 2:50` | Close | Architecture still: cloud proposes, edge decides, ledger proves | "A safety layer that consults the network isn't a safety layer. This one is local, deterministic, and keeps receipts." |
+
+**Do not claim in the voiceover:** a collision-free hardware session, measured veto-to-stop latency, a model
+running on-device, or that the replay proves the rig is safe — unless the numbers are in the repo and the
+footage shows them. Say "simulation" out loud whenever a decision carries `mode=simulation`; the UI renders a
+permanent badge, and the video must not contradict its own UI.

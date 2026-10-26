@@ -1,29 +1,85 @@
 # Makefile for reflex-physical-ai
+#
+# Every target here runs what it says it runs. If a capability does not exist yet,
+# the target fails loudly rather than printing a cheerful no-op — a green `make` that
+# proves nothing is worse than a red one that tells the truth.
 
-.PHONY: help sample check test demo lint format clean
+SHELL := /bin/bash
+.DEFAULT_GOAL := help
+BACKEND := backend
+RUN := cd $(BACKEND) && uv run --extra dev
 
-help:
-	@echo "Available commands:"
-	@echo "  make sample   - Run pipeline offline on golden fixtures with uv"
-	@echo "  make check    - Run linting, typechecking, and schema validation tests"
-	@echo "  make test     - Run full pytest test suite"
-	@echo "  make demo     - Run end-to-end demo (requires NEBIUS_API_KEY)"
-	@echo "  make clean    - Remove virtualenvs, caches, and build artifacts"
+.PHONY: help sample test lint format typecheck schema taxonomy params fixtures check demo serve verify-envelope replay clean
 
-sample:
-	cd backend && uv run --extra dev pytest tests/test_schemas.py -v
+help: ## Show the available targets
+	@echo "Reflex — available commands"
+	@echo ""
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  make %-16s %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Offline (no API key needed): sample, test, lint, typecheck, schema, taxonomy, params, fixtures, check"
+	@echo "Network:                     demo  (serves the API; planner/model calls land in Phase C)"
 
-check:
-	cd backend && uv run --extra dev pytest -v
+sample: ## Run the offline contract + fixture checks (no API key, no network)
+	$(RUN) pytest tests/test_schema_meta.py tests/test_schema_laws.py tests/test_ledger.py -q
 
-test:
-	cd backend && uv run --extra dev pytest tests/ -v
+test: ## Run the full test suite
+	$(RUN) pytest tests/ -q
 
-demo:
-	cd backend && uv run python -m app.main
+lint: ## Lint with ruff (check + format check)
+	$(RUN) ruff check app tests ../scripts
+	$(RUN) ruff format --check app tests ../scripts
 
-clean:
-	find . -type d -name "__pycache__" -exec rm -rf {} +
-	find . -type d -name ".pytest_cache" -exec rm -rf {} +
-	find . -type d -name ".ruff_cache" -exec rm -rf {} +
-	rm -rf backend/.venv frontend/node_modules
+format: ## Auto-fix lint findings and format the code
+	$(RUN) ruff check --fix app tests ../scripts
+	$(RUN) ruff format app tests ../scripts
+
+typecheck: ## Type-check the application package
+	$(RUN) mypy app
+
+schema: ## Validate the frozen contracts and every $ref
+	$(RUN) python ../scripts/validate_schema.py
+
+taxonomy: ## Validate rule structure and degraded-mode strictness
+	$(RUN) python ../scripts/validate_taxonomy.py --allow-placeholders --allow-missing-fixtures
+
+params: ## Check the calibration profile: coverage, provenance, degraded strictness
+	@$(RUN) python ../scripts/check_param_provenance.py; \
+	rc=$$?; \
+	if [ $$rc -eq 2 ]; then \
+		echo "  -> placeholders recorded (not fatal). 'make params-strict' is the gate for a measured rig."; \
+	elif [ $$rc -ne 0 ]; then \
+		exit $$rc; \
+	fi
+	@$(RUN) python ../scripts/diff_parameter_sets.py
+
+params-strict: ## Same, but fail unless every value traces to a measurement
+	$(RUN) python ../scripts/check_param_provenance.py --strict
+
+fixtures: ## Regenerate nothing; verify the committed fixtures still match the code
+	$(RUN) python ../scripts/make_fixtures.py --check
+
+check: lint typecheck schema taxonomy params fixtures test ## Everything CI runs
+	@echo ""
+	@echo "make check: PASS — lint, types, contracts, taxonomy, calibration, fixtures and tests are green"
+
+demo: ## Serve the API on :8000 (no API key required; the envelope is live)
+	cd $(BACKEND) && uv run python -m app.main
+
+serve: demo ## Alias for demo
+
+verify-envelope: ## Purity, determinism, rules, calibration and the fixture corpus
+	$(RUN) pytest tests/test_envelope_purity.py tests/test_envelope_determinism.py \
+		tests/test_envelope_rules.py tests/test_envelope_params.py \
+		tests/test_envelope_fixtures.py tests/test_replay.py -q
+	$(RUN) python -m app.envelope verify
+	@echo "verify-envelope: PASS — pure, deterministic, and the fixtures reproduce"
+
+replay: ## Replay the fixture corpus through the two-arm simulator
+	$(RUN) python ../jobs/replay_all.py --from-fixtures
+
+clean: ## Remove caches and virtualenvs
+	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
+	find . -type d -name ".pytest_cache" -prune -exec rm -rf {} +
+	find . -type d -name ".ruff_cache" -prune -exec rm -rf {} +
+	find . -type d -name ".mypy_cache" -prune -exec rm -rf {} +
+	rm -rf $(BACKEND)/.venv frontend/node_modules

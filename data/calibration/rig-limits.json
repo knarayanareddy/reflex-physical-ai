@@ -1,0 +1,111 @@
+{
+  "_meta": {
+    "purpose": "Measurement store for the veto taxonomy. The envelope reads every numeric value from here; it never reads a number out of the taxonomy.",
+    "status": "SYNTHETIC — NOT MEASURED",
+    "honesty_rule": "A profile whose provenance is not 'measurement' forces mode=simulation on every decision it produces. Those decisions must never be presented as hardware decisions. Replace sim_reference_v0 with a profile built from data/calibration measurements of your own rig (D-T06) before claiming any hardware result.",
+    "how_to_add_a_measured_profile": [
+      "1. Measure the rig: max safe speed, stall force, travel limits, camera p95 frame interval, encoder p95 interval, cloud RTT variance.",
+      "2. Copy the sim_reference_v0 block, set provenance to 'measurement', and give every parameter a provenance entry with kind='measurement' and a measurement_id.",
+      "3. Add the matching entry to the profile's 'measurements' map: id -> {method, instrument, value, unit, measured_at, notes}.",
+      "4. Point active_profile at it and run: python scripts/check_param_provenance.py --strict",
+      "5. Every degraded value must still be strictly more conservative; the loader refuses to start otherwise."
+    ],
+    "schema_version": "0.1.0"
+  },
+  "active_profile": "sim_reference_v0",
+  "profiles": {
+    "sim_reference_v0": {
+      "description": "Single-axis pusher, 370 mm of usable travel. Numbers chosen so the fixture suite exercises every rule with a clear margin. NOT measured on any physical device.",
+      "provenance": "synthetic",
+      "provenance_note": "Nothing in this profile was measured. It exists so the envelope, its tests and the simulator can run before a rig is instrumented.",
+      "rig": {
+        "actuator": "single-axis pusher on a linear rail",
+        "axis": "x",
+        "travel_mm": [10.0, 380.0],
+        "interlock": "electromechanical relay in the actuator power path",
+        "keep_out_volume": {"x": [150.0, 350.0], "y": [-150.0, 150.0]},
+        "sensors": ["usb camera", "quadrature encoder", "two limit switches", "stall-current force estimate"]
+      },
+      "values": {
+        "V1_EMERGENCY_STOP": {"normal": {}, "degraded": {}},
+        "V2_KEEP_OUT_OCCUPIED": {
+          "normal": {
+            "detection_min_confidence": 0.0,
+            "detection_method_priority": ["switch", "frame_diff", "depth", "classifier"],
+            "min_blob_area_px": 120,
+            "consecutive_frames_required": 1
+          },
+          "degraded": {
+            "detection_min_confidence": 0.0,
+            "detection_method_priority": ["switch", "frame_diff", "depth", "classifier"],
+            "min_blob_area_px": 60,
+            "consecutive_frames_required": 1
+          }
+        },
+        "V3_VELOCITY_LIMIT": {
+          "normal": {"max_velocity_mm_s": 60.0, "max_accel_mm_s2": 300.0},
+          "degraded": {"max_velocity_mm_s": 24.0, "max_accel_mm_s2": 120.0}
+        },
+        "V4_FORCE_LIMIT": {
+          "normal": {"max_force_n": 12.0, "force_estimate_method": "stall_current"},
+          "degraded": {"max_force_n": 6.0, "force_estimate_method": "stall_current"}
+        },
+        "V5_WORKSPACE_BOUND": {
+          "normal": {
+            "allowed_volume": {"x": [10.0, 380.0], "y": [-25.0, 25.0], "z": [20.0, 60.0]},
+            "boundary_margin_mm": 5.0
+          },
+          "degraded": {
+            "allowed_volume": {"x": [15.0, 375.0], "y": [-20.0, 20.0], "z": [25.0, 55.0]},
+            "boundary_margin_mm": 10.0
+          }
+        },
+        "V6_COLLISION_PREDICTED": {
+          "normal": {"lookahead_ms": 500, "swept_volume_inflation_mm": 8.0},
+          "degraded": {"lookahead_ms": 1000, "swept_volume_inflation_mm": 16.0}
+        },
+        "V7_SENSOR_STALE": {
+          "normal": {"camera_max_age_ms": 100, "encoder_max_age_ms": 50},
+          "degraded": {"camera_max_age_ms": 50, "encoder_max_age_ms": 25}
+        },
+        "V8_NETWORK_DEGRADED": {
+          "normal": {"window_ms": 2000, "allow_multi_step_plans": true, "planner_source": "cloud_ultra"},
+          "degraded": {"window_ms": 1000, "allow_multi_step_plans": false, "planner_source": "edge_local_or_nano"}
+        },
+        "V9_PLAN_MALFORMED": {
+          "normal": {"max_ttl_ms": 5000, "allow_limit_requests_above_ceiling": false},
+          "degraded": {"max_ttl_ms": 2000, "allow_limit_requests_above_ceiling": false}
+        },
+        "V10_HUMAN_PRESENCE": {
+          "normal": {"monitor_region": "cell + 500 mm perimeter", "detection_method": "frame_diff_or_classifier", "clear_hold_ms": 2000},
+          "degraded": {"monitor_region": "cell + 1000 mm perimeter", "detection_method": "frame_diff_or_classifier", "clear_hold_ms": 4000}
+        }
+      },
+      "measurements": {},
+      "parameter_provenance": {
+        "V2_KEEP_OUT_OCCUPIED.detection_min_confidence": {"kind": "synthetic", "note": "0.0 accepts any confident-enough detector result; replace with the measured false-negative rate crossover."},
+        "V2_KEEP_OUT_OCCUPIED.detection_method_priority": {"kind": "synthetic", "note": "Ordering is a design choice, not a measurement."},
+        "V2_KEEP_OUT_OCCUPIED.min_blob_area_px": {"kind": "synthetic", "note": "Placeholder for the smallest intruder the camera must catch; measure against your own optics and working distance."},
+        "V2_KEEP_OUT_OCCUPIED.consecutive_frames_required": {"kind": "synthetic", "note": "1 by design: waiting for confirmation adds stop latency, which is worse than an occasional false positive."},
+        "V3_VELOCITY_LIMIT.max_velocity_mm_s": {"kind": "synthetic", "note": "Placeholder for the maximum speed at which the rig stops inside the keep-out gap. Replace with a measured veto-to-stop distance."},
+        "V3_VELOCITY_LIMIT.max_accel_mm_s2": {"kind": "synthetic", "note": "Driver-owned ramp limit; not consumed by the envelope."},
+        "V4_FORCE_LIMIT.max_force_n": {"kind": "synthetic", "note": "Placeholder. A real value comes from a stall test on the actuator plus the application's pinch-force limit."},
+        "V4_FORCE_LIMIT.force_estimate_method": {"kind": "synthetic", "note": "stall_current is an ESTIMATE, not a measurement of contact force; the UI and the trace must say so."},
+        "V5_WORKSPACE_BOUND.allowed_volume": {"kind": "synthetic", "note": "Placeholder box for a 370 mm rail; measure the travel that the limit switches actually bound."},
+        "V5_WORKSPACE_BOUND.boundary_margin_mm": {"kind": "synthetic", "note": "Placeholder. Derive from the measured overtravel after a stop command."},
+        "V6_COLLISION_PREDICTED.lookahead_ms": {"kind": "synthetic", "note": "Placeholder. Should exceed the measured stop latency."},
+        "V6_COLLISION_PREDICTED.swept_volume_inflation_mm": {"kind": "synthetic", "note": "Placeholder for calibration error plus end-effector half-width."},
+        "V7_SENSOR_STALE.camera_max_age_ms": {"kind": "synthetic", "note": "Placeholder. Derive as p99 frame interval x 3 from a measured distribution."},
+        "V7_SENSOR_STALE.encoder_max_age_ms": {"kind": "synthetic", "note": "Placeholder. Derive from the measured control-loop jitter."},
+        "V8_NETWORK_DEGRADED.window_ms": {"kind": "synthetic", "note": "Placeholder. Must exceed the measured round-trip variance so a blip does not flap the mode."},
+        "V8_NETWORK_DEGRADED.allow_multi_step_plans": {"kind": "synthetic", "note": "A policy switch, not a measurement. Planner-owned."},
+        "V8_NETWORK_DEGRADED.planner_source": {"kind": "synthetic", "note": "A policy switch, not a measurement. Planner-owned."},
+        "V9_PLAN_MALFORMED.max_ttl_ms": {"kind": "synthetic", "note": "Placeholder. Must exceed the measured plan-to-execute latency, or every plan expires."},
+        "V9_PLAN_MALFORMED.allow_limit_requests_above_ceiling": {"kind": "synthetic", "note": "Policy: a planner may not ask for more than the normal-mode ceiling and expect a clamp."},
+        "V10_HUMAN_PRESENCE.monitor_region": {"kind": "synthetic", "note": "Detector-owned region definition."},
+        "V10_HUMAN_PRESENCE.detection_method": {"kind": "synthetic", "note": "Detector-owned method selection."},
+        "V10_HUMAN_PRESENCE.clear_hold_ms": {"kind": "synthetic", "note": "Detector-owned hold time after the cell clears."}
+      }
+    }
+  }
+}

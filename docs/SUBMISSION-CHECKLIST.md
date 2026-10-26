@@ -1,7 +1,8 @@
 # Submission Checklist & Disqualifiers
 
-**Deadline: Friday 30 October 2026, 10:00 am PT = 17:00 UTC = 19:00 CEST.**
-Target: **submit by Thursday 29 October, 18:00 CEST** — 25 hours of buffer. Devpost traffic spikes at the
+**Deadline: Friday 30 October 2026, 10:00 am PT = 17:00 UTC = 18:00 CET.** (EU summer time ended on
+2026-10-25, so the Netherlands is on CET, not CEST — the earlier "19:00 CEST" was an hour late.)
+Target: **submit by Thursday 29 October, 18:00 CET** — 25 hours of buffer. Devpost traffic spikes at the
 deadline and a saved draft is *not* a final submission.
 
 ---
