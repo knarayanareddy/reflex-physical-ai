@@ -44,7 +44,14 @@ SAMPLE_LEDGER = REPO / "runs" / "sample_veto_ledger.jsonl"
 
 
 def build_from_fixtures(destination: Path) -> list[dict[str, Any]]:
-    """Evaluate the fixture corpus and write the decisions to a ledger."""
+    """Evaluate the fixture corpus and write the decisions to a ledger.
+
+    The destination is truncated first. This is a *sample* ledger regenerated from the
+    corpus, not evidence: appending to yesterday's sample would mix two envelope versions in
+    one file and make every replay fail for a reason nobody could see.
+    """
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.unlink(missing_ok=True)
     ruleset = load_ruleset()
     decisions: list[dict[str, Any]] = []
     for path in sorted(FIXTURES.glob("*.json")):
@@ -67,10 +74,14 @@ def read_ledger(path: Path) -> list[dict[str, Any]]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument("--ledger", help="JSONL of EnvelopeDecision (default: the configured veto ledger)")
     parser.add_argument("--out", default=str(DEFAULT_OUT), help="directory for ReplayResult records")
-    parser.add_argument("--from-fixtures", action="store_true", help="rebuild the sample ledger from the fixtures first")
+    parser.add_argument(
+        "--from-fixtures", action="store_true", help="rebuild the sample ledger from the fixtures first"
+    )
     parser.add_argument("--quiet", action="store_true", help="only print the summary")
     args = parser.parse_args(argv)
 
@@ -104,7 +115,9 @@ def main(argv: list[str] | None = None) -> int:
         if comparison["collision_prevented"]:
             geometric_prevented += 1
         elif decision.get("outcome") == "VETO":
-            no_counterfactual[decision.get("rule_id") or "?"] = no_counterfactual.get(decision.get("rule_id") or "?", 0) + 1
+            no_counterfactual[decision.get("rule_id") or "?"] = (
+                no_counterfactual.get(decision.get("rule_id") or "?", 0) + 1
+            )
         prevented += 1 if decision.get("outcome") == "VETO" else 0
 
         for arm in ("envelope_off", "envelope_on"):
@@ -114,7 +127,9 @@ def main(argv: list[str] | None = None) -> int:
             except ContractViolation as exc:
                 invalid.append(f"{decision.get('decision_id')}/{arm}: {exc.problems[:2]}")
                 continue
-            (out_dir / f"{record['replay_id']}.json").write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+            (out_dir / f"{record['replay_id']}.json").write_text(
+                json.dumps(record, indent=2) + "\n", encoding="utf-8"
+            )
 
         if not args.quiet:
             off, on = comparison["envelope_off"]["outcome"], comparison["envelope_on"]["outcome"]
@@ -132,7 +147,9 @@ def main(argv: list[str] | None = None) -> int:
         print("vetoes with no geometric counterfactual (forced by a rule the 2-D sim cannot model):")
         for rule_id, count in sorted(no_counterfactual.items()):
             print(f"  - {rule_id}: {count}")
-    print(f"records written    : {len(list(out_dir.glob('rp_*.json')))} -> {out_dir.relative_to(REPO) if out_dir.is_relative_to(REPO) else out_dir}")
+    print(
+        f"records written    : {len(list(out_dir.glob('rp_*.json')))} -> {out_dir.relative_to(REPO) if out_dir.is_relative_to(REPO) else out_dir}"
+    )
 
     if invalid:
         print(f"\nFAIL - {len(invalid)} record(s) do not satisfy $defs/ReplayResult:", file=sys.stderr)

@@ -191,13 +191,21 @@ def _read_json(path: Path, what: str) -> tuple[dict[str, Any], str]:
         raise ParameterError(f"{what} is not valid JSON: {exc}") from exc
 
 
+#: The modules that actually participate in a decision. ``__main__.py`` is deliberately
+#: excluded: adding a CLI flag must not invalidate every decision already recorded, or the
+#: version stops meaning "the rules changed" and starts meaning "someone touched the repo".
+DECISION_MODULES = ("__init__.py", "core.py", "params.py", "rules.py")
+
+
 def _source_digest() -> str:
-    """sha256 over the envelope package source, so a decision pins the code that made it."""
+    """sha256 over the decision modules, so a decision pins the code that made it."""
     import hashlib
 
+    package = Path(__file__).resolve().parent
     digest = hashlib.sha256()
-    for path in sorted(Path(__file__).resolve().parent.glob("*.py")):
-        digest.update(path.name.encode())
+    for name in DECISION_MODULES:
+        path = package / name
+        digest.update(name.encode())
         digest.update(path.read_bytes())
     return digest.hexdigest()
 

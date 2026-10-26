@@ -30,7 +30,7 @@ flowchart LR
         R["ruff + mypy"]
         SV["validate_schema.py<br/>meta, $refs, rule conformance"]
         TV["validate_taxonomy.py<br/>structure + degraded strictness"]
-        P["pytest: 253 tests"]
+        P["pytest: 254 tests"]
     end
 
     S --> SV

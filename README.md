@@ -131,7 +131,7 @@ it does not. On screen: *"1,240 actions planned · 37 vetoed · 37 simulated · 
 │   ├── tf/ledger.py              <- append-only telemetry, validated, fsync'd
 │   ├── gate/gate.py              <- evidence-quote checker (NOT the envelope)
 │   └── envelope/                 <- the deterministic V1-V10 envelope (stdlib only)
-├── backend/tests/                <- 253 tests: schema laws, envelope, replay, ledger, app, gate
+├── backend/tests/                <- 254 tests: schema laws, envelope, replay, ledger, app, gate
 ├── frontend/src/tokens.css       <- design tokens only; no application yet
 ├── jobs/replay_all.py            <- local replay lane, writes contract-valid ReplayResults
 └── jobs/Dockerfile               <- API image, non-root, lockfile-frozen

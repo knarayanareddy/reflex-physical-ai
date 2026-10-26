@@ -270,3 +270,22 @@ def test_missing_wall_clock_is_an_input_error_not_a_default():
     del snapshot["ts_wall"]
     with pytest.raises(EnvelopeInputError, match="ts_wall"):
         evaluate(load_ruleset(), snapshot, case["proposal"], "normal")
+
+
+def test_the_version_pins_the_rules_not_the_tooling():
+    """A CLI flag must not invalidate every decision already on disk."""
+    from app.envelope.params import DECISION_MODULES
+
+    assert "__main__.py" not in DECISION_MODULES
+    assert {"core.py", "rules.py", "params.py"} <= set(DECISION_MODULES)
+
+    import hashlib
+
+    package = TAXONOMY_PATH.parent.parent / "backend" / "app" / "envelope"
+    expected = hashlib.sha256()
+    for name in DECISION_MODULES:
+        expected.update(name.encode())
+        expected.update((package / name).read_bytes())
+    from app.envelope.params import _source_digest
+
+    assert _source_digest() == expected.hexdigest()

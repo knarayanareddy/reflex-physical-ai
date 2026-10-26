@@ -11,7 +11,7 @@
 
 **Phase A applied on 2026-10-26** (commit "Phase A: unblock the build, enforce the contract, make CI real").
 **Phase B applied on 2026-10-26**: the deterministic envelope, the calibration file, the fixture corpus and
-the replay lane now exist and are tested (253 tests).
+the replay lane now exist and are tested (254 tests).
 Findings are marked here so this document does not go stale: `fixed` = the defect is gone and a test guards
 it; `partial` = the highest-risk half is addressed and the rest is ticketed; `open` = unchanged.
 
@@ -34,7 +34,7 @@ it; `partial` = the highest-risk half is addressed and the rest is ticketed; `op
 | R-15 fake Makefile targets | **fixed** | `lint`/`format`/`typecheck`/`schema`/`taxonomy` are real; `verify-envelope` now runs the purity, determinism, rule, calibration, fixture and replay suites, plus `python -m app.envelope verify`; `make replay` and `make params` added |
 | R-16 frontend unbuildable | **open** | Phase C; stated plainly in the README status table |
 | R-17 zero CI | **fixed** | `.github/workflows/ci.yml` runs lint, types, contracts, taxonomy, tests and an app smoke test |
-| R-18 placebo tests | **fixed** | 253 tests (250 passing, 3 expected failures) replacing the single vacuous assertion; the new envelope suites include a test that proves the purity checker catches violations |
+| R-18 placebo tests | **fixed** | 254 tests (251 passing, 3 expected failures) replacing the single vacuous assertion; the new envelope suites include a test that proves the purity checker catches violations |
 | R-19 prose assertions | **fixed** | Assertion list is executed, and a coverage test fails if a stated assertion has no fixture |
 | R-20 cross-project residue | **partial** | README, LIMITATIONS, ARCHITECTURE and the video script rewritten for the physical-AI domain; `docs/AGENT-DELEGATION-PROTOCOL.md` (A-T07 example), `docs/templates/*` and `data/competitor-subset.csv` still carry it |
 | R-21 two layouts | **partial** | `docs/DECISIONS.md` records `backend/` + `frontend/` as the layout and `backend/app/envelope/` as the Phase B home; `SPEC.md` §7 is unchanged |

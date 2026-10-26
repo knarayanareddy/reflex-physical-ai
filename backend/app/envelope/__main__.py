@@ -118,7 +118,8 @@ def _cmd_replay(args: argparse.Namespace) -> int:
         return 2
 
     ruleset = load_ruleset()
-    replayed = mismatched = 0
+    version = envelope_version(ruleset)
+    replayed = mismatched = stale = 0
     for lineno, line in enumerate(ledger.read_text(encoding="utf-8").splitlines(), start=1):
         if not line.strip():
             continue
@@ -129,6 +130,16 @@ def _cmd_replay(args: argparse.Namespace) -> int:
         if snapshot is None or proposal is None:
             print(f"  skip line {lineno}: no inline snapshot or intended action", file=sys.stderr)
             continue
+        if record.get("envelope_version") not in (None, version):
+            # Not a determinism failure: this record was made by another build, and the
+            # version pins the taxonomy, the calibration and the envelope source.
+            stale += 1
+            print(
+                f"  STALE  line {lineno} ({record.get('decision_id')}): recorded under another envelope version",
+                file=sys.stderr,
+            )
+            continue
+
         decision = evaluate(ruleset, snapshot, proposal, record.get("mode", "normal"))
         replayed += 1
         if decision["determinism_hash"] != record["determinism_hash"]:
@@ -139,7 +150,9 @@ def _cmd_replay(args: argparse.Namespace) -> int:
             )
 
     print()
-    print(f"replayed {replayed} decision(s); {mismatched} mismatch(es)")
+    print(
+        f"replayed {replayed} decision(s); {mismatched} mismatch(es); {stale} from another envelope version"
+    )
     return 0 if mismatched == 0 else 1
 
 

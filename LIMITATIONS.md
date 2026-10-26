@@ -39,7 +39,7 @@ machine, and **every limit the envelope enforces is a placeholder** — see §2.
 | Dashboard | **Missing.** `frontend/` is a design-token file; `npm run build` exits 1 | Phase C |
 | Hardware | **Nothing wired.** No relay, no limit switches, no camera, no measurement | D-T01 (go/no-go), D-T16, D-T17 |
 | Veto-to-stop latency / distance | **Not measured** — the fields exist in the contract and are null everywhere | High-fps capture + relay timing |
-| Test count | **253 tests, 3 expected failures** (the gate's known gaps) | — |
+| Test count | **254 tests, 3 expected failures** (the gate's known gaps) | — |
 
 ### What "synthetic" means here, precisely
 
