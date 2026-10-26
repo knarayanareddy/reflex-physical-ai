@@ -20,5 +20,4 @@ jobs:
       - name: Install dependencies and test
         run: |
           cd backend
-          uv pip install --system -e .
-          python -m pytest tests/ -v
+          uv run --extra dev pytest tests/ -v
