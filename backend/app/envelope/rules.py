@@ -31,6 +31,13 @@ SENSOR_STALE = "SENSOR_STALE"
 #: know" and "unsafe" must be the same thing.
 STOPPING_RESULTS = frozenset({VETO, SENSOR_MISSING, SENSOR_STALE})
 
+#: The proposal vocabulary, mirrored from $defs/ActionProposal. It lives here rather than in
+#: ``core.py`` because V9 is the rule that enforces it, and ``core`` already imports ``rules``.
+PROPOSAL_KINDS = frozenset({"move_to", "push", "grasp", "release", "home", "wait", "retract"})
+PROPOSAL_SOURCES = frozenset(
+    {"cloud_ultra", "cloud_nano", "cloud_gr00t", "cosmos_reason", "edge_local", "hardcoded_sequence"}
+)
+
 
 @dataclass(frozen=True)
 class RuleResult:
@@ -418,6 +425,25 @@ def rule_v9_plan_malformed(ctx: Context) -> RuleResult:
     """
     proposal = ctx.proposal
     problems: list[str] = []
+
+    # Structural validity first: a proposal that cannot name what it wants is not evaluated
+    # any further. This is the check that keeps an untyped payload from reaching the
+    # actuator as a shipped action — without it, a proposal missing `target_pose` passed
+    # every rule and was ALLOWed, producing a decision the contract itself rejects.
+    kind = proposal.get("kind")
+    if kind not in PROPOSAL_KINDS:
+        problems.append(f"kind {kind!r} is not one of {sorted(PROPOSAL_KINDS)}")
+
+    target = proposal.get("target_pose")
+    if not isinstance(target, Mapping):
+        problems.append("target_pose is missing or not an object")
+    else:
+        # Every kind needs a pose, including `wait`: $defs/ActionProposal requires x, y and z
+        # unconditionally, and a decision built on a payload the contract rejects cannot be
+        # written to the ledger. A no-op move states the pose it is already at.
+        for axis in AXES:
+            if _number(target.get(axis)) is None:
+                problems.append(f"target_pose.{axis} is missing or not a number")
 
     velocity = _number(proposal.get("velocity_limit"))
     if velocity is None or velocity <= 0:

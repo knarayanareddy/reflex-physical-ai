@@ -24,6 +24,12 @@ recorded here and the document is corrected (or the gap is ticketed). Per
 | 2026-10-26 | `docs/SUBMISSION-CHECKLIST.md` | Deadline "10:00 am PT = 17:00 UTC = 19:00 CEST" | 2026-10-30 10:00 PT is 17:00 UTC = **18:00 CET** (EU summer time ended 2026-10-25) | Checklist corrected to CET with the UTC anchor kept |
 | 2026-10-26 | `ARCHITECTURE.md`, `LIMITATIONS.md`, `README.md` | Legal/regulatory framing (statutory citations, marketplace delisting, "not a legal authority") | None of it applies to a robotics safety envelope; the text came from the template repo this scaffold was derived from | Rewritten for the physical-AI domain |
 | 2026-10-26 | `docs/ci/github-ci.yml` | CI runs on every push and the README shows a badge | The repo had zero workflows (`actions/workflows` → `total_count: 0`); the template was parked under `docs/` because the token lacked workflow scope | Real workflow added at `.github/workflows/ci.yml` (pushes and PRs), first run green; the parked template deleted. The badge starts resolving once this lands on `main` |
+| 2026-10-26 | `backend/app/envelope/rules.py` rule `V9_PLAN_MALFORMED` | A malformed plan is rejected (`VETO / V9_PLAN_MALFORMED`) | A proposal with no `target_pose`, an unknown `kind`, or no `ttl_ms` passed all ten rules and returned **ALLOW** — shipping a payload the frozen contract rejects, and producing a decision the ledger then refused to record | V9 checks `kind`, `target_pose.x/y/z` and `ttl_ms` before evaluating anything else; `core._looks_like_action_proposal` made as strict as `$defs/ActionProposal` on `target_pose`. `tests/test_plan.py` pins all three shapes |
+| 2026-10-26 | `SPEC.md` D-T11 parenthetical, `README.md`, `JUDGING-RUBRIC.md:193` | "Unverifiable evidence abstains" — UNDETERMINED for anything the gate cannot establish | A quote that is absent from a source we **do** hold is a refutation, not an absence: protocol §4.2 requires the citation to *resolve* and `ARCHITECTURE.md` says the gate rejects any finding whose citations do not resolve. Returning UNDETERMINED there would let a fabricated quote escalate to a human rather than be counted as false | Split implemented and tested: `UNDETERMINED` when the gate cannot check (no/vacuous quote, no source, unreadable assertion, unknown rule); `FAIL` when it can check and the evidence does not hold. `tests/test_gate.py` fixes which case is which |
+| 2026-10-26 | `SPEC.md` D-T28 view (1) | "StopButton always visible and always enabled" | There is no actuation API, no stop endpoint and no hardware. A button wired to nothing is the most dangerous control a safety UI can show: it converts "I pressed it" into "the machine stopped" | Omitted, with a `TODO_VERIFY` entry and `NOT_DONE` line. Requires a hardware/interlock ticket before it can be honest |
+| 2026-10-26 | `SPEC.md` D-T28 view (2) | The veto ledger view shows "every decision", each row expanding to a replay result | `backend/app/main.py` exposes no read endpoint for `runs/veto-ledger.jsonl`, and `app/replay.py` is reachable only through `jobs/replay_all.py` | The dashboard labels its ledger as this session's history (not the file) and its counterfactual as intended-vs-shipped (not a collision claim). Next ticket: expose `app/replay.compare` over HTTP |
+| 2026-10-26 | `docs/AGENT-DELEGATION-PROTOCOL.md` §3 | Every pipeline stage implements `backend/app/stages/base.py` → `StageResult` | Neither module exists in the repository; the planner returns its own `Plan` (`abstain_reason`, `proposals`, `invalid`), and the envelope returns a raw `EnvelopeDecision` dict | Planner built to the dispatch's `app/plan/ultra.py` contract instead. If the `Stage` protocol is meant to be real, it needs its own ticket that names every consumer |
+| 2026-10-26 | Ticket dispatch vs `SPEC.md` | D-T26 is "SAFETY-CASE.md — the auditor's document"; the dashboard is D-T28 | The dispatch calls this ticket D-T26 and describes the dashboard, plenary planner and outage test | Dispatch followed (standing scope decision). D-T28's SIMULATION-badge requirement adopted anyway because it is a safety property, not a layout choice; three-column layout is the dispatch's |
 
 ## Why this table is not empty
 
@@ -32,3 +38,16 @@ the thing rather than by reading it: `@v10` was a plausible tag that did not exi
 `envelope_on` law was a plausible sentence that made the main result unrepresentable; V1's
 "relay closed" was a plausible default that invented a fact. The fixtures, the loader and
 the purity test exist so the next plausible mistake is caught by CI instead of by a reader.
+
+## Open verification items (TODO_VERIFY) — D-T11 / D-T19 / D-T26
+
+Protocol §6: every unresolved `TODO_VERIFY` is listed here with an owner. Details and the exact
+blockers are in `reports/D-T11-T26.TASK_REPORT.md`.
+
+| Item | Where it is asserted today | Where to confirm | Owner |
+|---|---|---|---|
+| Token Factory JSON / structured-output mode (`response_format`) | `openai_completer` sends plain `chat.completions.create` and parses text; marked `TODO_VERIFY(plan-json-mode)` in `backend/app/plan/ultra.py` | `docs.tokenfactory.nebius.com/ai-models-inference/json` (unreachable from the build sandbox) | backend-agent |
+| Ultra model ID `nvidia/Nemotron-3-Ultra-550b-a55b` | `settings.model_ultra` (pre-existing in `config.py`, not introduced by this ticket) | `GET {nebius_base_url}/models` with a key | backend-agent |
+| 16k output-token limit for Ultra | Not asserted anywhere; prompt is sized well below it | Model card / `/models` | backend-agent |
+| Absence of a replay endpoint | Dashboard counterfactual draws intended vs shipped and claims no collision | `GET /v1/replay/{decision_id}` does not exist; wire it in the replay ticket | backend-agent + frontend-agent |
+| Absence of a stop path | No StopButton rendered (see the D-T28 row above) | Requires hardware/actuation work | human + backend-agent |
