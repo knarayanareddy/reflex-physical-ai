@@ -1,0 +1,105 @@
+{
+  "schema": "reflex.headline_statistics/1",
+  "generated_by": "jobs/batch_1000_eval.py",
+  "source": "SYNTHETIC \u2014 a scripted session. No hardware ran; no model was called.",
+  "session": {
+    "seed": 20261026,
+    "actions": 1000,
+    "families": {
+      "e_stop": 10,
+      "force": 50,
+      "human": 80,
+      "joint_limit": 100,
+      "keep_out": 120,
+      "malformed": 20,
+      "network": 30,
+      "nominal": 450,
+      "obstacle": 50,
+      "over_ceiling": 50,
+      "stale": 40
+    },
+    "sha256": "55c41bb4d70f2ef580b3608374142d178d8732bdec4dacd21beeb63827a2b091",
+    "cadence_hz": 10
+  },
+  "headline": {
+    "actions_planned": 1000,
+    "vetoes_enforced": 420,
+    "collisions_shipped_under_envelope": 0,
+    "collisions_prevented": 248
+  },
+  "prevented": {
+    "total": 248,
+    "collisions": 170,
+    "boundary_excursions": 78,
+    "by_rule": {
+      "V2_KEEP_OUT_OCCUPIED": 120,
+      "V5_WORKSPACE_BOUND": 78,
+      "V6_COLLISION_PREDICTED": 50
+    }
+  },
+  "vetoes": {
+    "total": 420,
+    "by_rule": {
+      "V10_HUMAN_PRESENCE": 80,
+      "V1_EMERGENCY_STOP": 10,
+      "V2_KEEP_OUT_OCCUPIED": 120,
+      "V4_FORCE_LIMIT": 50,
+      "V6_COLLISION_PREDICTED": 50,
+      "V7_SENSOR_STALE": 40,
+      "V9_PLAN_MALFORMED": 70
+    }
+  },
+  "decisions": {
+    "ALLOW": 450,
+    "ALLOW_CLAMPED": 130,
+    "VETO": 420
+  },
+  "decisions_without_geometric_counterfactual": {
+    "V10_HUMAN_PRESENCE": 80,
+    "V1_EMERGENCY_STOP": 10,
+    "V3_VELOCITY_LIMIT": 30,
+    "V4_FORCE_LIMIT": 50,
+    "V5_WORKSPACE_BOUND": 22,
+    "V7_SENSOR_STALE": 40,
+    "V9_PLAN_MALFORMED": 70
+  },
+  "shipped": {
+    "collisions": 0,
+    "boundary_excursions": 0
+  },
+  "determinism": {
+    "envelope_version": "sha256:1386291f5383ef8750b877c3cc84bac579c3248cbe1bd830706b6ea35fc18092",
+    "profile": "sim_reference_v0",
+    "calibration_provenance": "synthetic",
+    "session_reproducible": true
+  },
+  "acceptance": {
+    "elapsed_ms": 2857.6,
+    "under_15_seconds": true,
+    "zero_shipped_collisions": true
+  },
+  "environment": {
+    "python": "3.11.2",
+    "platform": "Linux-6.1.158+-x86_64-with-glibc2.36"
+  },
+  "caveats": [
+    "The 2-D swept-volume model covers position in x-y at the recorded end-effector z. It is not contact dynamics and it is not a physics engine.",
+    "Vetoes that stop the machine without a spatial witness (force, staleness, malformed plans, presence without localisation) have no geometric counterfactual and are listed under decisions_without_geometric_counterfactual, never as prevented. That bucket also holds clamps, so its total is not a veto count.",
+    "Motion is single-axis, which is what this rig does. Diagonal swept volumes are out of scope for the generator and for the model.",
+    "elapsed_ms is the only *summary* field that changes between runs; every decision, hash and count is deterministic given the seed.",
+    "The pack's byte hash (sandbox_pack.pack_sha256) does change between runs, because every decision carries the latency_us that was actually measured. Its content_sha256 does not: that digest covers the decision addresses and trajectory hashes, which is the session's stable identity."
+  ],
+  "sandbox_pack": {
+    "schema": "reflex.replay_pack/1",
+    "pack_sha256": "2256ec3b59ac4f04bcf08ddaf102496f35e4891763d5eb454e7251d80c3e1e5e",
+    "content_sha256": "d9a538f98ebd535d8b2554ecd5fa2903d6593d77265ba0da85d9ace79c43e5b4",
+    "counts": {
+      "decisions": 1000,
+      "replay_records": 2000,
+      "arms_per_decision": 2
+    },
+    "network_required": false,
+    "verified": true,
+    "verify_command": "python -m app.sandbox.replay_pack verify replay_pack   # from backend/, with the guest network disabled"
+  }
+}

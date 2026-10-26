@@ -9,7 +9,7 @@
  * with contract problems) instead of an empty screen that looks like a healthy system.
  */
 
-import type { Decision, EnvelopeInfo, Fixture } from './types'
+import type { Decision, EnvelopeInfo, Fixture, HeadlineStatistics, ReplayComparison } from './types'
 
 export type Result<T> = { ok: true; value: T } | { ok: false; error: string }
 
@@ -36,6 +36,20 @@ async function getJson<T>(path: string): Promise<Result<T>> {
   }
 }
 
+async function postJson<T>(path: string, body: unknown): Promise<Result<T>> {
+  try {
+    const response = await fetch(path, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+    if (!response.ok) return { ok: false, error: await readError(response) }
+    return { ok: true, value: (await response.json()) as T }
+  } catch (cause) {
+    return { ok: false, error: cause instanceof Error ? cause.message : String(cause) }
+  }
+}
+
 export function fetchEnvelopeInfo(): Promise<Result<EnvelopeInfo>> {
   return getJson<EnvelopeInfo>('/v1/envelope/info')
 }
@@ -53,20 +67,19 @@ export function fetchFixture(name: string): Promise<Result<Fixture>> {
  * Evaluate one proposal through the real envelope. This is the only thing on the page that can
  * produce a decision: nothing here computes an outcome, clamps a value or guesses a veto.
  */
-export async function evaluateRequest(fixture: Fixture): Promise<Result<Decision>> {
-  try {
-    const response = await fetch('/v1/envelope/evaluate', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        snapshot: fixture.snapshot,
-        proposal: fixture.proposal,
-        requested_mode: fixture.requested_mode,
-      }),
-    })
-    if (!response.ok) return { ok: false, error: await readError(response) }
-    return { ok: true, value: (await response.json()) as Decision }
-  } catch (cause) {
-    return { ok: false, error: cause instanceof Error ? cause.message : String(cause) }
-  }
+export function evaluateRequest(fixture: Fixture): Promise<Result<Decision>> {
+  return postJson<Decision>('/v1/envelope/evaluate', {
+    snapshot: fixture.snapshot,
+    proposal: fixture.proposal,
+    requested_mode: fixture.requested_mode,
+  })
+}
+
+/** The batch job's headline numbers. Absent until `python jobs/batch_1000_eval.py` has run. */
+export function fetchHeadlineStatistics(): Promise<Result<HeadlineStatistics>> {
+  return getJson<HeadlineStatistics>('/stats/headline.json')
+}
+
+export function fetchReplay(decision: Decision): Promise<Result<ReplayComparison>> {
+  return postJson<ReplayComparison>('/v1/replay', { decision })
 }

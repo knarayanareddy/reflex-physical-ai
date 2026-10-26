@@ -37,7 +37,7 @@ dev = [
 ]
 
 [tool.setuptools]
-packages = ["app", "app.gate", "app.tf"]
+packages = ["app", "app.gate", "app.plan", "app.sandbox", "app.tf"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

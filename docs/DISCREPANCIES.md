@@ -31,6 +31,12 @@ recorded here and the document is corrected (or the gap is ticketed). Per
 | 2026-10-26 | `docs/AGENT-DELEGATION-PROTOCOL.md` §3 | Every pipeline stage implements `backend/app/stages/base.py` → `StageResult` | Neither module exists in the repository; the planner returns its own `Plan` (`abstain_reason`, `proposals`, `invalid`), and the envelope returns a raw `EnvelopeDecision` dict | Planner built to the dispatch's `app/plan/ultra.py` contract instead. If the `Stage` protocol is meant to be real, it needs its own ticket that names every consumer |
 | 2026-10-26 | Ticket dispatch vs `SPEC.md` | D-T26 is "SAFETY-CASE.md — the auditor's document"; the dashboard is D-T28 | The dispatch calls this ticket D-T26 and describes the dashboard, plenary planner and outage test | Dispatch followed (standing scope decision). D-T28's SIMULATION-badge requirement adopted anyway because it is a safety property, not a layout choice; three-column layout is the dispatch's |
 
+| 2026-10-26 | `backend/pyproject.toml` `[tool.setuptools] packages` | The installed image contains the `app` package | The list was `["app", "app.gate", "app.tf"]`. `app.plan` (added by D-T11) and `app.sandbox` (this ticket) would have been **silently omitted**: `uv sync` succeeds, `import app.plan` fails only at runtime inside the container, and no local test notices because the source tree is on `sys.path` | Added `app.plan` and `app.sandbox`; `tests/test_batch_replay.py` imports through the package to keep it honest |
+| 2026-10-26 | `backend/app/sandbox/__init__.py` | `python -m app.sandbox.replay_pack verify <dir>` prints one clean line | Importing the submodule from the package `__init__` makes `runpy` warn `'app.sandbox.replay_pack' found in sys.modules after import of package 'app.sandbox'`. Harmless, but a verification command that always prints a warning is a command people learn to ignore | `__init__` now exports lazily via `__getattr__`; the command is clean |
+| 2026-10-26 | `README.md` command table, `make batch` row | **Does not exist.** The Nebius Serverless Job lane is Phase C | `make batch` exists now and runs the 1,000-action session. Left as-is it would be a false negative in the one table a reviewer checks first | Row rewritten to describe what it actually does, and to keep saying the Nebius runner is NOT wired |
+| 2026-10-26 | `SPEC.md` D-T28 view (2) / the D-T11 `TODO_VERIFY` "absence of a replay endpoint" | The dashboard cannot show a collision counterfactual because replay has no HTTP endpoint | Resolved by this ticket: `POST /v1/replay` returns both contract-valid arms | The D-T11 row stays for the historical record; this one closes it |
+| 2026-10-26 | `README.md` status table | Two-arm replay "**Done**", dashboard "**Not started**", cloud planner "**Not started**", replay-as-serverless-job "**Not started**" | The dashboard now renders the ledger, calibration, planner and replay (D-T26); the replay pack and the 1,000-action batch exist (this ticket). The table predates both and is partly wrong in both directions | The two rows this ticket changes were corrected; the rest not rewritten wholesale (it spans three tickets' claims and needs its own pass). Flagged for the submission ticket |
+
 ## Why this table is not empty
 
 A log with no entries usually means nobody looked. Every row above was found by running
@@ -39,10 +45,10 @@ the thing rather than by reading it: `@v10` was a plausible tag that did not exi
 "relay closed" was a plausible default that invented a fact. The fixtures, the loader and
 the purity test exist so the next plausible mistake is caught by CI instead of by a reader.
 
-## Open verification items (TODO_VERIFY) — D-T11 / D-T19 / D-T26
+## Open verification items (TODO_VERIFY) — D-T11 / D-T19 / D-T20-T21 / D-T26
 
 Protocol §6: every unresolved `TODO_VERIFY` is listed here with an owner. Details and the exact
-blockers are in `reports/D-T11-T26.TASK_REPORT.md`.
+blockers are in `reports/D-T11-T26.TASK_REPORT.md` and `reports/D-T20-T21.TASK_REPORT.md`.
 
 | Item | Where it is asserted today | Where to confirm | Owner |
 |---|---|---|---|
@@ -50,4 +56,7 @@ blockers are in `reports/D-T11-T26.TASK_REPORT.md`.
 | Ultra model ID `nvidia/Nemotron-3-Ultra-550b-a55b` | `settings.model_ultra` (pre-existing in `config.py`, not introduced by this ticket) | `GET {nebius_base_url}/models` with a key | backend-agent |
 | 16k output-token limit for Ultra | Not asserted anywhere; prompt is sized well below it | Model card / `/models` | backend-agent |
 | Absence of a replay endpoint | Dashboard counterfactual draws intended vs shipped and claims no collision | `GET /v1/replay/{decision_id}` does not exist; wire it in the replay ticket | backend-agent + frontend-agent |
+| Token Factory **Sandbox SDK** client signature (`create_sandbox`, network-off flag, artifact upload) | `sandbox_plan()` emits the steps and the offline verify command, with `sdk.status: TODO_VERIFY(sandbox-sdk)`; nothing pretends to have called the API | `docs.tokenfactory.nebius.com/sandboxes/sdk/python_sdk/*` (unreachable from the build sandbox) | backend-agent |
+| **Guest-network-disabled flag name/shape** | `sandbox_plan().network == "disabled"`; the pack verification is network-off *by test* (`socket` replaced with raisers), not by the platform | Same docs, `configure-networking-and-secrets` | backend-agent |
+| **Nebius Serverless Job submission** | `jobs/batch_1000_eval.py` runs locally and in-process; nothing submits it | `docs.nebius.com/serverless/jobs` quickstart | backend-agent |
 | Absence of a stop path | No StopButton rendered (see the D-T28 row above) | Requires hardware/actuation work | human + backend-agent |
