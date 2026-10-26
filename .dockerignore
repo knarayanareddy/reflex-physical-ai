@@ -1,0 +1,27 @@
+# Keep the build context small and reproducible:
+# - never ship a local virtualenv, caches or git history into the image
+# - never ship local runtime data; the ledger is a volume, not a layer
+.git
+.gitignore
+.venv
+**/.venv
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+**/node_modules
+frontend/dist
+.env
+.env.*
+!.env.example
+runs/*.jsonl
+!runs/sample_ledger.jsonl
+reports/*
+docs
+video
+*.md
+!backend/README.md
+LICENSE
+NOTICE
+REVIEW.md

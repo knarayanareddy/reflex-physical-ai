@@ -75,7 +75,7 @@
         "first_veto_index": {"type": ["integer", "null"], "minimum": 0},
         "intended_action": {"$ref": "#/$defs/ActionProposal", "description": "What the planner wanted. Preserved verbatim — this is the record of what was REFUSED, and it is insight #2."},
         "shipped_action": {"oneOf": [{"$ref": "#/$defs/ActionProposal"}, {"type": "null"}], "description": "What actually went to the actuator. LAW: null (or is_noop=true) whenever outcome=VETO. Never the clamped action."},
-        "clamp_applied": {"type": ["object", "null"], "properties": {"velocity": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}, "target_pose": {"type": ["object", "null"]}, "rule_id": {"type": "string"}}, "description": "Before/after for every clamp, so a partial refusal is visible rather than silent."},
+        "clamp_applied": {"type": ["object", "null"], "required": ["rule_id"], "properties": {"velocity": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}, "target_pose": {"type": ["object", "null"]}, "rule_id": {"type": "string"}}, "description": "Before/after for every clamp, so a partial refusal is visible rather than silent."},
         "mode": {"$ref": "#/$defs/Mode"},
         "interlock_relay_opened": {"type": "boolean", "default": false, "description": "True when a hard_stop veto physically opened the relay. The relay is in the POWER PATH."},
         "relay_click_ts_wall": {"type": ["string", "null"], "format": "date-time", "description": "For the video's audible click moment"},
@@ -94,9 +94,9 @@
         "sensor_snapshot_inline": {"oneOf": [{"$ref": "#/$defs/SensorSnapshot"}, {"type": "null"}], "description": "Inline for vetoed decisions so the veto is fully self-contained and replayable without any other state"}
       },
       "allOf": [
-        {"if": {"properties": {"outcome": {"const": "VETO"}}, "required": ["outcome"]}, "then": {"required": ["rule_id"], "properties": {"rule_id": {"type": "string"}, "shipped_action": {"oneOf": [{"type": "null"}, {"properties": {"is_noop": {"const": true}}}]}}}, "description": "LAW: a VETO with a real shipped action, or with no rule_id, MUST fail validation."},
+        {"if": {"properties": {"outcome": {"const": "VETO"}}, "required": ["outcome"]}, "then": {"required": ["rule_id"], "properties": {"rule_id": {"type": "string"}, "shipped_action": {"oneOf": [{"type": "null"}, {"type": "object", "required": ["is_noop"], "properties": {"is_noop": {"const": true}}}]}}}, "description": "LAW: a VETO with a real shipped action, or with no rule_id, MUST fail validation."},
         {"if": {"properties": {"outcome": {"const": "ALLOW"}}, "required": ["outcome"]}, "then": {"properties": {"rule_id": {"const": null}, "clamp_applied": {"const": null}}}, "description": "LAW: an ALLOW must have no firing rule and no clamp. If a rule fired, the outcome is ALLOW_CLAMPED or VETO."},
-        {"if": {"properties": {"outcome": {"const": "ALLOW_CLAMPED"}}, "required": ["outcome"]}, "then": {"required": ["clamp_applied", "rule_id"]}, "description": "LAW: a clamp without a recorded before/after is invisible, and an invisible partial refusal is a design failure."}
+        {"if": {"properties": {"outcome": {"const": "ALLOW_CLAMPED"}}, "required": ["outcome"]}, "then": {"required": ["clamp_applied", "rule_id"], "properties": {"clamp_applied": {"type": "object", "required": ["rule_id"], "anyOf": [{"required": ["velocity"]}, {"required": ["target_pose"]}]}}}, "description": "LAW: a clamp without a recorded before/after is invisible, and an invisible partial refusal is a design failure."}
       ]
     },
 
@@ -126,7 +126,7 @@
         "cost": {"type": ["number", "null"]},
         "ledger_id": {"type": ["string", "null"]}
       },
-      "allOf": [{"if": {"properties": {"arm": {"const": "envelope_off"}}, "required": ["arm"]}, "then": {"required": ["collision"]}}]
+      "allOf": [{"if": {"properties": {"arm": {"const": "envelope_off"}}, "required": ["arm"]}, "then": {"required": ["collision"]}, "description": "LAW: arm=envelope_off MUST set collision explicitly (an object or null). Omitting it is ambiguous, and ambiguity in a safety proof is unacceptable."}, {"if": {"properties": {"arm": {"const": "envelope_on"}}, "required": ["arm"]}, "then": {"required": ["collision"], "properties": {"outcome": {"not": {"const": "collided"}}, "collision": {"type": "null"}}}, "description": "LAW: envelope_on is the proof arm. It cannot report a collision."}, {"if": {"properties": {"outcome": {"const": "collided"}}, "required": ["outcome"]}, "then": {"required": ["collision"], "properties": {"collision": {"type": "object"}}}, "description": "LAW: outcome=collided must carry collision detail."}]
     },
 
     "Rule": {
@@ -139,7 +139,7 @@
         "severity": {"enum": ["hard_stop", "clamp", "degrade", "reject"]},
         "applies_to_modes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/Mode"}},
         "requires_sensors": {"type": "array", "items": {"type": "string"}},
-        "sensor_staleness_ms": {"type": "number", "minimum": 0},
+        "sensor_staleness_ms": {"type": "number", "minimum": 0, "description": "Freshness window for THIS rule's own sensor inputs, in ms. 0 has a defined meaning: not applicable, because the rule reads timestamps carried inside the snapshot or proposal (e.g. V7 reads age_ms fields, V9 checks the proposal's ttl) so an extra window would double-count. A rule with sensor_staleness_ms=0 MUST NOT declare requires_sensors."},
         "description": {"type": "string"},
         "condition": {"type": "string"},
         "action_on_veto": {"type": "string"},
@@ -151,7 +151,8 @@
         "test_fixture": {"type": "string"},
         "false_positive_risk": {"type": "string", "minLength": 20},
         "tuning_note": {"type": ["string", "null"]},
-        "parameter_provenance": {"type": ["object", "null"], "description": "Maps each numeric parameter to a measurement id in data/calibration/rig-limits.json. scripts/check_param_provenance.py enforces the linkage."}
+        "parameter_provenance": {"type": ["object", "null"], "description": "Maps each numeric parameter to a measurement id in data/calibration/rig-limits.json. scripts/check_param_provenance.py enforces the linkage."},
+        "degraded_strictness_exemption": {"type": ["string", "null"], "description": "Set ONLY for a rule whose degraded parameter set cannot be numerically stricter than normal (e.g. a binary interlock already at its maximum). Must explain why. scripts/validate_taxonomy.py accepts equal values for exempt rules and for parameters already at a hard bound, and fails everything else."}
       }
     },
 
@@ -167,7 +168,7 @@
         "device": {"type": "string"},
         "hardware_tier": {"enum": [1, 2, 3], "description": "From data/hardware-tiers.md. Published honestly — the tier is part of the claim."},
         "scenario": {"type": ["string", "null"], "description": "e.g. 'normal_operation', 'repeated_intrusion', 'network_outage'. The session must cover ≥3 (D-T22)."},
-        "counts": {"type": "object", "required": ["actions_planned", "actions_allowed", "actions_clamped", "actions_vetoed"], "properties": {"actions_planned": {"type": "integer", "minimum": 0}, "actions_allowed": {"type": "integer"}, "actions_clamped": {"type": "integer"}, "actions_vetoed": {"type": "integer"}, "vetoes_by_rule": {"type": "object", "additionalProperties": {"type": "integer"}}, "distinct_rules_exercised": {"type": "integer"}, "v9_malformed_rejections": {"type": "integer"}, "false_positives": {"type": ["integer", "null"]}}},
+        "counts": {"type": "object", "required": ["actions_planned", "actions_allowed", "actions_clamped", "actions_vetoed"], "properties": {"actions_planned": {"type": "integer", "minimum": 0}, "actions_allowed": {"type": "integer", "minimum": 0}, "actions_clamped": {"type": "integer", "minimum": 0}, "actions_vetoed": {"type": "integer", "minimum": 0}, "vetoes_by_rule": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}}, "distinct_rules_exercised": {"type": "integer", "minimum": 0}, "v9_malformed_rejections": {"type": "integer", "minimum": 0}, "false_positives": {"type": ["integer", "null"], "minimum": 0}}},
         "degraded_mode_entered": {"type": "boolean"},
         "degraded_mode_total_ms": {"type": ["number", "null"]},
         "network_outages": {"type": "integer"},
@@ -201,8 +202,33 @@
       }
     },
 
-    "LedgerLine": {"$ref": "../../A-redflag-eu-product-safety/schemas/core-schemas.json#/$defs/LedgerLine"},
-    "Citation": {"$ref": "../../A-redflag-eu-product-safety/schemas/core-schemas.json#/$defs/Citation"}
+    "LedgerLine": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One telemetry/cost record per model call, appended to runs/ledger.jsonl by backend/app/tf/ledger.py (envelope decision records are a separate artifact, runs/veto-ledger.jsonl, per SPEC C1). The committed runs/sample_ledger.jsonl is a SYNTHETIC fixture.",
+      "required": ["ts", "kind", "stage", "model", "request", "cost_usd", "latency_ms", "status"],
+      "properties": {
+        "id": {"type": "string", "description": "Dedupe key. Required by the ledger-durability test once D-T13 lands; not yet emitted by record_telemetry()."},
+        "ts": {"type": "string", "format": "date-time"},
+        "kind": {"type": "string"},
+        "stage": {"type": "string"},
+        "model": {"type": "string"},
+        "request": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["prompt_tokens", "completion_tokens", "cached_tokens"],
+          "properties": {
+            "prompt_tokens": {"type": "integer", "minimum": 0},
+            "completion_tokens": {"type": "integer", "minimum": 0},
+            "cached_tokens": {"type": "integer", "minimum": 0}
+          }
+        },
+        "cost_usd": {"type": "number", "minimum": 0},
+        "latency_ms": {"type": "number", "minimum": 0},
+        "status": {"type": "string"},
+        "notes": {"type": ["string", "null"]}
+      }
+    }
   },
 
   "types": {
@@ -212,7 +238,8 @@
     "ReplayResult": {"$ref": "#/$defs/ReplayResult"},
     "Rule": {"$ref": "#/$defs/Rule"},
     "SessionRun": {"$ref": "#/$defs/SessionRun"},
-    "EdgeModelBenchmark": {"$ref": "#/$defs/EdgeModelBenchmark"}
+    "EdgeModelBenchmark": {"$ref": "#/$defs/EdgeModelBenchmark"},
+    "LedgerLine": {"$ref": "#/$defs/LedgerLine"}
   },
 
   "integrity_assertions_that_must_fail_validation": [
@@ -223,6 +250,8 @@
     "ActionProposal with ttl_ms missing or ≤0",
     "SensorSnapshot with keep_out_occupied=true and keep_out_evidence=null",
     "ReplayResult with arm=envelope_off and the collision field omitted entirely",
+    "ReplayResult with arm=envelope_on and a colliding outcome or a non-null collision",
+    "ReplayResult with outcome=collided and collision=null",
     "Rule with only one parameter set",
     "Rule whose parameter_set_degraded is less conservative than parameter_set_normal (checked by scripts/diff_parameter_sets.py, not by schema)",
     "SessionRun with collisions_in_shipped > 0"

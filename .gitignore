@@ -52,6 +52,6 @@ Thumbs.db
 # Runtime data (except fixtures & samples)
 runs/*.jsonl
 !runs/sample_ledger.jsonl
-data/corpus/*.duckdb
-data/corpus/*.pdf
-data/corpus/safety_gate_cache/
+# Local calibration output and caches
+data/calibration/captures/
+data/fixtures/snapshots/.cache/

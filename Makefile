@@ -1,29 +1,70 @@
 # Makefile for reflex-physical-ai
+#
+# Every target here runs what it says it runs. If a capability does not exist yet,
+# the target fails loudly rather than printing a cheerful no-op — a green `make` that
+# proves nothing is worse than a red one that tells the truth.
 
-.PHONY: help sample check test demo lint format clean
+SHELL := /bin/bash
+.DEFAULT_GOAL := help
+BACKEND := backend
+RUN := cd $(BACKEND) && uv run --extra dev
 
-help:
-	@echo "Available commands:"
-	@echo "  make sample   - Run pipeline offline on golden fixtures with uv"
-	@echo "  make check    - Run linting, typechecking, and schema validation tests"
-	@echo "  make test     - Run full pytest test suite"
-	@echo "  make demo     - Run end-to-end demo (requires NEBIUS_API_KEY)"
-	@echo "  make clean    - Remove virtualenvs, caches, and build artifacts"
+.PHONY: help sample test lint format typecheck schema taxonomy check demo serve verify-envelope clean
 
-sample:
-	cd backend && uv run --extra dev pytest tests/test_schemas.py -v
+help: ## Show the available targets
+	@echo "Reflex — available commands"
+	@echo ""
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  make %-16s %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Offline (no API key needed): sample, test, lint, typecheck, schema, taxonomy, check"
+	@echo "Network:                     demo  (serves the API; model calls land in Phase B)"
 
-check:
-	cd backend && uv run --extra dev pytest -v
+sample: ## Run the offline contract + fixture checks (no API key, no network)
+	$(RUN) pytest tests/test_schema_meta.py tests/test_schema_laws.py tests/test_ledger.py -q
 
-test:
-	cd backend && uv run --extra dev pytest tests/ -v
+test: ## Run the full test suite
+	$(RUN) pytest tests/ -q
 
-demo:
-	cd backend && uv run python -m app.main
+lint: ## Lint with ruff (check + format check)
+	$(RUN) ruff check app tests ../scripts
+	$(RUN) ruff format --check app tests ../scripts
 
-clean:
-	find . -type d -name "__pycache__" -exec rm -rf {} +
-	find . -type d -name ".pytest_cache" -exec rm -rf {} +
-	find . -type d -name ".ruff_cache" -exec rm -rf {} +
-	rm -rf backend/.venv frontend/node_modules
+format: ## Auto-fix lint findings and format the code
+	$(RUN) ruff check --fix app tests ../scripts
+	$(RUN) ruff format app tests ../scripts
+
+typecheck: ## Type-check the application package
+	$(RUN) mypy app
+
+schema: ## Validate the frozen contracts and every $ref
+	$(RUN) python ../scripts/validate_schema.py
+
+taxonomy: ## Validate rule structure and degraded-mode strictness
+	$(RUN) python ../scripts/validate_taxonomy.py --allow-placeholders --allow-missing-fixtures
+
+check: lint typecheck schema taxonomy test ## Everything CI runs
+	@echo ""
+	@echo "make check: PASS — lint, types, contracts, taxonomy and tests are green"
+
+demo: ## Serve the API on :8000 (no API key required; envelope is not implemented yet)
+	cd $(BACKEND) && uv run python -m app.main
+
+serve: demo ## Alias for demo
+
+verify-envelope: ## Purity + determinism proof for the envelope (SPEC §10) — Phase B
+	@if [ -d "$(BACKEND)/app/envelope" ]; then \
+		$(RUN) pytest tests/test_envelope_purity.py tests/test_envelope_determinism.py -q && echo "verify-envelope: PASS"; \
+	else \
+		echo "verify-envelope: NOT IMPLEMENTED"; \
+		echo "  The deterministic envelope (V1-V10) has not been written yet."; \
+		echo "  This target will run the purity and 500-replay determinism tests once it exists."; \
+		echo "  See REVIEW.md (R-08) and docs/DECISIONS.md."; \
+		exit 1; \
+	fi
+
+clean: ## Remove caches and virtualenvs
+	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
+	find . -type d -name ".pytest_cache" -prune -exec rm -rf {} +
+	find . -type d -name ".ruff_cache" -prune -exec rm -rf {} +
+	find . -type d -name ".mypy_cache" -prune -exec rm -rf {} +
+	rm -rf $(BACKEND)/.venv frontend/node_modules
