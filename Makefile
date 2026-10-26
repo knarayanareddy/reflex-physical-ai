@@ -9,7 +9,7 @@ SHELL := /bin/bash
 BACKEND := backend
 RUN := cd $(BACKEND) && uv run --extra dev
 
-.PHONY: help sample test lint format typecheck schema taxonomy params fixtures check demo serve verify-envelope replay batch clean
+.PHONY: help sample test lint format typecheck schema taxonomy params fixtures check demo demo-check serve verify-envelope replay batch clean
 
 help: ## Show the available targets
 	@echo "Reflex — available commands"
@@ -17,7 +17,8 @@ help: ## Show the available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  make %-16s %s\n", $$1, $$2}'
 	@echo ""
 	@echo "Offline (no API key needed): sample, test, lint, typecheck, schema, taxonomy, params, fixtures, check"
-	@echo "Network:                     demo  (serves the API; planner/model calls land in Phase C)"
+	@echo "Demo:                        demo  (10-second simulated session, then API + dashboard on :8000/:5173)"
+	@echo "Network:                     nothing here needs it; planner/model calls land in Phase C"
 
 sample: ## Run the offline contract + fixture checks (no API key, no network)
 	$(RUN) pytest tests/test_schema_meta.py tests/test_schema_laws.py tests/test_ledger.py -q
@@ -62,10 +63,14 @@ check: lint typecheck schema taxonomy params fixtures test ## Everything CI runs
 	@echo ""
 	@echo "make check: PASS — lint, types, contracts, taxonomy, calibration, fixtures and tests are green"
 
-demo: ## Serve the API on :8000 (no API key required; the envelope is live)
-	cd $(BACKEND) && uv run python -m app.main
+demo: ## 10-second offline session: V2 veto, interlock, ledger line, then serve API + dashboard
+	$(RUN) python ../jobs/offline_demo.py --serve
 
-serve: demo ## Alias for demo
+demo-check: ## Same session and probes, then exit 0 (for CI; leaves no server running)
+	$(RUN) python ../jobs/offline_demo.py --check
+
+serve: ## Serve the API on :8000 and nothing else (no API key required; the envelope is live)
+	cd $(BACKEND) && uv run python -m app.main
 
 verify-envelope: ## Purity, determinism, rules, calibration and the fixture corpus
 	$(RUN) pytest tests/test_envelope_purity.py tests/test_envelope_determinism.py \

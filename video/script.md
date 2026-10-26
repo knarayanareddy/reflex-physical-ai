@@ -1,28 +1,42 @@
-# 2:50 demo video — shot list
+# Demo video — 2:45, shot by shot
 
-**Hard limit:** ≤ 3:00. **Target:** 2:50. Physical AI requires **≥ 1:00 of footage of the hardware or key
-modules actually operating** (see `docs/SUBMISSION-CHECKLIST.md` §B).
+**Runtime: exactly 2:45 (165 s).** Hard limit is 3:00 (judges need not watch beyond it); the submission
+target is 2:45 so the last line lands before the cut-off. Timecodes below sum to 165 s.
 
-**Rule for this file: every shot below must be filmable with what exists.** Anything that needs hardware or a
-component that is still missing is marked **[rig]** — it cannot appear in the submitted cut until it exists.
-An unbacked shot is the fastest way to lose the panel that scores honesty (`docs/JUDGING-RUBRIC.md` §3).
+**Filmable from the repository alone.** Every shot is a terminal or the dashboard. There is no hardware
+in this build, so nothing is marked `[rig]` — the checklist's "≥ 1 minute of the key application modules
+in action" is covered by shots 2–4 (90 s of the envelope, the dashboard and the replay canvas running).
 
-Updated after Phase B: the ledger, the replay and the network-cut shots are now **filmable from the repo**
-(`make replay`, `runs/replay/`, and a local `curl` against `/v1/envelope/evaluate`) even though they still
-need hardware to be *physically* convincing. The shots that remain blocked are the ones that need a relay
-to click and a camera to see a block.
+**Spoken word budget.** 295 words over 165 s — 1.8 words/second (counted from the spoken column below). Rehearse to that; if a take runs long,
+cut words, not shots.
 
-| Timecode | Shot | What must be on screen | Spoken line |
-|---|---|---|---|
-| `0:00 – 0:20` | Persona and problem | Kai's cell: pusher, block, taped keep-out volume, relay module. No stock footage | State the pain in the persona's words: *"I can plan a robot's next action in two seconds. I can't tell anyone what I stopped it from doing, or prove the thing that stopped it can't be talked out of it."* |
-| `0:20 – 0:50` | The veto, live, one unbroken take | Left: camera. Right: terminal showing intended action → decision → actuator state | "The planner proposes the push. The block is inside the keep-out volume. The envelope vetoes. The relay opens. The actuator has no power." |
-| `0:50 – 1:20` | The ledger beats the relay **[rig for the click]** | `runs/sample_veto_ledger.jsonl`: one line landing with rule id, intended action, full rule trace, `sensor_snapshot_inline`. Relay click cut in if the rig exists | "Every refusal is written down — including the ones that allowed motion. This is the artifact a client or an insurer asks for." |
-| `1:20 – 1:50` | Replay compare: filmable today | `make replay` running; then two `runs/replay/rp_*.json` records side by side — `envelope_off` collides at the keep-out boundary, `envelope_on` never moves. Show the two `trajectory_sha256` values | "Same scene, same seed, two arms. This is what the veto prevented — and here is the arm where it did not." |
-| `1:50 – 2:15` | Network cut: filmable today | `POST /v1/envelope/evaluate` with `network.cloud_reachable=false`; `parameter_set` flips to `degraded`, `mode` shows SIMULATION; `make params` prints every stricter value | "Cut the network and the cell does not fail open. It switches to stricter limits and keeps operating." |
-| `2:15 – 2:35` | What is not done | `LIMITATIONS.md` on screen, with the real numbers (rules implemented, fixtures, measurements) | "Here is what isn't finished, with the count. That's the honest state of the build." |
-| `2:35 – 2:50` | Close | Architecture still: cloud proposes, edge decides, ledger proves | "A safety layer that consults the network isn't a safety layer. This one is local, deterministic, and keeps receipts." |
+| # | Timecode | Shot | On screen | Spoken line |
+|---|---|---|---|---|
+| 1 | `0:00 – 0:15` | Hook | Terminal, `make demo` typed. Title card: *Reflex — the veto layer that keeps receipts* | "A cloud planner proposes a robot's next action. This layer refuses, locally and deterministically — and every refusal keeps its receipt. Here it is, in ten seconds." |
+| 2 | `0:15 – 0:45` | The veto, live (`make demo`) | The 10-second timeline scrolling: `ALLOW` frames, then `t= 4.0 s VETO V2_KEEP_OUT_OCCUPIED`, then `interlock relay : opened = True` and the `V1_EMERGENCY_STOP` hold | "Ten seconds at ten hertz. The tool tip advances fifteen millimetres a second. At second four an intruder appears in the keep-out volume. V-two vetoes, the interlock opens, nothing ships — and every later proposal is refused by the interlock rule, so asking again does not restart the machine." |
+| 3 | `0:45 – 1:15` | Split-screen control room (dashboard) | http://127.0.0.1:5173 — three columns: scene left, the ten interlocks centre, telemetry and the veto ledger right. Camera holds on the headline bar | "The same decision in the operator view: scene on the left, all ten interlocks in the middle, telemetry and the veto ledger on the right. The headline bar reads one thousand actions planned, four hundred and twenty vetoes enforced, two hundred and forty-eight prevented, zero collisions shipped. The calibration is synthetic, so the badge says simulation — and it stays on screen." |
+| 4 | `1:15 – 1:45` | Simulate replay, per ledger row | Click **simulate replay**. Canvas: red path advances and stops at the keep-out edge with the ✕ contact marker; green path stays as a single point. Then `runs/headline_statistics.json` on screen | "Press simulate replay on any row. Red is the planner's action with the envelope off: it enters the keep-out volume at a hundred and fifty millimetres. Green is what shipped: no motion. Across the thousand-action session, two hundred and forty-eight adverse end states were preventable — a hundred and seventy contacts and seventy-eight boundary excursions. Both arms re-derive offline." |
+| 5 | `1:45 – 2:10` | Network cut | A terminal POSTing `cloud_reachable: false`; response shows `parameter_set: degraded` and a veto. Overlay: three degraded values | "Cut the network and nothing fails open. The cloud becomes unreachable, the envelope switches to degraded parameters — slower, longer hold, wider swept volume — and it keeps vetoing. Sixty tests pin that a degraded value is never less conservative than its normal one." |
+| 6 | `2:10 – 2:30` | What is not done | `LIMITATIONS.md` §3, scrolled slowly; the 0-calls row and the 22-synthetic-values row visible | "What is not done: no hardware, so veto-to-stop latency is unmeasured. No API key, so not one model call is in the ledger. The planner is a library with no endpoint. The limitations file lists each one with its number." |
+| 7 | `2:30 – 2:45` | Close | Architecture card: *cloud proposes · edge decides · ledger proves*; then the headline banner | "A safety layer that consults the network is not a safety layer. This one is local, deterministic, and keeps receipts." |
 
-**Do not claim in the voiceover:** a collision-free hardware session, measured veto-to-stop latency, a model
-running on-device, or that the replay proves the rig is safe — unless the numbers are in the repo and the
-footage shows them. Say "simulation" out loud whenever a decision carries `mode=simulation`; the UI renders a
-permanent badge, and the video must not contradict its own UI.
+## Pre-flight (do this before recording)
+
+1. `make check` — must end `make check: PASS` and `417 passed`.
+2. `cd frontend && npm install` once (the only step that needs the registry), then `make demo`.
+3. `make batch` so `runs/headline_statistics.json` exists — the headline bar reads it, and without it
+   the bar correctly says *"run `python jobs/batch_1000_eval.py`"* instead of showing zeros.
+4. Start from a clean terminal at 120 columns so the ledger line does not wrap mid-number.
+
+## What the voiceover must not claim
+
+- **Not** "248 collisions". The number is real, the word is not: 248 is the sum of 170 geometric
+  contacts and 78 boundary excursions, and the JSON field is a total. Say "adverse end states", or say
+  the split. The dashboard shows the two figures separately for the same reason.
+- **Not** a hardware result. No relay clicked; `interlock_relay_opened` is a decision, not a click.
+- **Not** measured veto-to-stop latency or distance — both are `null`.
+- **Not** a model running on-device, or any Token Factory latency: zero calls have been recorded.
+- **Not** "the replay proves the rig is safe" — it proves what this 2-D model would have done.
+
+Say **simulation** out loud whenever a decision carries `mode=simulation`; the UI renders a permanent
+badge, and the video must not contradict its own UI.
