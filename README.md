@@ -14,17 +14,19 @@
 
 ## ⚠️ Build status — read this before the quickstart
 
-This repository is at **Phase 1 of 5**: the contracts, the specification and the test harness exist; the
-envelope, the planner, the replay lane and the dashboard **do not**. The honest summary:
+This repository is at **Phase 2 of 5**: the contracts and the deterministic envelope exist and are
+tested; the planner, the dashboard and the hardware rig **do not**. The honest summary:
 
 | Component | Status | Evidence |
 |---|---|---|
 | Frozen contracts (`schemas/`, `data/veto-taxonomy.json`) | **Done** | `make schema`, `make taxonomy` |
 | Contract laws as executable tests | **Done** | `backend/tests/test_schema_laws.py` |
 | Config, telemetry ledger, HTTP provenance surface | **Done** | `backend/app/`, `make demo` |
-| Deterministic envelope V1–V10 | **Not started** | `make verify-envelope` fails by design |
+| Deterministic envelope V1–V10 | **Done (synthetic parameters)** | `make verify-envelope`: purity, 500-snapshot determinism, 20 fixtures |
+| Calibration profile for the rig | **Placeholder** | `data/calibration/rig-limits.json` — every value is synthetic, which forces `mode=simulation` |
+| Two-arm replay (local) | **Done** | `make replay` → 34 contract-valid `ReplayResult` records, 3 geometric counterfactuals |
+| Replay as a Nebius Serverless Job | **Not started** | the job runner is local; the arithmetic is the same |
 | Cloud planner / Cosmos Reason perception | **Not started** | no client exists |
-| Simulation replay + Serverless Job | **Not started** | `jobs/replay_all.py` does not exist |
 | Dashboard | **Not started** | `frontend/` is a design-token file |
 | Hardware rig, interlock, measured veto-to-stop | **Not started** | no wiring, no measurement |
 
@@ -52,8 +54,10 @@ make demo      # serves the API on :8000; then curl localhost:8000/health
 | `make sample` | No | Runs the contract and ledger fixture tests offline |
 | `make check` | No | Everything CI runs: ruff, mypy, `$ref` resolution, every schema law, taxonomy strictness, pytest |
 | `make demo` | No | Serves `/health` and `/v1/info` on :8000 (reports the contract version, the taxonomy digest and pinned model IDs) |
-| `make verify-envelope` | No | **Fails** until the deterministic envelope exists — it is not a no-op |
-| `make batch` | — | **Does not exist.** The Serverless Job lane is Phase B |
+| `make verify-envelope` | No | Purity (no `httpx`/`openai`/`socket` import in the decision path), 500-snapshot determinism, 20 rule fixtures, calibration invariants |
+| `make replay` | No | Replays the fixture corpus through both arms and writes `ReplayResult` records to `runs/replay/` |
+| `make params` | No | Prints every normal→degraded value and fails if any degraded value is less conservative |
+| `make batch` | — | **Does not exist.** The Nebius Serverless Job lane is Phase C |
 
 With a key (only needed once the planner exists):
 
@@ -114,15 +118,22 @@ it does not. On screen: *"1,240 actions planned · 37 vetoed · 37 simulated · 
 ├── data/veto-taxonomy.json       <- the 10 veto rules, both parameter sets, rationales
 ├── scripts/validate_schema.py    <- meta-validation, $ref resolution, rule conformance
 ├── scripts/validate_taxonomy.py  <- structure, priority total order, degraded-mode strictness
+├── data/calibration/rig-limits.json <- parameter values + provenance (synthetic today)
+├── data/fixtures/snapshots/       <- 20 cases: each rule's trigger and its near miss
 ├── backend/app/
 │   ├── config.py                 <- settings from env / .env (no fake key defaults)
-│   ├── main.py                   <- /health, /v1/info
+│   ├── main.py                   <- /health, /v1/info, /v1/envelope/{info,evaluate}
+│   ├── storage.py                <- fsync'd append-only JSONL, shared by both ledgers
+│   ├── contracts.py              <- jsonschema boundary validation (kept OUT of the envelope)
+│   ├── decision_ledger.py        <- the veto ledger: one EnvelopeDecision per evaluation
+│   ├── replay.py                 <- two-arm swept-volume replay
 │   ├── version.py                <- contract + taxonomy provenance
 │   ├── tf/ledger.py              <- append-only telemetry, validated, fsync'd
 │   ├── gate/gate.py              <- evidence-quote checker (NOT the envelope)
-│   └── envelope/                 <- Phase B: the deterministic V1-V10 envelope
-├── backend/tests/                <- 85 tests: schema laws, taxonomy, ledger, app, gate
+│   └── envelope/                 <- the deterministic V1-V10 envelope (stdlib only)
+├── backend/tests/                <- 253 tests: schema laws, envelope, replay, ledger, app, gate
 ├── frontend/src/tokens.css       <- design tokens only; no application yet
+├── jobs/replay_all.py            <- local replay lane, writes contract-valid ReplayResults
 └── jobs/Dockerfile               <- API image, non-root, lockfile-frozen
 ```
 
@@ -132,13 +143,15 @@ it does not. On screen: *"1,240 actions planned · 37 vetoed · 37 simulated · 
 
 | Criterion (25% each) | What this submission will show | Where to look |
 |---|---|---|
-| **Technological Implementation** | A small NVIDIA model on the edge device; Nemotron Ultra planning in the cloud; Cosmos Reason visual reasoning; replay of every veto as a Nebius Serverless Job; a cost/latency ledger that covers ≥95% of calls | `backend/`, `jobs/`, `runs/` |
+| **Technological Implementation** | A pure, network-free V1–V10 envelope with a content-addressed audit trail; a 500-snapshot determinism proof and an import-graph purity test; two-arm replay of every veto; a small NVIDIA model on the edge and Nemotron Ultra in the cloud (planned); a cost/latency ledger | `backend/app/envelope/`, `backend/tests/test_envelope_*.py`, `jobs/`, `runs/` |
 | **Design** | A split-screen operator view where the verdict and the safe action are above the fold and the evidence collapses underneath; VETO / CLAMP / ALLOW distinguishable in greyscale and under deuteranopia, with text labels | `frontend/src/tokens.css`, later `frontend/src/` |
 | **Potential Impact** | An auditable safety layer for small integrators; the veto-ledger format documented as reusable; ≥1 real practitioner conversation | `docs/`, `LIMITATIONS.md` |
 | **Quality of the Idea** | Three named insights; abstention as a first-class outcome; the no-LLM-import test; a fail-safe network test that is filmable | `backend/tests/`, this README |
 
-**Honest scoring position:** technological implementation is currently **strong on contracts and weak on
-product**. The criteria are equally weighted, and a repo whose README overclaims loses credibility with a
+**Honest scoring position:** technological implementation is now **strong on the safety layer** — the
+envelope is pure, deterministic, contract-checked and replayable — and still **weak on the product**: no
+planner, no dashboard, no measured rig, and every limit in the calibration file is a placeholder, which is
+why every decision is stamped `mode=simulation`. The criteria are equally weighted, and a repo whose README overclaims loses credibility with a
 panel that has said on the record that it rewards candour about what is unfinished
 (see [`docs/JUDGING-RUBRIC.md`](docs/JUDGING-RUBRIC.md)).
 

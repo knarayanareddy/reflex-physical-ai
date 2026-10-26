@@ -108,11 +108,6 @@ MUST_FAIL = {
         "ReplayResult with arm=envelope_off and the collision field omitted entirely",
         lambda: {k: v for k, v in replay_result().items() if k != "collision"},
     ),
-    "replay_on_with_collision": (
-        "ReplayResult",
-        "ReplayResult with arm=envelope_on and a colliding outcome or a non-null collision",
-        lambda: replay_result(arm="envelope_on", outcome="collided", collision={"with": "x", "at_t_ms": 1.0}),
-    ),
     "collided_without_detail": (
         "ReplayResult",
         "ReplayResult with outcome=collided and collision=null",
@@ -122,6 +117,16 @@ MUST_FAIL = {
         "Rule",
         "Rule with only one parameter set",
         lambda: {k: v for k, v in taxonomy_rule().items() if k != "parameter_set_degraded"},
+    ),
+    "decision_without_parameter_set": (
+        "EnvelopeDecision",
+        "EnvelopeDecision with no parameter_set (an ALLOW is meaningless without the limit set that allowed it)",
+        lambda: {k: v for k, v in veto_decision().items() if k != "parameter_set"},
+    ),
+    "rejection_without_evidence": (
+        "EnvelopeDecision",
+        "EnvelopeDecision with intended_action=null and intended_action_raw=null",
+        lambda: veto_decision(intended_action=None, intended_action_raw=None),
     ),
     "session_with_collision_shipped": (
         "SessionRun",
@@ -210,3 +215,21 @@ def test_builders_are_not_shared_mutable_state():
     assert second["rules_evaluated"] == ["V1_EMERGENCY_STOP", "V2_KEEP_OUT_OCCUPIED"]
     copy.deepcopy(second)["mode"] = "degraded"
     assert second["mode"] == "normal"
+
+
+def test_a_collision_under_the_envelope_is_representable():
+    """The contract must not forbid the finding it exists to look for.
+
+    An earlier draft made ``arm=envelope_on`` unable to report a collision, which would have
+    turned "the shipped action still hit something" — the most valuable result the replay
+    lane can produce — into a validation crash. Both arms now have to *state* the field;
+    neither is allowed to hide behind it.
+    """
+    validate(
+        "ReplayResult",
+        replay_result(arm="envelope_on", outcome="collided", collision={"with": "block", "at_t_ms": 12.5}),
+    )
+    with pytest.raises(ValidationError):
+        validate(
+            "ReplayResult", {k: v for k, v in replay_result(arm="envelope_on").items() if k != "collision"}
+        )

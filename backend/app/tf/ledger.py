@@ -30,6 +30,7 @@ from pathlib import Path
 from typing import Any
 
 from app.config import REPO_ROOT, settings
+from app.storage import append_jsonl, read_jsonl
 
 LEDGER_ENV_VAR = "REFLEX_LEDGER_PATH"
 DEFAULT_LEDGER_PATH = REPO_ROOT / "runs" / "ledger.jsonl"
@@ -162,15 +163,7 @@ def record_telemetry(
         validate_entry(entry)
 
     target = Path(destination).expanduser().resolve() if destination else ledger_path()
-    target.parent.mkdir(parents=True, exist_ok=True)
-
-    # One append-only write per record, flushed to disk before returning: either the
-    # whole line is durable or nothing is.
-    line = json.dumps(entry, ensure_ascii=False) + "\n"
-    with open(target, "a", encoding="utf-8") as handle:
-        handle.write(line)
-        handle.flush()
-        os.fsync(handle.fileno())
+    append_jsonl(target, entry)
     return entry
 
 
@@ -179,13 +172,4 @@ def read_ledger(destination: Path | str | None = None) -> list[dict[str, Any]]:
     target = Path(destination).expanduser().resolve() if destination else ledger_path()
     if not target.exists():
         return []
-    records: list[dict[str, Any]] = []
-    with open(target, encoding="utf-8") as handle:
-        for lineno, line in enumerate(handle, start=1):
-            if not line.strip():
-                continue
-            try:
-                records.append(json.loads(line))
-            except json.JSONDecodeError as exc:  # pragma: no cover - defensive
-                raise ValueError(f"{target}:{lineno} is not valid JSON: {exc}") from exc
-    return records
+    return read_jsonl(target)

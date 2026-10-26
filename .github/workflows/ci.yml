@@ -57,8 +57,40 @@ jobs:
         # every unresolved value so the debt is visible in the log rather than hidden.
         run: cd backend && uv run python ../scripts/validate_taxonomy.py --allow-placeholders --allow-missing-fixtures
 
+      - name: Calibration coverage, provenance and degraded strictness
+        # Exit 2 means "structurally sound but still synthetic" and is reported, not failed:
+        # the numbers cannot be measured before the rig exists (D-T06). `make params-strict`
+        # is the gate to flip once it does.
+        run: |
+          cd backend
+          set +e
+          uv run python ../scripts/check_param_provenance.py
+          code=$?
+          if [ "$code" -eq 2 ]; then
+            echo "::notice title=Calibration::Placeholder values recorded — decisions are forced to mode=simulation"
+          elif [ "$code" -ne 0 ]; then
+            exit "$code"
+          fi
+          uv run python ../scripts/diff_parameter_sets.py
+
+      - name: Fixture corpus matches the implementation
+        run: cd backend && uv run python ../scripts/make_fixtures.py --check
+
       - name: Tests
         run: cd backend && uv run pytest -q
+
+      - name: Envelope purity, determinism and the fixture corpus
+        # Belt and braces: the suite already covers this, but the claim is the headline of the
+        # project, so it gets its own named step that can never be silently dropped.
+        run: |
+          cd backend
+          uv run pytest tests/test_envelope_purity.py tests/test_envelope_determinism.py -q
+          uv run python -m app.envelope verify
+
+      - name: Replay both arms and validate the records
+        run: |
+          cd backend
+          uv run python ../jobs/replay_all.py --from-fixtures --quiet --out ../runs/replay
 
       - name: Application imports and answers HTTP
         # The specific failure this guards: a syntax error in app/__init__.py kept the

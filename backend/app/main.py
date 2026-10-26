@@ -1,46 +1,86 @@
 """FastAPI surface.
 
-Scope note, so nobody mistakes this for the product: the deterministic envelope
-(V1–V10), the planner and the replay lane are Phase B. This module currently exposes
-liveness and provenance only. ``/health`` must never report a capability the process
-does not have, and it must never echo a credential.
+Two layers, deliberately separated:
+
+* the HTTP boundary — validates untrusted input against the frozen contracts and records
+  what came back;
+* the deterministic envelope — ``app.envelope``, which cannot reach the network and is
+  the only thing that decides whether motion happens.
+
+Nothing here widens the envelope: a planner's payload is validated, evaluated and either
+refused or clamped. The cloud can propose; it cannot permit.
 """
 
 from __future__ import annotations
 
-from fastapi import FastAPI
+from functools import lru_cache
+from typing import Any, Literal
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, ConfigDict, Field
 
 from app import version
 from app.config import settings
+from app.contracts import ContractViolation, validate_payload
+from app.decision_ledger import record_decision, veto_ledger_path
+from app.envelope import EnvelopeInputError, ParameterError, Ruleset, envelope_version, evaluate, load_ruleset
 
 app = FastAPI(
     title="Reflex — Deterministic Edge Safety Envelope & Cloud Replay for Physical AI",
     description=(
         "Cloud VLM proposes robotic actions; a local deterministic envelope holds hard veto "
-        "authority over keep-out volumes and force limits. This build exposes provenance and "
-        "liveness; the envelope itself is not yet implemented."
+        "authority over keep-out volumes and force limits. The decision path imports no network "
+        "client and no model client; it is enforced by tests/test_envelope_purity.py."
     ),
-    version="0.1.0",
+    version="0.2.0",
 )
+
+
+@lru_cache(maxsize=1)
+def ruleset() -> Ruleset:
+    """Load the taxonomy + calibration once. A broken parameter set fails at first use."""
+    return load_ruleset()
+
+
+class EvaluateRequest(BaseModel):
+    """Untrusted input: a sensor snapshot and a proposed action."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    snapshot: dict[str, Any] = Field(description="A $defs/SensorSnapshot")
+    proposal: dict[str, Any] = Field(description="A $defs/ActionProposal, from any source")
+    requested_mode: Literal["normal", "degraded", "simulation"] = "normal"
 
 
 @app.get("/health")
 def health_check() -> dict[str, object]:
-    """Liveness. Reports capability flags, never credential values."""
+    """Liveness plus capability. Never echoes a credential."""
+    envelope_state = "ok"
+    profile: str | None = None
+    try:
+        active = ruleset()
+        profile = active.profile
+    except (ParameterError, FileNotFoundError) as exc:  # pragma: no cover - misconfiguration
+        envelope_state = f"unavailable: {exc}"
+
     return {
         "status": "ok",
         "environment": settings.environment,
         "capabilities": {
             "nebius_credentials": settings.has_nebius_credentials,
             "tavily_credentials": settings.has_tavily_credentials,
-            "envelope_implemented": False,
+            "envelope_implemented": True,
+            "envelope_state": envelope_state,
         },
+        "envelope": {"profile": profile, "calibration_provenance": active.provenance if profile else None}
+        if profile
+        else None,
     }
 
 
 @app.get("/v1/info")
 def get_info() -> dict[str, object]:
-    """Provenance: which models are pinned, which rule table is loaded, which contract."""
+    """Provenance: pinned models, contract version, and exactly which rules are live."""
     return {
         "project": "Reflex — Deterministic Edge Safety Envelope & Cloud Replay for Physical AI",
         "track": "Physical AI",
@@ -48,7 +88,7 @@ def get_info() -> dict[str, object]:
             "contract_version": version.contract_version(),
             "taxonomy_version": version.taxonomy_version(),
             "taxonomy_rules": version.taxonomy_rule_count(),
-            "envelope_implemented": False,
+            "envelope_implemented": True,
         },
         "models": {
             "ultra": settings.model_ultra,
@@ -59,12 +99,58 @@ def get_info() -> dict[str, object]:
     }
 
 
+@app.get("/v1/envelope/info")
+def envelope_info() -> dict[str, object]:
+    """The live rule table, the calibration profile and the version that pins them."""
+    active = ruleset()
+    return {
+        "envelope_version": envelope_version(active),
+        "profile": active.profile,
+        "calibration_provenance": active.provenance,
+        "measured": active.is_measured,
+        "simulation_badge_required": not active.is_measured,
+        "rig": active.rig,
+        "rules": [
+            {
+                "rule_id": rule.rule_id,
+                "priority": rule.priority,
+                "severity": rule.severity,
+                "applies_to_modes": list(rule.applies_to_modes),
+                "parameters": {
+                    "normal": active.normal.values.get(rule.rule_id, {}),
+                    "degraded": active.degraded.values.get(rule.rule_id, {}),
+                },
+            }
+            for rule in active.rules
+        ],
+        "veto_ledger_path": str(veto_ledger_path()),
+    }
+
+
+@app.post("/v1/envelope/evaluate")
+def evaluate_endpoint(request: EvaluateRequest) -> dict[str, Any]:
+    """Evaluate one proposal. The response is the decision, already written to the ledger."""
+    try:
+        validate_payload("SensorSnapshot", request.snapshot)
+        validate_payload("ActionProposal", request.proposal)
+    except ContractViolation as exc:
+        # Rejected before it became a decision: nothing to evaluate, nothing to log.
+        raise HTTPException(
+            status_code=422, detail={"contract": exc.defname, "problems": exc.problems}
+        ) from exc
+
+    try:
+        decision = evaluate(ruleset(), request.snapshot, request.proposal, request.requested_mode)
+    except (EnvelopeInputError, ParameterError) as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    record_decision(decision)
+    return decision
+
+
 if __name__ == "__main__":  # pragma: no cover - exercised by `make demo`
     import uvicorn
 
-    # Only pass an import string when reload is on: reload needs it, and it avoids the
-    # old `python -m app.main` bug where the module was imported twice (once as
-    # __main__, once as app.main), giving the process two Settings singletons.
     if settings.environment == "development":
         uvicorn.run(
             "app.main:app", host="0.0.0.0", port=8000, reload=True, log_level=settings.log_level.lower()

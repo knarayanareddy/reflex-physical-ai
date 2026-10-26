@@ -18,7 +18,8 @@ FROM python:3.12.7-slim-bookworm AS base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
-    REFLEX_LEDGER_PATH=/data/runs/ledger.jsonl
+    REFLEX_LEDGER_PATH=/data/runs/ledger.jsonl \
+    REFLEX_VETO_LEDGER_PATH=/data/runs/veto-ledger.jsonl
 
 WORKDIR /app
 

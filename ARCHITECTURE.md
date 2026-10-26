@@ -5,7 +5,7 @@ the failure mode this file exists to prevent.
 
 ---
 
-## 1. What exists today (Phase 1)
+## 1. What exists today (Phase 2)
 
 ```mermaid
 flowchart LR
@@ -16,17 +16,21 @@ flowchart LR
 
     subgraph Backend["backend/app"]
         C["config.py<br/>env + .env, no fake defaults"]
-        M["main.py<br/>/health, /v1/info"]
+        M["main.py<br/>/health, /v1/info,<br/>/v1/envelope/{info,evaluate}"]
         V["version.py<br/>taxonomy digest, contract version"]
         L["tf/ledger.py<br/>append-only, validated, fsync"]
         G["gate/gate.py<br/>evidence-quote checker"]
+        E["envelope/<br/>V1-V10, stdlib only,<br/>pure + deterministic"]
+        K["contracts.py<br/>jsonschema at the boundary<br/>(never inside the envelope)"]
+        D["decision_ledger.py<br/>EnvelopeDecision per evaluation"]
+        R["replay.py<br/>two-arm swept-volume 2-D"]
     end
 
     subgraph CI["make check / GitHub Actions"]
         R["ruff + mypy"]
         SV["validate_schema.py<br/>meta, $refs, rule conformance"]
         TV["validate_taxonomy.py<br/>structure + degraded strictness"]
-        P["pytest: 85 tests"]
+        P["pytest: 253 tests"]
     end
 
     S --> SV
@@ -37,7 +41,25 @@ flowchart LR
     V --> M
     L --> P
     G --> P
+    T --> E
+    CAL["data/calibration/rig-limits.json<br/>values + provenance"] --> E
+    E --> K
+    E --> D
+    D --> R
 ```
+
+### The envelope's three boundaries
+
+| Boundary | Who validates | Why there and not inside |
+|---|---|---|
+| Untrusted input (`SensorSnapshot`, `ActionProposal`) | `app/contracts.py` (jsonschema) | jsonschema's dependency chain can reach `urllib`; the purity test forbids it inside `app.envelope` |
+| Values | `app/envelope/params.py` (loader refuses to start) | A limit that fails to load must stop the process, not default to something plausible |
+| Output (`EnvelopeDecision`) | `app/contracts.py`, before it reaches the ledger | A ledger of unvalidated decisions is not an audit trail |
+
+Inside those boundaries the envelope is a pure function of `(ruleset, snapshot, proposal,
+requested_mode)`: no clock, no I/O, no randomness, no mutable module state. `determinism_hash`
+covers `{envelope_version, proposal, snapshot}` minus `ts_mono_ms`; `decision_id` is that hash
+truncated, so identical inputs deduplicate instead of double-logging.
 
 The gate is an **evidence-quote checker**: it answers "does this sentence appear verbatim in that
 document?" It is not a safety envelope, it does not read the taxonomy, and its verdict vocabulary

@@ -10,6 +10,8 @@
 ## 0. Remediation status
 
 **Phase A applied on 2026-10-26** (commit "Phase A: unblock the build, enforce the contract, make CI real").
+**Phase B applied on 2026-10-26**: the deterministic envelope, the calibration file, the fixture corpus and
+the replay lane now exist and are tested (253 tests).
 Findings are marked here so this document does not go stale: `fixed` = the defect is gone and a test guards
 it; `partial` = the highest-risk half is addressed and the rest is ticketed; `open` = unchanged.
 
@@ -20,19 +22,19 @@ it; `partial` = the highest-risk half is addressed and the rest is ticketed; `op
 | R-03 foreign `$ref`s | **fixed** | Local `LedgerLine`; unused `Citation` removed; `tests/test_schema_meta.py` fails on any non-local `$ref` |
 | R-04 demo path does not exist | **fixed** | README rewritten against measured behaviour; `make batch` row removed; `make sample`/`check`/`demo` now do what they say |
 | R-05 licence not detected | **fixed** | Canonical Apache-2.0 (sections 1–9 + appendix) restored; `NOTICE` added; `License-Expression: Apache-2.0` in wheel metadata (GitHub should now detect it) |
-| R-06 three state vocabularies | **open** | Recorded in `docs/DISCREPANCIES.md` and `docs/DECISIONS.md`; needs a contract decision in Phase B |
+| R-06 three state vocabularies | **partial** | The envelope's trace vocabulary is now a subset of the contract's (`DEGRADE` was added to `EnvelopeDecision.rule_trace[].result`, which could not previously record a degradation). The gate's `PASS`/`FAIL`/`UNDETERMINED` still differs and is Phase C |
 | R-07 gate is not a gate | **open** | Characterised in `tests/test_gate.py` with three `xfail(strict=True)` tests that will fail once fixed |
-| R-08 taxonomy unexecutable | **partial** | `scripts/validate_schema.py` + `scripts/validate_taxonomy.py` exist and run in CI; `TODO_MEASURE` values and `check_param_provenance.py` remain Phase B |
+| R-08 taxonomy unexecutable | **fixed** | The envelope reads values only from `data/calibration/rig-limits.json`; `check_param_provenance.py`, `diff_parameter_sets.py` and `make_fixtures.py` all exist and run in CI; 20 fixtures replace the 10 that were named but absent. The `TODO_MEASURE` text stays in the taxonomy as a visible contract placeholder, and the loader never reads it |
 | R-09 degraded not stricter | **fixed** | `V1` declares a justified exemption; `V8.window_ms` is 1000 vs 2000; the validator enforces a declared direction for every parameter and rejects wrong-way multipliers |
 | R-10 ledger sample not JSON | **fixed** | Valid, schema-checked, marked SYNTHETIC; `LedgerLine` now local and enforced |
 | R-11 ledger path | **fixed** | `REFLEX_LEDGER_PATH` / settings, never derived from `__file__`; fsync'd append; `id` on every line; tests cover both |
 | R-12 `.env` ignored | **fixed** | `SettingsConfigDict(env_file=…)`; `mock-key` default removed; `.env.example` matches `Settings` |
 | R-13 Dockerfile | **partial** | Rewritten: root-context build, `uv sync --frozen`, non-root user, healthcheck, volume for the ledger. Not built — no Docker in this environment, and the base image is tag-pinned, not digest-pinned |
 | R-14 pyproject incomplete | **fixed** | `build-system`, `license = "Apache-2.0"`, explicit packages, ruff/mypy config, `backend/README.md` |
-| R-15 fake Makefile targets | **fixed** | `lint`/`format`/`typecheck`/`schema`/`taxonomy` are real; `verify-envelope` fails loudly with a reason instead of pretending |
+| R-15 fake Makefile targets | **fixed** | `lint`/`format`/`typecheck`/`schema`/`taxonomy` are real; `verify-envelope` now runs the purity, determinism, rule, calibration, fixture and replay suites, plus `python -m app.envelope verify`; `make replay` and `make params` added |
 | R-16 frontend unbuildable | **open** | Phase C; stated plainly in the README status table |
 | R-17 zero CI | **fixed** | `.github/workflows/ci.yml` runs lint, types, contracts, taxonomy, tests and an app smoke test |
-| R-18 placebo tests | **fixed** | 85 tests (82 passing, 3 expected failures) replacing the single vacuous assertion |
+| R-18 placebo tests | **fixed** | 253 tests (250 passing, 3 expected failures) replacing the single vacuous assertion; the new envelope suites include a test that proves the purity checker catches violations |
 | R-19 prose assertions | **fixed** | Assertion list is executed, and a coverage test fails if a stated assertion has no fixture |
 | R-20 cross-project residue | **partial** | README, LIMITATIONS, ARCHITECTURE and the video script rewritten for the physical-AI domain; `docs/AGENT-DELEGATION-PROTOCOL.md` (A-T07 example), `docs/templates/*` and `data/competitor-subset.csv` still carry it |
 | R-21 two layouts | **partial** | `docs/DECISIONS.md` records `backend/` + `frontend/` as the layout and `backend/app/envelope/` as the Phase B home; `SPEC.md` §7 is unchanged |
@@ -40,9 +42,11 @@ it; `partial` = the highest-risk half is addressed and the rest is ticketed; `op
 | R-23 no recorded decisions | **fixed** | `docs/DECISIONS.md` has real entries and records D-T01 as **not recorded** rather than inventing one |
 | R-24 dependency padding | **partial** | `duckdb`, `jinja2`, `markupsafe` removed and `uv.lock` regenerated (46 packages); `openai`/`httpx` are kept for the Phase B planner |
 
-**Still true after Phase A:** the envelope, planner, replay lane, dashboard and hardware do not exist. The
-project is still ~24–36 engineering hours from its own claims, minus roughly 6 hours of Phase A work. Nothing
-in this file should be read as saying otherwise.
+**Still true after Phase B:** there is no planner, no dashboard, no hardware and no measured number. The
+envelope is real and tested, but every limit it enforces is a placeholder, which is why it stamps
+`mode=simulation` on every decision. The replay lane runs locally, not as a Nebius Serverless Job, and its
+simulator is a 2-D swept volume that cannot see force, staleness or trust. The project remains roughly
+18–30 engineering hours from its own claims. Nothing in this file should be read as saying otherwise.
 
 ---
 

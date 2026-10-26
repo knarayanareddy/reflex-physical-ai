@@ -57,6 +57,8 @@ class Settings(BaseSettings):
     # Where telemetry is appended. Empty means the repository default
     # (``runs/ledger.jsonl``); set it explicitly in containers.
     ledger_path: str = ""
+    # Where envelope decisions are appended (``runs/veto-ledger.jsonl`` by default).
+    veto_ledger_path: str = ""
 
     @property
     def has_nebius_credentials(self) -> bool:

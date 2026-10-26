@@ -4,7 +4,7 @@
 appears verbatim in a source document. It never loads the veto taxonomy, never looks at
 the assertion it is given, and its verdict vocabulary does not match the contract's
 ``Outcome`` enum. Two tests below are marked ``xfail(strict=True)``: they describe the
-intended behaviour, they fail today, and when Phase B fixes the gate they will start
+intended behaviour, they fail today, and when the gate is fixed they will start
 passing — at which point the strict marker turns that into a test failure and forces
 someone to delete the marker rather than leave a stale caveat in the repo.
 """
@@ -47,7 +47,7 @@ def test_result_vocabulary_does_not_match_the_contract():
 
 
 @pytest.mark.xfail(
-    strict=True, reason="Phase B: the gate ignores `assertion`, so a wildly unsafe claim can pass"
+    strict=True, reason="Phase C: the gate ignores `assertion`, so a wildly unsafe claim can pass"
 )
 def test_gate_must_not_pass_an_assertion_it_never_checked():
     result = DeterministicGate.evaluate(
@@ -56,14 +56,14 @@ def test_gate_must_not_pass_an_assertion_it_never_checked():
     assert result["verdict"] != "PASS"
 
 
-@pytest.mark.xfail(strict=True, reason="Phase B: whitespace/one-character quotes are accepted as grounding")
+@pytest.mark.xfail(strict=True, reason="Phase C: whitespace/one-character quotes are accepted as grounding")
 def test_gate_must_not_accept_a_vacuous_quote():
     result = DeterministicGate.evaluate("V1_EMERGENCY_STOP", {}, " ", "some source")
     assert result["verdict"] != "PASS"
 
 
 @pytest.mark.xfail(
-    strict=True, reason="Phase B: the README promises abstention on unverifiable evidence, code says FAIL"
+    strict=True, reason="Phase C: the README promises abstention on unverifiable evidence, code says FAIL"
 )
 def test_unverifiable_evidence_should_abstain_not_fail():
     result = DeterministicGate.evaluate("V2_KEEP_OUT_OCCUPIED", {}, "not present", SOURCE)

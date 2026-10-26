@@ -5,8 +5,9 @@
 > This project is built around honesty about its own operating boundaries. In a safety context, knowing when
 > a system cannot make a determination is worth more than a confident wrong answer.
 
-**Current state: Phase 1 of 5.** The contracts and the harness exist; the envelope, the replays, the
-dashboard and the hardware do not. Nothing here has been used to control a machine.
+**Current state: Phase 2 of 5.** The contracts, the deterministic envelope and a local two-arm replay
+exist. The planner, the dashboard and the hardware do not. Nothing here has been used to control a
+machine, and **every limit the envelope enforces is a placeholder** — see §2.
 
 ---
 
@@ -27,15 +28,29 @@ dashboard and the hardware do not. Nothing here has been used to control a machi
 
 | Area | Measured reality (2026-10-26) | What it would take |
 |---|---|---|
-| Veto rules implemented | **0 of 10.** The taxonomy is a contract; there is no evaluator | Phase B: `backend/app/envelope/` |
-| Envelope parameters | **12 of ~26 values are the literal string `TODO_MEASURE`**; 6 more are `TODO_MEASURE × k` | Rig calibration (D-T06) → `data/calibration/rig-limits.json` |
-| Rule fixtures | **0 of 10** named fixtures exist (`data/fixtures/snapshots/*.json`) | One positive and one negative fixture per rule |
-| Planner / perception | **No client.** `openai` is installed and unused | Phase B |
-| Replay + Serverless Job | **Missing.** `jobs/replay_all.py` does not exist; the folder holds a Dockerfile | Phase B |
-| Dashboard | **Missing.** `frontend/` is a 21-line design-token file; `npm run build` exits 1 | Phase C |
+| Veto rules implemented | **10 of 10**, as pure functions in `backend/app/envelope/rules.py` | — |
+| Envelope **values** | **22 of 22 are `synthetic`.** `data/calibration/rig-limits.json` has provenance `synthetic`, so every decision is forced to `mode=simulation` | Rig calibration (D-T06); `make params-strict` becomes the gate |
+| Contract placeholders | The taxonomy still carries its `TODO_MEASURE` text; the envelope never reads it (values come from calibration) | Delete them once a measured profile exists |
+| Rule fixtures | **20 of 20** (each rule's trigger and its near miss), regenerated and re-verified by `make fixtures` | — |
+| Determinism proof | **500 generated snapshots**, two passes, byte-identical; plus key-order, concurrency, fresh-interpreter and JSON-round-trip checks | — |
+| Replay | **Local only.** 34 `ReplayResult` records from 17 unique decisions; **3 of 7 vetoes have a geometric counterfactual** — the rest (force, staleness, trust, presence) are not spatial, and the job says so | A Serverless Job runner (Phase C) |
+| Simulator fidelity | **2-D swept volume in x-y**, 2 mm sampling. No dynamics, no contact force, no z motion | A dynamics engine would be required to claim anything about contact forces |
+| Planner / perception | **No client.** `openai` is installed and unused | Phase C |
+| Dashboard | **Missing.** `frontend/` is a design-token file; `npm run build` exits 1 | Phase C |
 | Hardware | **Nothing wired.** No relay, no limit switches, no camera, no measurement | D-T01 (go/no-go), D-T16, D-T17 |
 | Veto-to-stop latency / distance | **Not measured** — the fields exist in the contract and are null everywhere | High-fps capture + relay timing |
-| Test count | **85 tests, 3 expected failures** (the gate's known gaps) | — |
+| Test count | **253 tests, 3 expected failures** (the gate's known gaps) | — |
+
+### What "synthetic" means here, precisely
+
+Every number in `data/calibration/rig-limits.json` was chosen so the fixtures have a clear margin. None
+was measured. The loader enforces the consequence rather than trusting a label: a profile whose
+`provenance` is not `measurement` sets `mode=simulation` on **every** decision it produces, and
+`tests/test_envelope_params.py::test_provenance_decides_the_mode_not_the_request` asserts that no caller
+can ask for `normal` and get it back.
+
+The 22 numbers are individually traceable: each has a `kind: synthetic` entry and a note saying what to
+measure instead. `python scripts/check_param_provenance.py --strict` is red today, by design.
 
 ---
 

@@ -1,0 +1,85 @@
+{
+  "case_id": "veto_v9_malformed",
+  "description": "V9: the proposal asks to live for 9 s, beyond the envelope's 5 s TTL ceiling. A stale proposal describes a world that no longer exists.",
+  "requested_mode": "normal",
+  "expect": {
+    "outcome": "VETO",
+    "rule_id": "V9_PLAN_MALFORMED"
+  },
+  "snapshot": {
+    "snapshot_id": "s_0001",
+    "ts_mono_ms": 123456,
+    "ts_wall": "2026-10-26T12:00:00Z",
+    "camera": {
+      "frame_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "frame_idx": 42,
+      "age_ms": 33.0,
+      "fps_measured": 30.0
+    },
+    "end_effector": {
+      "x": 10.0,
+      "y": 0.0,
+      "z": 40.0,
+      "encoder_raw": 1024,
+      "age_ms": 5.0,
+      "velocity_mm_s": 0.0
+    },
+    "limit_switches": {
+      "min": false,
+      "max": false,
+      "age_ms": 5.0
+    },
+    "keep_out_occupied": false,
+    "keep_out_evidence": {
+      "method": "frame_diff",
+      "blob_area_px": 0.0,
+      "confidence": 0.99,
+      "witnesses_agreeing": [
+        "frame_diff"
+      ]
+    },
+    "intruder_present": false,
+    "human_presence_detected": false,
+    "force_estimate": 2.0,
+    "force_estimate_method": "stall_current",
+    "relay_state": true,
+    "e_stop_asserted": false,
+    "network": {
+      "cloud_reachable": true,
+      "last_cloud_ok_ms_ago": 12.0,
+      "rtt_ms_p99": 80.0
+    },
+    "device": {
+      "device_id": "sim-rig-01",
+      "temp_c": 41.0,
+      "cpu_pct": 12.0,
+      "mem_pct": 30.0,
+      "firmware_version": "0.1.0"
+    }
+  },
+  "proposal": {
+    "proposal_id": "p_0001",
+    "plan_id": "plan_0001",
+    "kind": "move_to",
+    "target_pose": {
+      "x": 200.0,
+      "y": 0.0,
+      "z": 40.0,
+      "frame": "world"
+    },
+    "velocity_limit": 40.0,
+    "force_limit": 8.0,
+    "preconditions": [
+      "relay_closed",
+      "keep_out_clear"
+    ],
+    "expected_end_state": {
+      "block": "at_target"
+    },
+    "source": "cloud_ultra",
+    "issued_at": "2026-10-26T11:59:59.900Z",
+    "ttl_ms": 9000,
+    "signature": null,
+    "is_noop": false
+  }
+}

@@ -6,6 +6,10 @@ recorded here and the document is corrected (or the gap is ticketed). Per
 
 | Date | Source | Documented behaviour | Observed behaviour | Resolution |
 |---|---|---|---|---|
+| 2026-10-26 | `schemas/core-schemas.json` `$defs/ReplayResult` | "envelope_on is the proof arm. It cannot report a collision." | A validator that forbids the failure it exists to detect: the first honest negative result would have crashed the replay job instead of being reported | Law removed. Both arms must now *state* `collision`; neither may be silent. `tests/test_schema_laws.py::test_a_collision_under_the_envelope_is_representable` pins it |
+| 2026-10-26 | `README.md` status table | "Simulation replay + Serverless Job — Not started; `jobs/replay_all.py` does not exist" | `jobs/replay_all.py` now replays both arms locally and writes contract-valid `ReplayResult` records; the *Serverless* runner still does not exist | README row split: local replay implemented, Nebius serverless execution still Phase C |
+| 2026-10-26 | `data/veto-taxonomy.json` rule `V2_KEEP_OUT_OCCUPIED` | `detection_min_confidence` and `consecutive_frames_required` must be strictly lower in degraded mode | Both are already at the hard floor (0.0 / 1); "stricter" is impossible, so a strict check rejects the only correct value | Calibration loader and both scripts now honour `HARD_BOUNDS` from `scripts/validate_taxonomy.py` when normal == degraded == floor |
+| 2026-10-26 | `backend/app/envelope/rules.py` rule `V1_EMERGENCY_STOP` | Treated a missing `relay_state` as a closed relay | "e-stop released and relay closed" was reported for a snapshot that never said so — an unknown interlock rounded to the safe-looking value | V1 abstains (`SENSOR_MISSING`) unless both `e_stop_asserted` and `relay_state` are explicitly safe. `test_missing_relay_state_is_an_abstention` |
 | 2026-10-26 | `README.md` quickstart | `make sample` runs the "full end-to-end pipeline offline against golden fixtures" | Ran a single 13-line test asserting the schema dict had *some* key; no pipeline, no fixtures | README rewritten to describe what actually runs; pipeline work is Phase B |
 | 2026-10-26 | `README.md` quickstart | `make demo` performs "real-time inference through Nebius Token Factory and deterministic gate" | Process died with `SyntaxError` in `backend/app/__init__.py`; no Token Factory client and no gate route exist | `__init__.py` fixed; `make demo` now serves a documented provenance API; README states the limits |
 | 2026-10-26 | `README.md` quickstart | `make check` covers "code quality, Pydantic/JSON schema integrity, and gate rules" | No lint, no types, no models, no gate test | `make check` now runs ruff, mypy, contract laws and the schema/taxonomy validators |
@@ -20,3 +24,11 @@ recorded here and the document is corrected (or the gap is ticketed). Per
 | 2026-10-26 | `docs/SUBMISSION-CHECKLIST.md` | Deadline "10:00 am PT = 17:00 UTC = 19:00 CEST" | 2026-10-30 10:00 PT is 17:00 UTC = **18:00 CET** (EU summer time ended 2026-10-25) | Checklist corrected to CET with the UTC anchor kept |
 | 2026-10-26 | `ARCHITECTURE.md`, `LIMITATIONS.md`, `README.md` | Legal/regulatory framing (statutory citations, marketplace delisting, "not a legal authority") | None of it applies to a robotics safety envelope; the text came from the template repo this scaffold was derived from | Rewritten for the physical-AI domain |
 | 2026-10-26 | `docs/ci/github-ci.yml` | CI runs on every push and the README shows a badge | The repo had zero workflows (`actions/workflows` → `total_count: 0`); the template was parked under `docs/` because the token lacked workflow scope | Real workflow added at `.github/workflows/ci.yml` (pushes and PRs), first run green; the parked template deleted. The badge starts resolving once this lands on `main` |
+
+## Why this table is not empty
+
+A log with no entries usually means nobody looked. Every row above was found by running
+the thing rather than by reading it: `@v10` was a plausible tag that did not exist; the
+`envelope_on` law was a plausible sentence that made the main result unrepresentable; V1's
+"relay closed" was a plausible default that invented a fact. The fixtures, the loader and
+the purity test exist so the next plausible mistake is caught by CI instead of by a reader.

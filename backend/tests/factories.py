@@ -130,6 +130,7 @@ def _decision_base(**overrides: Any) -> dict[str, Any]:
         "shipped_action": None,
         "clamp_applied": None,
         "mode": "normal",
+        "parameter_set": "normal",
         "interlock_relay_opened": True,
         "latency_us": 320.0,
         "envelope_version": "sha256:" + "a" * 64,
