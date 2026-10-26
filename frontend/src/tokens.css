@@ -1,0 +1,21 @@
+/* Reflex Design System — Robotics & Safety Envelope */
+:root {
+  --color-bg-primary: #0F172A;
+  --color-bg-secondary: #1E293B;
+  --color-bg-card: #243046;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  --color-border: #334155;
+
+  /* Industrial Safety Accents */
+  --color-veto: #FF1744;        /* Hard Veto Interlock Red */
+  --color-hazard: #FFEA00;      /* Keep-Out Volume Yellow */
+  --color-safe: #00E676;        /* Clear Path Green */
+  --color-telemetry: #38BDF8;   /* Telemetry Stream Cyan */
+  --color-nvidia: #76B900;      /* NVIDIA Green */
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Inter', system-ui, sans-serif;
+}

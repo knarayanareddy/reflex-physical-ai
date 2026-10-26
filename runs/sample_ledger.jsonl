@@ -1,0 +1,1 @@
+{"id": "led_sample_001", "ts": "2026-10-26T18:00:00Z", "kind": "chat.completions", "stage": "extract_fields", "model": "nvidia/nemotron-3-nano", "request": {"prompt_tokens": 850, "completion_tokens": 120, "cached_tokens": 800}, "cost_usd": 0.00012, "latency_ms": 280.4, "status": "ok", "notes": "Sample initial ledger trace"}\n

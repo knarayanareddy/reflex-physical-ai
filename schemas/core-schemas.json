@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/reflex/schemas/core-schemas.json",
+  "title": "Reflex core contracts",
+  "description": "FROZEN after ticket D-T09. SPEC.md §4 is the authoritative prose; data/veto-taxonomy.json holds the rule vocabulary. ONE definition shared by edge and cloud — the edge gets a generated subset; never hand-maintain two.",
+  "schema_version": "1.0.0",
+
+  "$defs": {
+
+    "Mode": {"enum": ["normal", "degraded", "simulation"], "description": "INSIGHT #3. 'degraded' is a MODE, not an error: same rules, strictly stricter parameters. 'simulation' MUST render a permanent SIMULATION badge in the UI — confusing it with hardware is the worst failure this project could commit."},
+
+    "Outcome": {"enum": ["ALLOW", "ALLOW_CLAMPED", "VETO"], "description": "A clamp is a PARTIAL refusal and must be visually distinct from ALLOW (D-T08). Three states, not two."},
+
+    "ActionProposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["proposal_id", "plan_id", "kind", "target_pose", "velocity_limit", "force_limit", "preconditions", "expected_end_state", "source", "issued_at", "ttl_ms"],
+      "properties": {
+        "proposal_id": {"type": "string", "pattern": "^p_"},
+        "plan_id": {"type": "string", "pattern": "^plan_"},
+        "kind": {"enum": ["move_to", "push", "grasp", "release", "home", "wait", "retract"]},
+        "target_pose": {"type": "object", "required": ["x", "y", "z"], "properties": {"x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"}, "frame": {"type": "string", "default": "world"}}},
+        "velocity_limit": {"type": "number", "exclusiveMinimum": 0, "description": "A REQUEST. The envelope may lower it, never raise it. V9 rejects a request above the envelope ceiling."},
+        "force_limit": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "preconditions": {"type": "array", "items": {"type": "string"}},
+        "expected_end_state": {"type": "object"},
+        "source": {"enum": ["cloud_ultra", "cloud_nano", "cloud_gr00t", "cosmos_reason", "edge_local", "hardcoded_sequence"], "description": "Anything from a model is UNTRUSTED INPUT to a machine that moves. V9 schema-validates it."},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "ttl_ms": {"type": "integer", "minimum": 1, "description": "LAW: a stale proposal describes a world that no longer exists. V9 rejects an expired proposal. This is a real safety property most demos lack."},
+        "expires_at": {"type": ["string", "null"], "format": "date-time"},
+        "signature": {"type": ["string", "null"], "description": "Optional integrity check that the executed proposal is the one that was issued"},
+        "is_noop": {"type": "boolean", "default": false}
+      }
+    },
+
+    "SensorSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["snapshot_id", "ts_mono_ms", "ts_wall", "end_effector", "limit_switches", "keep_out_occupied", "relay_state", "network", "device"],
+      "properties": {
+        "snapshot_id": {"type": "string", "pattern": "^s_"},
+        "ts_mono_ms": {"type": "integer", "minimum": 0, "description": "Monotonic. Recorded, but NEVER used as an input to a decision — determinism requires it."},
+        "ts_wall": {"type": "string", "format": "date-time"},
+        "camera": {"type": ["object", "null"], "properties": {"frame_sha256": {"type": "string"}, "frame_idx": {"type": "integer"}, "age_ms": {"type": "number", "minimum": 0}, "fps_measured": {"type": ["number", "null"]}}},
+        "end_effector": {"type": "object", "required": ["x", "y", "z", "age_ms"], "properties": {"x": {"type": "number"}, "y": {"type": "number"}, "z": {"type": "number"}, "encoder_raw": {"type": ["integer", "null"]}, "age_ms": {"type": "number", "minimum": 0}, "velocity_mm_s": {"type": ["number", "null"]}}},
+        "limit_switches": {"type": "object", "properties": {"min": {"type": "boolean"}, "max": {"type": "boolean"}, "age_ms": {"type": "number"}}},
+        "keep_out_occupied": {"type": "boolean"},
+        "keep_out_evidence": {"type": ["object", "null"], "required": ["method"], "properties": {"method": {"enum": ["switch", "frame_diff", "depth", "classifier", "beam", "none"]}, "blob_bbox": {"type": ["array", "null"]}, "blob_area_px": {"type": ["number", "null"]}, "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1}, "witnesses_agreeing": {"type": "array", "items": {"type": "string"}, "description": "Two independent detectors agreeing is a strong safety argument — record both"}, "background_sha256": {"type": ["string", "null"]}}, "description": "LAW: keep_out_occupied=true with no evidence MUST fail validation."},
+        "intruder_present": {"type": ["boolean", "null"]},
+        "human_presence_detected": {"type": ["boolean", "null"]},
+        "force_estimate": {"type": ["number", "null"], "description": "Named 'estimate' deliberately. If derived from motor current it is NOT a measured force, and it must be labelled as an estimate everywhere it appears."},
+        "force_estimate_method": {"enum": ["load_cell", "stall_current", "model_inferred", "none", null]},
+        "relay_state": {"type": "boolean", "description": "true = closed (motion possible), false = open (motion physically impossible)"},
+        "e_stop_asserted": {"type": "boolean", "default": false},
+        "network": {"type": "object", "required": ["cloud_reachable"], "properties": {"cloud_reachable": {"type": "boolean"}, "last_cloud_ok_ms_ago": {"type": ["number", "null"], "minimum": 0}, "rtt_ms_p99": {"type": ["number", "null"]}}},
+        "device": {"type": "object", "properties": {"device_id": {"type": "string"}, "temp_c": {"type": ["number", "null"]}, "cpu_pct": {"type": ["number", "null"]}, "mem_pct": {"type": ["number", "null"]}, "firmware_version": {"type": ["string", "null"]}}},
+        "advisory_perception": {"type": ["object", "null"], "description": "Cosmos Reason output. ADVISORY ONLY: it may add evidence but may NEVER clear a veto or widen the envelope. Asserted by the D-T14 test.", "properties": {"scene_description": {"type": ["string", "null"]}, "object_poses": {"type": "array"}, "anomaly_flags": {"type": "array", "items": {"type": "string"}}, "claims_workspace_clear": {"type": "boolean", "default": false, "description": "Recorded so the 'a model cannot clear a veto' test can assert it was ignored"}, "model": {"type": ["string", "null"]}, "ledger_id": {"type": ["string", "null"]}}}
+      },
+      "allOf": [{"if": {"properties": {"keep_out_occupied": {"const": true}}, "required": ["keep_out_occupied"]}, "then": {"required": ["keep_out_evidence"], "properties": {"keep_out_evidence": {"type": "object"}}}}]
+    },
+
+    "EnvelopeDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "THE CENTRAL OBJECT. One per envelope evaluation, veto or allow. This is what the audit trail is made of.",
+      "required": ["decision_id", "proposal_id", "snapshot_id", "outcome", "rules_evaluated", "rule_trace", "intended_action", "shipped_action", "mode", "latency_us", "envelope_version", "determinism_hash", "decided_at", "device_id"],
+      "properties": {
+        "decision_id": {"type": "string", "pattern": "^d_"},
+        "proposal_id": {"type": "string", "pattern": "^p_"},
+        "snapshot_id": {"type": "string", "pattern": "^s_"},
+        "outcome": {"$ref": "#/$defs/Outcome"},
+        "rule_id": {"type": ["string", "null"], "pattern": "^V([1-9]|10)_", "description": "The FIRST rule that vetoed. Null when outcome=ALLOW."},
+        "rules_evaluated": {"type": "array", "items": {"type": "string"}, "description": "Every rule considered, in priority order."},
+        "rule_trace": {"type": "array", "items": {"type": "object", "required": ["rule_id", "result"], "properties": {"rule_id": {"type": "string"}, "result": {"enum": ["PASS", "VETO", "CLAMP", "SKIPPED_MODE", "SENSOR_MISSING", "SENSOR_STALE"]}, "parameter_set_used": {"enum": ["normal", "degraded", null]}, "detail": {"type": ["string", "null"]}}}, "description": "The FULL evaluation trace, not just the rule that fired. Showing which rules were considered and in what order is a genuinely novel and informative artifact — surface it in the UI (D-T28)."},
+        "first_veto_index": {"type": ["integer", "null"], "minimum": 0},
+        "intended_action": {"$ref": "#/$defs/ActionProposal", "description": "What the planner wanted. Preserved verbatim — this is the record of what was REFUSED, and it is insight #2."},
+        "shipped_action": {"oneOf": [{"$ref": "#/$defs/ActionProposal"}, {"type": "null"}], "description": "What actually went to the actuator. LAW: null (or is_noop=true) whenever outcome=VETO. Never the clamped action."},
+        "clamp_applied": {"type": ["object", "null"], "properties": {"velocity": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2}, "target_pose": {"type": ["object", "null"]}, "rule_id": {"type": "string"}}, "description": "Before/after for every clamp, so a partial refusal is visible rather than silent."},
+        "mode": {"$ref": "#/$defs/Mode"},
+        "interlock_relay_opened": {"type": "boolean", "default": false, "description": "True when a hard_stop veto physically opened the relay. The relay is in the POWER PATH."},
+        "relay_click_ts_wall": {"type": ["string", "null"], "format": "date-time", "description": "For the video's audible click moment"},
+        "veto_to_stop_latency_ms": {"type": ["number", "null"], "minimum": 0, "description": "MEASURED, from decision to motion ceasing. A core safety metric almost nobody publishes."},
+        "veto_to_stop_distance_mm": {"type": ["number", "null"], "minimum": 0, "description": "MEASURED, from the high-fps footage. Derives V3/V5's degraded parameters."},
+        "latency_us": {"type": "number", "minimum": 0, "description": "Envelope evaluation time. Target p95 < 1000 µs. Publish the real number."},
+        "envelope_version": {"type": "string", "description": "sha256 of (veto-taxonomy.json + envelope source). Ties a decision to the exact rule set that produced it — this is what makes the ledger auditable across a changing codebase."},
+        "determinism_hash": {"type": "string", "description": "sha256 of the canonicalised (snapshot, intended_action, envelope_version). 500 snapshots replayed twice must produce byte-identical hashes."},
+        "decided_at": {"type": "string", "format": "date-time"},
+        "device_id": {"type": "string"},
+        "firmware_version": {"type": ["string", "null"]},
+        "buffered_locally": {"type": "boolean", "default": false, "description": "True while the cloud is unreachable. The safety record must not depend on the network that the safety layer must not depend on (insight #3)."},
+        "shipped_to_cloud_at": {"type": ["string", "null"], "format": "date-time"},
+        "replayed": {"type": "boolean", "default": false},
+        "replay_ids": {"type": "array", "items": {"type": "string", "pattern": "^rp_"}},
+        "sensor_snapshot_inline": {"oneOf": [{"$ref": "#/$defs/SensorSnapshot"}, {"type": "null"}], "description": "Inline for vetoed decisions so the veto is fully self-contained and replayable without any other state"}
+      },
+      "allOf": [
+        {"if": {"properties": {"outcome": {"const": "VETO"}}, "required": ["outcome"]}, "then": {"required": ["rule_id"], "properties": {"rule_id": {"type": "string"}, "shipped_action": {"oneOf": [{"type": "null"}, {"properties": {"is_noop": {"const": true}}}]}}}, "description": "LAW: a VETO with a real shipped action, or with no rule_id, MUST fail validation."},
+        {"if": {"properties": {"outcome": {"const": "ALLOW"}}, "required": ["outcome"]}, "then": {"properties": {"rule_id": {"const": null}, "clamp_applied": {"const": null}}}, "description": "LAW: an ALLOW must have no firing rule and no clamp. If a rule fired, the outcome is ALLOW_CLAMPED or VETO."},
+        {"if": {"properties": {"outcome": {"const": "ALLOW_CLAMPED"}}, "required": ["outcome"]}, "then": {"required": ["clamp_applied", "rule_id"]}, "description": "LAW: a clamp without a recorded before/after is invisible, and an invisible partial refusal is a design failure."}
+      ]
+    },
+
+    "ReplayResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["replay_id", "decision_id", "arm", "simulator", "sim_version", "ran_at", "outcome", "trajectory_sha256"],
+      "description": "The PROOF that a veto prevented something. Two arms per vetoed decision, from one byte-identical Sandbox image.",
+      "properties": {
+        "replay_id": {"type": "string", "pattern": "^rp_"},
+        "decision_id": {"type": "string", "pattern": "^d_"},
+        "arm": {"enum": ["envelope_on", "envelope_off"], "description": "envelope_off replays the INTENDED action with no safety layer. envelope_on replays the SHIPPED action."},
+        "simulator": {"type": "string", "description": "e.g. 'in-house swept-volume 2D' — justify the choice in docs/SIMULATOR-CHOICE.md"},
+        "sim_version": {"type": "string"},
+        "sandbox_image_uuid": {"type": ["string", "null"], "description": "Both arms MUST come from the same pinned immutable image"},
+        "sandbox_operation_id": {"type": ["string", "null"]},
+        "sandbox_branch": {"type": ["string", "null"]},
+        "ran_at": {"type": "string", "format": "date-time"},
+        "runner": {"enum": ["nebius_serverless_job", "token_factory_sandbox", "local_process"]},
+        "seed": {"type": ["integer", "null"], "description": "Determinism: same seed + same inputs → same trajectory_sha256"},
+        "outcome": {"enum": ["completed", "collided", "out_of_bounds", "force_exceeded", "timeout", "error"]},
+        "collision": {"type": ["object", "null"], "required": ["with", "at_t_ms"], "properties": {"with": {"type": "string"}, "at_t_ms": {"type": "number"}, "penetration_mm": {"type": ["number", "null"]}, "contact_point": {"type": ["object", "null"]}}, "description": "LAW: arm=envelope_off MUST set this field explicitly — either an object or null. Omitting it is ambiguous, and ambiguity in a safety proof is unacceptable."},
+        "trajectory_sha256": {"type": "string"},
+        "trajectory_points": {"type": ["array", "null"]},
+        "still_image_path": {"type": ["string", "null"], "description": "A renderable still per arm — ReplayCompare shows the two side by side. This is the whole argument in one frame."},
+        "metrics": {"type": ["object", "null"], "properties": {"path_length_mm": {"type": "number"}, "max_velocity_mm_s": {"type": "number"}, "max_force_n": {"type": ["number", "null"]}, "time_to_complete_ms": {"type": ["number", "null"]}}},
+        "cost": {"type": ["number", "null"]},
+        "ledger_id": {"type": ["string", "null"]}
+      },
+      "allOf": [{"if": {"properties": {"arm": {"const": "envelope_off"}}, "required": ["arm"]}, "then": {"required": ["collision"]}}]
+    },
+
+    "Rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule_id", "priority", "severity", "applies_to_modes", "requires_sensors", "sensor_staleness_ms", "description", "condition", "action_on_veto", "parameter_set_normal", "parameter_set_degraded", "rationale", "test_fixture", "false_positive_risk"],
+      "properties": {
+        "rule_id": {"type": "string", "pattern": "^V([1-9]|10)_[A-Z_]+$"},
+        "priority": {"type": "integer", "minimum": 1, "maximum": 10, "description": "Total, unambiguous order. FIRST veto wins."},
+        "severity": {"enum": ["hard_stop", "clamp", "degrade", "reject"]},
+        "applies_to_modes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/Mode"}},
+        "requires_sensors": {"type": "array", "items": {"type": "string"}},
+        "sensor_staleness_ms": {"type": "number", "minimum": 0},
+        "description": {"type": "string"},
+        "condition": {"type": "string"},
+        "action_on_veto": {"type": "string"},
+        "latching": {"type": "boolean", "default": false},
+        "reset_requires": {"enum": ["explicit_operator_reset", "condition_cleared", "clear_hold_elapsed", null]},
+        "parameter_set_normal": {"type": "object", "description": "LAW: required. A rule with only one parameter set has no degraded behaviour, and that is a fail-open by omission."},
+        "parameter_set_degraded": {"type": "object", "description": "LAW: required, and every value must be STRICTLY MORE CONSERVATIVE than its normal counterpart. scripts/diff_parameter_sets.py asserts this and fails the build."},
+        "rationale": {"type": "string", "minLength": 80, "description": "Written as if for an auditor: why this rule, why these numbers, what happens if it is wrong in each direction."},
+        "test_fixture": {"type": "string"},
+        "false_positive_risk": {"type": "string", "minLength": 20},
+        "tuning_note": {"type": ["string", "null"]},
+        "parameter_provenance": {"type": ["object", "null"], "description": "Maps each numeric parameter to a measurement id in data/calibration/rig-limits.json. scripts/check_param_provenance.py enforces the linkage."}
+      }
+    },
+
+    "SessionRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "mode", "started_at", "ended_at", "device", "hardware_tier", "counts", "collisions_in_shipped", "cost_usd", "latency"],
+      "properties": {
+        "run_id": {"type": "string", "pattern": "^run_"},
+        "mode": {"$ref": "#/$defs/Mode"},
+        "started_at": {"type": "string", "format": "date-time"},
+        "ended_at": {"type": ["string", "null"], "format": "date-time"},
+        "device": {"type": "string"},
+        "hardware_tier": {"enum": [1, 2, 3], "description": "From data/hardware-tiers.md. Published honestly — the tier is part of the claim."},
+        "scenario": {"type": ["string", "null"], "description": "e.g. 'normal_operation', 'repeated_intrusion', 'network_outage'. The session must cover ≥3 (D-T22)."},
+        "counts": {"type": "object", "required": ["actions_planned", "actions_allowed", "actions_clamped", "actions_vetoed"], "properties": {"actions_planned": {"type": "integer", "minimum": 0}, "actions_allowed": {"type": "integer"}, "actions_clamped": {"type": "integer"}, "actions_vetoed": {"type": "integer"}, "vetoes_by_rule": {"type": "object", "additionalProperties": {"type": "integer"}}, "distinct_rules_exercised": {"type": "integer"}, "v9_malformed_rejections": {"type": "integer"}, "false_positives": {"type": ["integer", "null"]}}},
+        "degraded_mode_entered": {"type": "boolean"},
+        "degraded_mode_total_ms": {"type": ["number", "null"]},
+        "network_outages": {"type": "integer"},
+        "decisions_lost_during_outage": {"type": ["integer", "null"], "description": "MUST be 0. The buffer-then-ship design (D-T13) exists to guarantee this."},
+        "collisions_in_shipped": {"type": "integer", "const": 0, "description": "LAW: must be 0. Any other value means the system shipped a collision and the submission's central claim is false."},
+        "replay": {"type": ["object", "null"], "properties": {"vetoes_replayed": {"type": "integer"}, "collisions_envelope_off": {"type": "integer"}, "collisions_envelope_on": {"type": "integer", "const": 0}, "conservative_fraction": {"type": "number", "minimum": 0, "maximum": 1, "description": "Vetoes where the envelope_off arm ALSO completed cleanly. Report honestly — this is the cost of determinism, not a failure."}, "mean_penetration_prevented_mm": {"type": ["number", "null"]}}},
+        "veto_to_stop": {"type": ["object", "null"], "properties": {"latency_ms_p50": {"type": "number"}, "latency_ms_p95": {"type": "number"}, "distance_mm_p50": {"type": "number"}, "distance_mm_p95": {"type": "number"}}},
+        "cost_usd": {"type": "number"},
+        "latency": {"type": "object", "required": ["edge_envelope_us_p50", "edge_envelope_us_p95"], "properties": {"edge_envelope_us_p50": {"type": "number"}, "edge_envelope_us_p95": {"type": "number"}, "edge_local_model_ms_p50": {"type": ["number", "null"]}, "cloud_planner_ms_p50": {"type": ["number", "null"]}, "cloud_planner_ms_p95": {"type": ["number", "null"]}, "cloud_perception_ms_p50": {"type": ["number", "null"]}, "sensor_snapshot_hz_measured": {"type": ["number", "null"]}, "sensor_staleness_ms_p99": {"type": ["number", "null"]}, "description_note": {"type": "string", "description": "Edge and cloud latency MUST be reported separately — the split is the architecture."}}},
+        "video_clip_ids": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+
+    "EdgeModelBenchmark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["device", "model", "quantisation", "measured_at", "throughput"],
+      "description": "The evidence for the 'local models on physical AI' claim — the thing Johnny asked for on the record. Real measured numbers only.",
+      "properties": {
+        "device": {"type": "string", "description": "Exact model and memory, e.g. 'Jetson Orin Nano 8GB' or 'Raspberry Pi 5 8GB'"},
+        "model": {"type": "string"},
+        "quantisation": {"type": ["string", "null"]},
+        "framework": {"type": ["string", "null"]},
+        "job_in_pipeline": {"type": "string", "description": "REQUIRED and must be a real job whose removal would degrade the system — not decorative."},
+        "throughput": {"type": "object", "properties": {"unit": {"enum": ["tokens_per_s", "frames_per_s", "inferences_per_s"]}, "value": {"type": "number"}, "batch_size": {"type": ["integer", "null"]}}},
+        "peak_memory_mb": {"type": ["number", "null"]},
+        "power_draw_w": {"type": ["number", "null"]},
+        "thermal_10min": {"type": ["object", "null"], "properties": {"start_temp_c": {"type": "number"}, "end_temp_c": {"type": "number"}, "throttled": {"type": "boolean"}}},
+        "runs_on_device_not_workstation": {"type": "boolean", "description": "HONESTY LAW: if the model actually runs on a workstation acting as the edge, this is false and the UI, README and video must say so plainly. Overclaiming where a model runs is instantly detectable by a Jetson-experienced judge and would destroy the submission."},
+        "measured_at": {"type": "string", "format": "date-time"}
+      }
+    },
+
+    "LedgerLine": {"$ref": "../../A-redflag-eu-product-safety/schemas/core-schemas.json#/$defs/LedgerLine"},
+    "Citation": {"$ref": "../../A-redflag-eu-product-safety/schemas/core-schemas.json#/$defs/Citation"}
+  },
+
+  "types": {
+    "ActionProposal": {"$ref": "#/$defs/ActionProposal"},
+    "SensorSnapshot": {"$ref": "#/$defs/SensorSnapshot"},
+    "EnvelopeDecision": {"$ref": "#/$defs/EnvelopeDecision"},
+    "ReplayResult": {"$ref": "#/$defs/ReplayResult"},
+    "Rule": {"$ref": "#/$defs/Rule"},
+    "SessionRun": {"$ref": "#/$defs/SessionRun"},
+    "EdgeModelBenchmark": {"$ref": "#/$defs/EdgeModelBenchmark"}
+  },
+
+  "integrity_assertions_that_must_fail_validation": [
+    "EnvelopeDecision with outcome=VETO and a non-null, non-noop shipped_action",
+    "EnvelopeDecision with outcome=VETO and rule_id=null",
+    "EnvelopeDecision with outcome=ALLOW and rule_id set",
+    "EnvelopeDecision with outcome=ALLOW_CLAMPED and clamp_applied=null",
+    "ActionProposal with ttl_ms missing or ≤0",
+    "SensorSnapshot with keep_out_occupied=true and keep_out_evidence=null",
+    "ReplayResult with arm=envelope_off and the collision field omitted entirely",
+    "Rule with only one parameter set",
+    "Rule whose parameter_set_degraded is less conservative than parameter_set_normal (checked by scripts/diff_parameter_sets.py, not by schema)",
+    "SessionRun with collisions_in_shipped > 0"
+  ]
+}

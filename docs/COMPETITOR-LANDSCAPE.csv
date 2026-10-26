@@ -1,0 +1,834 @@
+repo,url,language,stars,clusters,description
+something,https://github.com/nikhillakra2007-tech/something,TypeScript,0,,
+zero-out,https://github.com/MAXIMUSSCORP/zero-out,Python,0,voice/speech;LOGISTICS/MOBILITY*,Maps US toll-free phone menus so you can jump straight to the option you need. Local app: Parakeet ASR + Nemotron on Nebius Token Factory.
+livefix,https://github.com/NovaCorpAI/livefix,Python,0,,
+claim-check,https://github.com/AnujD21/claim-check,TypeScript,0,fact-check/verification,"Fact-check any message, screenshot or article with NVIDIA Nemotron on Nebius Token Factory and live Tavily search."
+proofline,https://github.com/jpalii77/proofline,JavaScript,1,fact-check/verification;SMALL-BUSINESS/ECOM*,An agent that builds a verified profile of a small business from its web traces. Every claim carries a re-runnable proof. NVIDIA Nemotron on Nebius Token Factory + Tavily.
+ghost-nebius,https://github.com/nickthelegend/ghost-nebius,Python,0,security/guardrails;physical-ai/robotics,"Camera-less guardian: an ESP32 WiFi mesh senses presence and breathing through walls, Nemotron reasons, a robot lamp acts."
+TwinPulse,https://github.com/lee2017-bit/TwinPulse,Python,0,,
+MonoPulse-AI,https://github.com/HadiaIshtiaqq/MonoPulse-AI,Python,0,,An autonomous multi-agent AI marketing agency
+palace,https://github.com/jphein/palace,Python,0,personal-ai/memory,"Palace: a private personal AI with a real long-term memory, on NVIDIA Nemotron via Nebius Token Factory. AGPL-3.0-or-later."
+kalyth,https://github.com/Philipjj609/kalyth,TypeScript,0,fact-check/verification;coding-agent;personal-ai/memory,"Persistent, evidence-backed engineering model and decision record for people and coding agents (MCP)."
+Skylark,https://github.com/anki0476/Skylark,Python,1,coding-agent,A tool for spotting issues and crafting fixing proposals for problems within the workflows of AI Agents (Currently limited to Booking AI Agents only). A build for Nebius X NVIDIA Hackathon
+understudy,https://github.com/gibouu/understudy,TypeScript,0,jobs/hiring;physical-ai/robotics,"Watch a person do a task once, interview them, rehearse it on a simulated robot, export the dataset. Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track."
+distillery,https://github.com/Auro-rium/distillery,Python,0,fact-check/verification,Sandbox-verified distillation autopilot on Nebius Token Factory
+open-apprentice,https://github.com/AryanG01/open-apprentice,Python,0,coding-agent,"Teach an AI your diagram style once: it asks when unsure, fixes every diagram and proves each edit. NVIDIA Nemotron on Nebius Token Factory."
+studyforge,https://github.com/studyforge-team/studyforge,Python,0,,"Study agent for engineering students that can't make up numbers — Nemotron writes Python, a browser sandbox computes. Nebius x NVIDIA Global AI Hackathon."
+fixloop,https://github.com/Faizanmal/fixloop,Python,0,,
+bankguard-redteam,https://github.com/iam-laiba-mannan4477/bankguard-redteam,Shell,0,security/guardrails,
+crata-health,https://github.com/mclovin-9917/crata-health,Python,0,health/clinical,For the NVIDIA x Nebius Hackathon submission.
+HackAI,https://github.com/Bplhansi/HackAI,JavaScript,0,,
+revive,https://github.com/bhavyasharma2/revive,Jupyter Notebook,0,,
+nemotron-quant-agent,https://github.com/carlkvilleback-gif/nemotron-quant-agent,Python,0,finance/trading,"AI agent that turns market news into trading hypotheses, writes and self-corrects its own backtests, and explains the result. NVIDIA Nemotron on Nebius Token Factory + Tavily."
+TapScout,https://github.com/OzzyD07/TapScout,TypeScript,0,coding-agent,AI agent that explores and tests Android & iOS apps without test scripts — powered by NVIDIA Nemotron on Nebius Token Factory.
+anti-cassiopeia,https://github.com/cheran-eclipse/anti-cassiopeia,Python,0,fact-check/verification,"A verification engine: confirmed / contradicted / undetermined. Nebius x NVIDIA Global AI Hackathon, Apps and Agents track."
+KernelForge,https://github.com/ruchitham2025-byte/KernelForge,Python,0,,Autonomous GPU kernel optimization agent powered by Nemotron-70B on Nebius.
+garagedesk,https://github.com/zhangshen20/garagedesk,Python,0,,
+Is-This-Legit,https://github.com/siyinggg0402/Is-This-Legit,Python,0,scam/fraud,legit
+crecer-digital-content-engine,https://github.com/crecerdigital/crecer-digital-content-engine,Python,0,,
+northbridge-nebius-brief,https://github.com/dl88jing/northbridge-nebius-brief,TypeScript,0,,Northbridge Brief — agentic household research/ops on Nebius Token Factory + NVIDIA Nemotron (Nebius x NVIDIA Global AI Hackathon)
+traceback,https://github.com/abhishek-x86/traceback,Python,0,,
+Tegeera,https://github.com/NestroyMusoke/Tegeera,TypeScript,0,,
+Dukaan_Dost,https://github.com/Sehar2376/Dukaan_Dost,Python,1,personal-ai/memory;SMALL-BUSINESS/ECOM*,"AI WhatsApp assistant for small Pakistani businesses, powered by NVIDIA Nemotron on Nebius Token Factory"
+warden,https://github.com/dbalchunas2-pixel/warden,Rust,0,personal-ai/memory;security/guardrails;voice/speech,MCP Security Gateway with LLM-Powered Tool Call Classification - Nebius x NVIDIA Global AI Hackathon
+slopproof,https://github.com/premanand8800/slopproof,Python,0,fact-check/verification;coding-agent;security/guardrails,"Proof, not vibes: triage vulnerability reports by checking every claim against the real code and the web, then reproducing the bug in a sandbox. NVIDIA Nemotron on Nebius Token Factory + Tavily."
+vaultai,https://github.com/Zainamrj/vaultai,TypeScript,0,,
+DeepTrace,https://github.com/Umaima-Manzoor/DeepTrace,Python,0,fact-check/verification,DeepTrace: Autonomous Fact-Checking & Misinformation Radar | Nebius x NVIDIA Global AI Hackathon
+teire,https://github.com/teire-dev/teire,TypeScript,0,coding-agent,"When a package, API or model changes, Teire fixes your code. NVIDIA Nemotron on Nebius Token Factory edits what a swap can't; your own tests prove it before and after; a pull request shows the proof."
+AxiomSRE,https://github.com/poowa-gg/AxiomSRE,Python,0,sre/incident,Autonomous Multi-Tier Incident Commander & Zero-Day Auto-Remediator powered by NVIDIA Nemotron on Nebius Token Factory & Tavily AI Grounding.
+borges,https://github.com/CarSanoja/borges,Python,0,,Walks the garden of forking analyses and finds the one defensible choice that flips your decision. Nemotron on Nebius Token Factory + Sandboxes.
+warrant,https://github.com/jwlai-cloud/warrant,Python,0,,"A multi-agent system where agents can't reach across organisational boundaries without a warrant, and replan when refused. Nebius x NVIDIA Global AI Hackathon 2026."
+dating-agent,https://github.com/Yagnik-Trivedi/dating-agent,JavaScript,2,,AI agent that handles early dating-app conversations and judges compatibility — Nebius x NVIDIA Global AI Hackathon
+loadbearing,https://github.com/varunikarai/loadbearing,Python,0,sre/incident,"Find which inputs a pipeline is actually load-bearing on, by checkpoint-and-fork over mutated inputs. Nebius Token Factory Sandboxes + NVIDIA Nemotron."
+promiseproof,https://github.com/yobanrg6-coder/promiseproof,Python,0,fact-check/verification,Machine-verifiable ledger of public product promises: zero-LLM verdicts against the Wayback Machine. NVIDIA Nemotron via Nebius Token Factory. Built for the Nebius x NVIDIA Global AI Hackathon.
+athena-portable,https://github.com/xkazm04/athena-portable,Python,1,personal-ai/memory;security/guardrails,Athena: a personal AI agent that works inside your web apps and asks before it acts. NVIDIA Nemotron on Nebius Token Factory red-teams her gate.
+vividia,https://github.com/swarupgaikwad1801-ux/vividia,TypeScript,0,,An app for children who can't speak up. NVIDIA Nemotron on Nebius Token Factory.
+lifeguard-agent,https://github.com/PavanKushana/lifeguard-agent,Python,0,coding-agent;security/guardrails;sre/incident;finance/trading,"AI SRE agent that investigates and fixes server incidents, built with NVIDIA Nemotron on Nebius Token Factory"
+Albus,https://github.com/One-Hat/Albus,Python,0,finance/trading,"Albus: an AI quant research copilot. Reads SEC filings, backtests hypotheses, runs a self-calibrating forecasting swarm, and has a critic agent that tries to reject its own results. Built on NVIDIA Nemotron 3 (Nano, Super, Ultra) via Nebius Token Factory."
+atrium,https://github.com/looubna/atrium,Python,0,jobs/hiring,Atrium — AI coaching platform (interview module)
+opportunity-lens,https://github.com/jyoshna-jilagam/opportunity-lens,Python,0,,
+alimurtaza9dev-ctrl,https://github.com/alimurtaza9dev-ctrl/alimurtaza9dev-ctrl,,0,,
+repomedic,https://github.com/AbdLim/repomedic,Python,0,,
+cirujano,https://github.com/juan294/cirujano,TypeScript,1,fact-check/verification;coding-agent;cost-routing,"Verified CI cost surgery for GitHub Actions: rank where the minutes go, verify workflow patches that cut cost without cutting coverage, and move heavy jobs onto on-demand Nebius runners."
+nebius,https://github.com/YaswanthNadh-coder/nebius,Python,0,,
+meta-global,https://github.com/jacklachan/meta-global,Python,0,,
+cric,https://github.com/youngjun-choi-kr/cric,Python,0,,CRIC — Cosmic Response & Intelligence Console: AI mission control for satellite conjunctions and space weather (Nebius x NVIDIA hackathon)
+tradecharts-nemotron,https://github.com/tradecharts/tradecharts-nemotron,TypeScript,1,,Nemotron proposes the Elliott Wave count; a deterministic validator gates it before it draws. Rules over vibes.
+signalforge-nebius-2026,https://github.com/daryas2226-rgb/signalforge-nebius-2026,TypeScript,0,,AI business decision agent powered by NVIDIA Nemotron and Nebius Token Factory
+TrustLine,https://github.com/PranjaySrivastava/TrustLine,Python,0,coding-agent,Trustline stops autonomous AI coding agents from being steered by malicious web content into stealing private keys or executing harmful commands.
+graze-open,https://github.com/ojoshua151-ship-it/graze-open,HTML,0,,
+Nationals,https://github.com/zhonibek/Nationals,C++,3,health/clinical;physical-ai/robotics,"C++ robotics control for VEX V5: PROS, Eigen, trajectory tracking, localization, motor diagnostics, and a browser simulator with validation scripts."
+aloud,https://github.com/big14way/aloud,TypeScript,0,personal-ai/memory;ACCESSIBILITY*,A one-button visual assistant for blind and low-vision people that says when it is not sure. Nemotron on Nebius Token Factory.
+financial-analyst-agent-final,https://github.com/bennibyx/financial-analyst-agent-final,Python,0,finance/trading,
+kakeratta,https://github.com/takeshy/kakeratta,Go,0,personal-ai/memory,A timeline where domain-specialised AIs each keep their own memory and speak only when it is their business.
+troth,https://github.com/ADAMAMZAR/troth,Python,0,,
+nebius-studypilot,https://github.com/codervishal207max/nebius-studypilot,Python,0,personal-ai/memory;jobs/hiring,"Private study and career AI assistant with memory, notes RAG, tools and Telegram. Built on NVIDIA Nemotron + Nebius Token Factory."
+helper2.ai,https://github.com/silvioincalza/helper2.ai,Java,0,personal-ai/memory,"Metasearch for the AI world: tools, models, MCP servers, papers and news. An AI guide on NVIDIA Nemotron (Nebius Token Factory) that only recommends what it can prove."
+nivaran,https://github.com/harshkawatra11/nivaran,TypeScript,0,legal/contracts;GOV/CIVIC*,"File once. Nivaran keeps the government's clock: Nemotron agents on Nebius Token Factory draft, review and legally escalate civic complaints."
+nebius-physical-ai,https://github.com/goodboychan/nebius-physical-ai,Python,0,fact-check/verification;sre/incident;finance/trading;cost-routing;physical-ai/robotics,"Evidence before deployment. QuantGate helps robot developers decide which precision of a policy to ship on an edge device. It shows the engine's measured cost, its real-arm behavior and how strong the evidence is."
+knowledge-assistant,https://github.com/Rishikesh0117/knowledge-assistant,Python,0,personal-ai/memory,
+nemotron-nav-agent,https://github.com/ASylviaofmine/nemotron-nav-agent,Python,0,,
+AMTDRS,https://github.com/BugHunterX2101/AMTDRS,Python,0,,
+cudaify,https://github.com/itsrushuu/cudaify,Python,0,,
+Gatherlight,https://github.com/Ting97/Gatherlight,TypeScript,0,personal-ai/memory,"our life, your data, your AI — a self-hosted life assistant"
+vajra,https://github.com/DhyeyPatel007/vajra,TypeScript,1,,Zero-install browser-native WebGPU kernel auto-tuner powered by NVIDIA Nemotron via Nebius Token Factory
+crowdshield,https://github.com/0xhaz/crowdshield,TypeScript,0,scam/fraud,"Scam intelligence for Malaysia: one shared graph for the public, banks and businesses (Nebius x NVIDIA hackathon)"
+shiftwork,https://github.com/jaydonnnk/shiftwork,Python,0,,Nebius x NVIDIA Global Hackathon Build
+nebius-silicon-technician,https://github.com/u19725505-star/nebius-silicon-technician,Python,0,,
+ai-daily-digest,https://github.com/sanketny8/ai-daily-digest,,1,,"Auto-curated daily roundup of trending AI papers, blog posts, and discussions. "
+buildingbees,https://github.com/anuroopanand7/buildingbees,Python,0,,"Agentic product planning: AI bees plan your product with no gaps, on NVIDIA Nemotron and Google Gemini"
+nxn-global-ai-hackathon-personal-agent,https://github.com/Akshat-Soni02/nxn-global-ai-hackathon-personal-agent,TypeScript,0,personal-ai/memory,"A personal AI agent that you teach how to do a task once and it then runs that task autonomously on a schedule, using your own browser and apps, with the AI brain powered by Nemotron on Nebius."
+muis-os-lite,https://github.com/muisdevop/muis-os-lite,Python,0,,
+family-context-agent,https://github.com/Shrijitvivek/family-context-agent,Python,0,,
+NIRVA,https://github.com/Megha-ldce/NIRVA,Python,0,, Natural-language Intelligence for Reactive & Vision-guided Autonomy
+ExeaLabsNvidiaHacks,https://github.com/AvnehSBhatia/ExeaLabsNvidiaHacks,Python,3,,For the Exea team :D
+awesome-developer-conferences,https://github.com/Infrasity-Labs/awesome-developer-conferences,Python,70,,"A daily updated directory of developer, DevRel, cloud native, and platform engineering conferences taking place all over the world, separated by regions. It is an open source repository covering B2B SaaS, DevOps, and API events with dates, formats, and registration links."
+ScamDrill,https://github.com/Biswajit-17/ScamDrill,Python,0,voice/speech;scam/fraud,"Practice resisting scam calls. An AI plays a fictional scammer, you make decisions, and a debrief shows which pressure tactics worked on you. Built with NVIDIA Nemotron on Nebius Token Factory."
+cozzo-judge,https://github.com/Thomas-Jerard/cozzo-judge,TypeScript,0,voice/speech,Score voice-AI agent calls against a business's approved script with NVIDIA Nemotron on Nebius Token Factory. Nebius x NVIDIA Global AI Hackathon entry.
+reddy895,https://github.com/reddy895/reddy895,,0,,
+cryptic-conqueror,https://github.com/TurkeyByte/cryptic-conqueror,JavaScript,0,,
+oncall-copilot,https://github.com/gengwg/oncall-copilot,Shell,1,fact-check/verification;sre/incident;finance/trading;voice/speech,"Always-on AI on-call copilot: investigates alerts before paging you, then sends a Telegram brief with likely root cause, evidence, and a suggested first action from your own runbooks. Built for the Nebius x NVIDIA Global AI Hackathon."
+recon-agent,https://github.com/pramath675/recon-agent,Python,0,fact-check/verification;coding-agent,RECON: Verification-first autonomous bug fixing agent
+polaris,https://github.com/duoduo-cell/polaris,Python,0,fact-check/verification,"Polaris: an evidence-grounded job-search agent for LLM/Agent internship seekers in China (LangGraph, FastAPI, Postgres hybrid search, Next.js)"
+varunikarai,https://github.com/varunikarai/varunikarai,,0,,
+Rookwise,https://github.com/cpantaleon06-coder/Rookwise,Python,0,security/guardrails;cost-routing,"Hierarchical AI agent teams with a hard token budget. A director plans, managers hire operators, an auditor checks the work. Built on NVIDIA Nemotron via Nebius."
+planguard,https://github.com/Peoplerepabulic/planguard,Python,0,security/guardrails;physical-ai/robotics,"PlanGuard — pre-execution safety runtime that catches LLM robot-planner failures before they reach the physical world. Nebius x NVIDIA Global AI Hackathon, Physical AI track."
+opportunities,https://github.com/anurag629/opportunities,,1,,"Fellowships, grants, paid hackathons and bounties you can still apply for. Checked against the official page, updated daily, India eligibility marked."
+previsit,https://github.com/sougandhimanu/previsit,Python,0,,
+accessproof,https://github.com/SS221908/accessproof,Python,0,coding-agent;ACCESSIBILITY*,AI agent that tests keyboard accessibility and produces reproducible bug reports
+meko,https://github.com/dinnettside/meko,TypeScript,0,fact-check/verification,"Turn a topic into a short, fact-checked, animated explainer video"
+edge-deploy-agent,https://github.com/vineetha00/edge-deploy-agent,Python,0,sre/incident;cost-routing;physical-ai/robotics;agent-eval/benchmark,Nemotron agent that optimizes and benchmarks models on a Raspberry Pi 4 within latency and RAM budgets.
+dengueradar,https://github.com/advaitarunnair/dengueradar,TypeScript,0,,Weekly dengue inspection priorities for Singapore: LightGBM forecast + transparent subzone ranking (student prototype)
+receipts,https://github.com/Talu-7/receipts,Python,0,,
+nucliva,https://github.com/ahmoin/nucliva,TypeScript,1,,
+kernloop,https://github.com/Izecrypt/kernloop,Python,0,,"Autonomous GPU kernel engineer: Nemotron writes the Triton kernels, Nebius GPUs grade them. Nebius x NVIDIA Global AI Hackathon entry."
+medisimplifier-nemotron-vagt,https://github.com/deepset01-sys/medisimplifier-nemotron-vagt,Python,0,,
+weather-twin,https://github.com/Lalitha23/weather-twin,Python,0,,
+moveproof,https://github.com/othnielObasi/moveproof,Python,0,,
+YapLab,https://github.com/JaswanthP6878/YapLab,Python,1,coding-agent,collab repo
+Prooflayer,https://github.com/Dhyey0201/Prooflayer,Python,0,fact-check/verification,Independent Verification and proof certificates for autonomous AI Agents.
+infergrid,https://github.com/draarivpatel-ui/infergrid,JavaScript,0,cost-routing,"Open source LLM capacity planner, KV cache calculator and GPU routing workbench for open weight models on NVIDIA clusters"
+tokenscope,https://github.com/draarivpatel-ui/tokenscope,JavaScript,0,,
+mockrep,https://github.com/ranjit-sahoo/mockrep,Python,0,jobs/hiring,"AI interview prep for IT candidates and recruiters, built on NVIDIA Nemotron + Nebius Token Factory"
+trace-research,https://github.com/solanaminter/trace-research,Python,0,,Trace - deep research with receipts. Nebius x NVIDIA Global AI Hackathon entry.
+study-assistant,https://github.com/Khazar451/study-assistant,Python,2,personal-ai/memory,Repository for Nebius X Nvidia Global AI Hackhathon
+BlindSpot-AI-agent-that-fixes-keyboard-and-screen-reader-accessibility,https://github.com/Srinjoy12/BlindSpot-AI-agent-that-fixes-keyboard-and-screen-reader-accessibility,TypeScript,0,coding-agent;ACCESSIBILITY*,
+nightshift,https://github.com/Aryesh22/nightshift,Python,1,,
+bud,https://github.com/bud-2026/bud,TypeScript,0,personal-ai/memory;voice/speech,Voice-Enabled Virtual Assistant with Screen Vision
+Replay,https://github.com/priyanshu2007-cmd/Replay,TypeScript,0,,
+sideline-lift-judge,https://github.com/amitmtrn/sideline-lift-judge,Python,0,,
+VARANASI_NVIDIA-X-NEBIUS,https://github.com/ganesh-pirinti/VARANASI_NVIDIA-X-NEBIUS,TypeScript,0,,
+FactCheck_Radar,https://github.com/amansheikh-techie/FactCheck_Radar,Python,0,fact-check/verification,
+compass,https://github.com/Ratnesh-101/compass,Python,2,personal-ai/memory;SMALL-BUSINESS/ECOM*,"Personal AI assistant with persistent memory — tracks hackathon deadlines, recalls code context across repos, and organizes coursework. Built on Nebius Token Factory with Nemotron models. Web chat + CLI, one shared brain."
+StewardAI,https://github.com/VDT37/StewardAI,Python,0,security/guardrails;cost-routing,"A control plane for autonomous AI agents. Monitor, audit, govern, and secure agent actions, tool access, and spending from a single platform."
+CareerPilot,https://github.com/creatoropener/CareerPilot,TypeScript,0,jobs/hiring,
+dilemma-dynamics,https://github.com/sheinkmana/dilemma-dynamics,Python,0,,"Exploring AI strategies, incentives and cooperation. An interactive game laboratory studying NVIDIA Nemotron's choices. Submission to Nebius x NVIDIA Global AI Hackathon (Best Apps and Agents Track)."
+unmissed,https://github.com/SebAustin/unmissed,TypeScript,0,,"Other checkers show you what they found. Unmissed proves what it didn't miss. Hackathon rules compiled into checks, on Nebius Token Factory + NVIDIA Nemotron."
+Nebius-ai-hack,https://github.com/Yashika2211/Nebius-ai-hack,Python,0,,
+sutura,https://github.com/juan294/sutura,TypeScript,1,fact-check/verification;coding-agent,"AI agents make CI pass. Sutura verifies the fix, filters flaky failures, rejects unsafe shortcuts, and opens an evidence-backed PR for human review."
+shakefix-nebius,https://github.com/spacenos-cto/shakefix-nebius,JavaScript,0,,
+Robotics-Opportunities-Tracking,https://github.com/MasterMopers/Robotics-Opportunities-Tracking,Python,0,physical-ai/robotics,Tracking competitions and microgrants for robotics projects
+agent-joules,https://github.com/tomas-rampas/agent-joules,C#,0,ENERGY/GRID/CLIMATE*,"Agent Joules: energy per agent step, measured on your GPU"
+jit,https://github.com/StefanKhor/jit,TypeScript,1,,
+hackhq,https://github.com/Hack-HQ/hackhq,TypeScript,123,,"Your HQ for every hackathon worth joining: A curated, community-driven list of open & upcoming hackathons, updated automatically."
+Sutreva,https://github.com/Yashwrld-hub/Sutreva,Python,0,security/guardrails,"AI-assisted engineering document auditing that extracts EPC data, checks configurable engineering rules, and produces traceable review reports."
+demeter,https://github.com/loveyadav1015/demeter,TypeScript,0,ENERGY/GRID/CLIMATE*;SMALL-BUSINESS/ECOM*,"Demeter turns messy WhatsApp tiffin orders into reliable packing sheets. AI proposes, the owner approves, code calculates, so no meal is wasted and no cancellation is missed."
+JustJay7,https://github.com/JustJay7/JustJay7,,0,,
+lucius-open-reader,https://github.com/ailucius/lucius-open-reader,Python,0,voice/speech,"Read a public tender before you bid: every requirement quoted from its page, and a bid call you can trace. NVIDIA Nemotron 3 on Nebius Token Factory + Tavily."
+panoskokmotos,https://github.com/panoskokmotos/panoskokmotos,HTML,0,,Co-founder @ Givelink: wishlist giving for nonprofits in Greece and the US. What I've shipped and what I'm building.
+samanvay,https://github.com/NANDINI502/samanvay,Python,0,,
+lifeledger,https://github.com/rohitshukla001/lifeledger,Go,0,,"Private life-admin AI agent that remembers your bills, renewals, and deadlines, reminds you on time, and acts for you with your approval. Built with NVIDIA Nemotron on Nebius Token Factory."
+project-nova,https://github.com/Ritanshu-Prasad/project-nova,TypeScript,4,,
+awesome-ccamel,https://github.com/ccamel/awesome-ccamel,,29,,"🔖 A collection of awesome things for me, myself and I."
+PaisaPath,https://github.com/ruthweb-site/PaisaPath,Python,0,,
+autofix-ci,https://github.com/Alwaysgaurav1/autofix-ci,Python,0,,Autonomous CI/CD failure triage & auto-PR agent powered by NVIDIA Nemotron on Nebius Token Factory for the Nebius x NVIDIA Global AI Hackathon.
+stutterClear,https://github.com/Pradyuman-aviator/stutterClear,Python,0,,
+Assistant_AI,https://github.com/charan-codes-17/Assistant_AI,Python,0,personal-ai/memory,
+bom-watch,https://github.com/IronSpider438/bom-watch,Python,0,fact-check/verification;finance/trading;cost-routing,AI agent that monitors a BOM's stock/prices and proposes code-verified drop-in substitutes (Nebius x NVIDIA hackathon)
+Harness-lab,https://github.com/waleedfarraj/Harness-lab,TypeScript,0,coding-agent,"Find which harness change broke your coding agent: controlled, replicated experiments with deterministic regression attribution. Nebius Token Factory + NVIDIA Nemotron."
+Astra,https://github.com/Rishikesh183/Astra,Python,0,,
+Hazsight,https://github.com/SimonCurda/Hazsight,TypeScript,0,,
+spacegrade-agent,https://github.com/geobond13/spacegrade-agent,TypeScript,0,physical-ai/robotics,SpaceGrade Agent: a Nemotron agent on Nebius Token Factory that answers aerospace hardware questions with cited records (Nebius x NVIDIA hackathon)
+WAYLO,https://github.com/THISHA-SAMPATH/WAYLO,Python,0,ACCESSIBILITY*,YOUR WORLD. YOUR WAY. — AI-Powered Physical AI Mobility Copilot for Electric Wheelchairs Powered by NVIDIA Models on Nebius AI Cloud
+Wakeru,https://github.com/panjalabindumadhav-commits/Wakeru,Python,1,personal-ai/memory,Wakeru (分ける): AI garbage-sorting assistant for foreign residents in Japan. Explains your city's rules in your language using NVIDIA Nemotron on Nebius Token Factory.  
+TOMORA-AI,https://github.com/yahyeameer/TOMORA-AI,TypeScript,0,,"TOMORA: personal future intelligence. Talk with your future self on NVIDIA Nemotron, explore roads, get a plan. Live demo with a private workspace for every visitor."
+hackathon-radar-fetch,https://github.com/pantha704/hackathon-radar-fetch,Python,0,,Fetching half of hackathon-radar: 11-source global hackathon catalog — live online list in the README
+grindresume,https://github.com/MaahinVPanchal/grindresume,TypeScript,1,,"GrinderResume shows where you fit before you apply: Strong, Moderate or Stretch, with the gaps named. It never invents experience. A fit quiz then has you answer role-specific questions in your own words."
+JComit,https://github.com/Mehdi-Abidi/JComit,Python,0,finance/trading,"Private personal-finance agent: local redaction, Nemotron on Nebius Token Factory, sandboxed egress."
+inboxpilot,https://github.com/CaoLongyang/inboxpilot,Python,0,fact-check/verification,"AI email-to-action agent: read real Gmail, analyze with NVIDIA Nemotron on Nebius, approve, create a verified Gmail draft."
+rescuesim-usar,https://github.com/roshini-t-24/rescuesim-usar,Python,0,,
+exportAgent,https://github.com/NaveenVikramR/exportAgent,Python,0,,
+MathMap-AI,https://github.com/HndrxCodes/MathMap-AI,Python,0,health/clinical,AI-powered math misconception diagnosis agent — Nebius x NVIDIA Hackathon
+fixedyet,https://github.com/beniamin-levin/fixedyet,Python,0,fact-check/verification;coding-agent,"Reproduce GitHub bug reports before answering them: an agent on NVIDIA Nemotron (Nebius Token Factory) runs a pytest reproduction in a sandbox at the reported version and on main, returns a rule-based verdict, and can verify a backport or a fix and open a draft PR."
+Beniamin-Levin-CV-public,https://github.com/beniamin-levin/Beniamin-Levin-CV-public,Python,0,,My public CV
+living-archive,https://github.com/arifiarber-sYn/living-archive,Python,0,fact-check/verification;personal-ai/memory,"The Living Archive - an honest retrieval agent: persistent memory, tool use, cited evidence (Apache-2.0)"
+proofgate,https://github.com/Mohammad-Umar7/proofgate,Python,0,fact-check/verification;security/guardrails,AI made fake security reports free to produce. ProofGate makes proving them cheap. Evidence-first vulnerability-report triage agent on NVIDIA Nemotron + Nebius Token Factory.
+Bifang,https://github.com/Protocol-X-01/Bifang,Python,0,,Open-source Nemotron-powered coding IDE for agentic engineering with Nebius Token Factory.
+two-speed,https://github.com/goldencloudsx3/two-speed,Python,0,coding-agent,Nano reviews one Python function on Nebius Token Factory. Super runs only when that review finds a high-severity bug.
+SilentFail-Hardener,https://github.com/vlakshitha6127/SilentFail-Hardener,Python,0,,
+two-speed,https://github.com/barbiesfeetpix/two-speed,Python,0,coding-agent,Nano reviews one Python function on Nebius Token Factory. Super runs only when that review finds a high-severity bug.
+Moveproof,https://github.com/wiqilee/Moveproof,Python,0,fact-check/verification;security/guardrails,"AI-assisted data migration with deterministic execution, independent verification, repair, and auditable evidence."
+pqc-factory,https://github.com/shankarsai000/pqc-factory,Python,2,MANUFACTURING/INDUSTRIAL*,Production-Qualified Change Factory – Multi-agent system that turns tickets into production-ready PRs using Nebius Token Factory Sandboxes + Nemotron models (Nebius x NVIDIA Global AI Hackathon)
+seamwatch,https://github.com/Flash0529/seamwatch,,0,coding-agent,Nebius x NVIDIA Global AI Hackathon: warns teammates and their coding agents before their work semantically collides.
+Nebius-x-NVIDIA-Global-AI-Hackathon,https://github.com/AmarVerma99/Nebius-x-NVIDIA-Global-AI-Hackathon,TypeScript,0,,innovation to build autonomous system
+flawcheck,https://github.com/ahmed13576/flawcheck,TypeScript,1,legal/contracts;MANUFACTURING/INDUSTRIAL*,"NDT Inspection Copilot — turns raw ultrasonic thickness CSVs and PT/MT notes into code-compliant, clause-cited inspection reports. NVIDIA Nemotron on Nebius Token Factory. Built for the Nebius x NVIDIA Global AI Hackathon."
+zero-trust-edge-enclave,https://github.com/jiarong0423/zero-trust-edge-enclave,JavaScript,0,physical-ai/robotics,"Encrypted document handoff where a restricted AI adviser (NVIDIA Nemotron on Nebius Token Factory, or a local Nano) only proposes and fixed code decides who receives. Hackathon prototype; the server holds the key, so it is not end-to-end encryption."
+nebius-x-nvidia-global-ai-hackathon,https://github.com/Vinayakgupta1/nebius-x-nvidia-global-ai-hackathon,Python,0,,
+aibook,https://github.com/TanishtaVarman/aibook,TypeScript,0,,
+DEVDOC,https://github.com/DEVDOC-Team/DEVDOC,Python,1,fact-check/verification;coding-agent;sre/incident;finance/trading,"AI-powered DevOps and SRE platform for automated incident investigation, root-cause analysis, fix generation, and sandbox verification."
+tasteprobe,https://github.com/nickthelegend/tasteprobe,JavaScript,0,,
+foreveryours,https://github.com/miravena/foreveryours,Python,0,voice/speech,"ForeverYours — a voice-first, caregiver-briefed AI companion for older adults (Nebius x NVIDIA Global AI Hackathon)"
+awesome-stars,https://github.com/saforem2/awesome-stars,,24,,A curated list of my GitHub stars!
+proofloop,https://github.com/realwarp/proofloop,JavaScript,0,,...
+lifehealth-id-development,https://github.com/nalintiwari36-coder/lifehealth-id-development,TypeScript,0,health/clinical,
+worldseed,https://github.com/Rickygole/worldseed,TypeScript,0,coding-agent;physical-ai/robotics,"Counterfactual decision engine: simulate a real place, change it, and search for the fix. Nemotron on Nebius Token Factory."
+everypage-web,https://github.com/MariusGithub13/everypage-web,Python,0,fact-check/verification,"Ask a PDF a question: verified quotes with their page, and an honest 'cannot say' when a page could not be read. NVIDIA Nemotron on Nebius Token Factory."
+ExperimentOS,https://github.com/NA-V10/ExperimentOS,Python,0,,
+headroom,https://github.com/haseebmalik18/headroom,Python,0,fact-check/verification;coding-agent;finance/trading,"An autonomous performance engineer that investigates SLO violations, runs controlled experiments, and ships only verified fixes."
+clausewise,https://github.com/airrdrrop1/clausewise,Python,0,fact-check/verification;legal/contracts,"ClauseWise — Know what you sign: turn a freelancer contract into a plain-language brief with verified red flags, powered by NVIDIA Nemotron on Nebius Token Factory."
+Say2,https://github.com/Venkatanarayanamallineni/Say2,HTML,0,SMALL-BUSINESS/ECOM*,"Your website, now taking questions. A grounded AI front desk for small businesses, built with NVIDIA Nemotron on Nebius Token Factory."
+election-integrity-guard-nemotron,https://github.com/nguyenhuulong2222/election-integrity-guard-nemotron,Python,0,fact-check/verification;security/guardrails,"NVIDIA Nemotron on Nebius Token Factory guards a fictional county election site: deterministic seal detects every change, Nemotron triages it, Tavily hunts misinformation, a human decides."
+concierge,https://github.com/rjmcgee53192/concierge,,0,,"Concierge — the AI receptionist that can see. Multi-agent lead qualification for local and luxury businesses. Built for the major-company hackathon circuit (Meta Global AI, Nebius x NVIDIA, PayPal AI)."
+zenith,https://github.com/samaunmahmud/zenith,Java,1,finance/trading;voice/speech,"Multi-agent AI investment committee: three NVIDIA Nemotron analysts argue a stock, an Ultra chair makes the call. Runs on Nebius Token Factory. Research tool, not financial advice."
+floodplain,https://github.com/JonathanSolvesProblems/floodplain,Python,0,fact-check/verification;coding-agent,"Runs the test suites of a package's dependents before and after a release, in forked Nebius Sandboxes, and drafts a verified patch for each one that broke"
+lantern-ai,https://github.com/lambdabypi/lantern-ai,Python,0,personal-ai/memory,"Lantern: a personal AI for gamers. Ask anything about your games and get answers from each game's own wiki, cited and spoiler-safe. NVIDIA Nemotron on Nebius Token Factory + Tavily."
+rent-scanner-ai,https://github.com/Alortiztique/rent-scanner-ai,TypeScript,1,REAL-ESTATE/HOUSING*,The Open-Source Skyscanner for Cheap Urban Subleases & Anti-Gentrification Housing Intelligence (Nebius x NVIDIA Global AI Hackathon)
+flakeline,https://github.com/Ps23102004/flakeline,Python,0,coding-agent;health/clinical,"Flakeline: an agent that hunts flaky tests — runs suites via Nebius Token Factory, diagnoses cause class with NVIDIA Nemotron, writes a minimal reproducer and quarantine annotation. Nebius x NVIDIA Global AI Hackathon entry."
+Panelwise,https://github.com/Katlego-tech/Panelwise,Python,0,,"Script to storyboard to comic, grounded in the screenplay at every step. Nebius x NVIDIA Global AI Hackathon."
+Nebius-x-NVIDIA-Global-AI-Hackathon,https://github.com/loulouA-ux/Nebius-x-NVIDIA-Global-AI-Hackathon,TypeScript,0,,
+Praetor,https://github.com/Back-Nit1/Praetor,Python,0,,this is the project for Nebius x Nvidia Hackathon online
+architecture-cleaner,https://github.com/corupta/architecture-cleaner,TypeScript,0,,"Restructures a TypeScript backend sliced by technical type (controllers/, services/, repositories/) into feature modules, one commit per step, without changing behavior. Nemotron on Nebius Token Factory draws the map, code moves the files, and a separate checker certifies every diff. Replay it with "
+phishlens,https://github.com/ahmedzahid52567-bit/phishlens,Python,0,scam/fraud,
+Northvaine,https://github.com/Chinmayjoshi10/Northvaine,Python,0,,"AI sales radar for B2B exporters: finds buyers from official trade records, every fact quoted from its source. NVIDIA Nemotron on Nebius Token Factory + Tavily."
+waive,https://github.com/Fluffy-SHIBAINU/waive,Python,0,finance/trading,"Waive: help paying hospital bills, from each hospital's own financial assistance policy"
+NVera,https://github.com/renad-tech/NVera,TypeScript,0,,"Describe any scene, download the perfect 3D model in a minute. An agentic AI workflow on NVIDIA Nemotron and Tavily searches millions of free models, checks them against real photos, and restyles them your way."
+Nemotrace,https://github.com/anastasiya315510/Nemotrace,Python,0,,
+ai-workbench,https://github.com/J-sterling/ai-workbench,Python,1,coding-agent;sre/incident;health/clinical,"Log triage agent on NVIDIA Nemotron + Nebius Token Factory: runbook-grounded diagnosis, read-only checks, human approval before any fix"
+AgentAudit,https://github.com/SoumalyaSaha/AgentAudit,Python,0,,
+saidwho,https://github.com/SelcukOzbilgi/saidwho,TypeScript,2,fact-check/verification,"Who really said it? Paste a viral quote and AI agents trace it back to its earliest verifiable source, checking every piece of evidence on the way. Built with Nemotron on Nebius Token Factory + Tavily for the Nebius x NVIDIA Global AI Hackathon."
+Room-Intelligence-IoT,https://github.com/CyberCakeCat/Room-Intelligence-IoT,JavaScript,5,physical-ai/robotics,"Sleep tracking tells you what happened. It almost never tells you why. Temperature, light, and airflow are supposed to be load-bearing variables for deep sleep, according to the sleep-science literature. A bedroom wired with sensors should be able to prove that, night by night, with p-values instead"
+RxLint,https://github.com/Marc-Dvci/RxLint,Python,0,fact-check/verification;legal/contracts,"Verifiable pediatric medication checks with NVIDIA Nemotron on Nebius Token Factory, a deterministic WHO/FDA rule kernel, FHIR import and live regulator intelligence."
+nebius-x-nvidia,https://github.com/SiddarthShekhar1994/nebius-x-nvidia,Python,0,,
+baton,https://github.com/Ized09/baton,Python,0,,
+nemotron-sentinel,https://github.com/jordialbarracin/nemotron-sentinel,Python,0,coding-agent;security/guardrails,Autonomous Code Vulnerability Auto-Patcher & CI/CD Security Agent (Nebius x NVIDIA Global AI Hackathon)
+omnikernel-agent,https://github.com/jordialbarracin/omnikernel-agent,Python,0,,Autonomous GPU Kernel Architect & Triton Compiler Agent targeting NVIDIA Hopper H100 (Nebius x NVIDIA Global AI Hackathon)
+deepaudit-agent,https://github.com/jordialbarracin/deepaudit-agent,Python,0,,"Autonomous Forensic Due Diligence & Corporate Integrity Agent (Nebius x NVIDIA Global AI Hackathon - Best Use of Tavily $3,000 Winner)"
+AnuragVerma777,https://github.com/AnuragVerma777/AnuragVerma777,,1,,"Personal GitHub profile README showcasing my projects, technical skills, learning journey, and work in Data Science, Machine Learning, Python, and Software Development."
+agentgate,https://github.com/sandeep9z/agentgate,Python,0,fact-check/verification,"Governed Terraform review agent: deterministic rules, NVIDIA Nemotron on Nebius, and a verifier that rejects ungrounded claims."
+Caraxes_AI,https://github.com/Manas-Jain14/Caraxes_AI,Python,0,,
+NebiusxNvidia-FaultForge,https://github.com/Ramy888/NebiusxNvidia-FaultForge,Python,0,,
+BachatBuddy-2.0,https://github.com/parth-bansal081/BachatBuddy-2.0,Python,0,,
+cheatproof,https://github.com/manishwvn/cheatproof,Python,0,coding-agent;security/guardrails,"RewardSeal: red-team, patch and certify RL coding environments. Nemotron 3 Super on Nebius Token Factory + Sandboxes + Tavily."
+f1-compass,https://github.com/kevinlionel874/f1-compass,TypeScript,0,,"Know before you work: check whether F-1 visa rules likely allow an activity, with citations from official U.S. sources. NVIDIA Nemotron on Nebius Token Factory + Tavily."
+NebiusProofLineAI,https://github.com/kevin9327/NebiusProofLineAI,Python,0,,NebiusProofLine Studio — 3-Tier NVIDIA Nemotron Cascade on Nebius Token Factory + Tavily 2-Stage Deep Grounding + Deterministic Citation Proof Gate
+joblens,https://github.com/2309ankit/joblens,Java,0,,
+receipts,https://github.com/mukeshkbj/receipts,Python,0,,
+Motherhood,https://github.com/meeramkhan155-prog/Motherhood,HTML,0,sre/incident;voice/speech,"Motherhood: a warm, voice-first AI companion for mothers, from pregnancy through the newborn months. Talk or type in English, Urdu, Arabic, Spanish or Turkish. Powered by NVIDIA Nemotron on Nebius Token Factory, with a voice baby log, emergency help, and your village's voices."
+incidentzero,https://github.com/AryanSharma9917/incidentzero,Python,2,coding-agent;sre/incident;health/clinical,"Autonomous AI incident-resolution engineer for diagnosing, fixing, and validating Kubernetes production incidents using NVIDIA Nemotron, Nebius Token Factory, LangGraph, and Tavily."
+Second-Look,https://github.com/nishika-chauhan/Second-Look,Python,0,,
+ReplayForge,https://github.com/Idk507/ReplayForge,Python,2,,
+sponsorlens,https://github.com/him-agni/sponsorlens,Python,0,,
+nebiusxnvidia_hackathon,https://github.com/aiambo08/nebiusxnvidia_hackathon,Python,0,fact-check/verification;health/clinical;physical-ai/robotics,"Autonomous reliability agent for camera-based Physical AI: detect, diagnose with NVIDIA Nemotron on Nebius Token Factory, act safely, verify, roll back."
+flowforge-ai,https://github.com/bikkinagowtham/flowforge-ai,,0,fact-check/verification,FlowForge AI - Autonomous Workflow Planning and Verification
+Agent_Shield,https://github.com/Aleeshal/Agent_Shield,JavaScript,0,,
+atlas-live,https://github.com/victorisaacchinta-eng/atlas-live,TypeScript,0,,"A live globe, photoreal landmarks and machines you take apart with your hands. Nebius x NVIDIA Global AI Hackathon."
+nightingale,https://github.com/adxhere/nightingale,Python,0,,
+suhail39ahmed,https://github.com/suhail39ahmed/suhail39ahmed,TypeScript,0,,Source for savvysuhail.com and my GitHub profile README.
+scenepilot,https://github.com/kiri5358/scenepilot,Python,0,,Nebius x NVIDIA Global AI Hackathon project
+Culprit,https://github.com/vybex-dev/Culprit,Python,0,,Finds the exact commit that made your app slower.
+meshcfo-control-tower,https://github.com/Cubiczan/meshcfo-control-tower,Python,1,,MeshCFO Control Tower — governed ICFR remediation agent on Nebius Token Factory + NVIDIA Nemotron (Nebius x NVIDIA Global AI Hackathon)
+NebiusxNvidia,https://github.com/uvpatel/NebiusxNvidia,TypeScript,1,,
+vf-logistics-nebius-nvidia,https://github.com/hoachauphuoc/vf-logistics-nebius-nvidia,Python,0,scam/fraud;LOGISTICS/MOBILITY*,Multi-agent AI fraud detection system for logistics - Nebius x NVIDIA Global AI Hackathon submission
+auditbench,https://github.com/Rcidshacker/auditbench,Python,0,security/guardrails,"EU AI Act pre-screener on NVIDIA Nemotron + Nebius Token Factory, built on a pre-registered study of whether LLM compliance auditors can be trusted."
+Roboproof,https://github.com/SriHasa26/Roboproof,Python,0,,
+hackathon-playbook,https://github.com/geonq/hackathon-playbook,Shell,0,fact-check/verification,"A reusable, evidence-led field kit for preparing, building, and presenting at hackathons."
+quantum-study-agent,https://github.com/serce-yasemin/quantum-study-agent,Python,0,personal-ai/memory;finance/trading,Nebius x NVIDIA Global AI Hackathon 2026 - Personal AI track. A Nemotron-based study/quiz assistant for quantum computing self-study.
+AxisOS-Nebula-Engine,https://github.com/mcrusan/AxisOS-Nebula-Engine,Python,0,,
+orion-personal-ai,https://github.com/ssurekumar01111-hue/orion-personal-ai,Python,0,personal-ai/memory,"Orion — a private Personal AI operating layer with persistent memory, reusable skills, autonomous workflows, and permission-aware tool execution. Local-first personal AI operating layer featuring structured SQLite memory, bounded agent orchestration, and explicit human-in-the-loop permission boundar"
+klarixa-neurohaptic-os-,https://github.com/f1725developmenttechnologies-create/klarixa-neurohaptic-os-,Python,0,,
+Waypoint,https://github.com/sagars2004/Waypoint,TypeScript,0,,"Waypoint is a multimodal NYC/NJ commute agent that tells commuters when to leave, with a confidence level and a Plan B, built on NVIDIA Nemotron through Nebius Token Factory for the Nebius x NVIDIA Global AI Hackathon."
+hiresense-nemotron,https://github.com/khizzcr7/hiresense-nemotron,TypeScript,0,jobs/hiring,HireSense Nemotron - autonomous AI recruitment screening agents running on Nebius Token Factory with NVIDIA Nemotron models + Tavily company research. Entry for the Nebius x NVIDIA Global AI Hackathon.
+homecoming,https://github.com/msimakhov-star/homecoming,Python,0,health/clinical,"The weekend after discharge: photograph the letter, the boxes and the pill organiser; see where they disagree. Questions for the pharmacist, never advice. NVIDIA Nemotron on Nebius Token Factory."
+bumi-watch-nemotron,https://github.com/HanifWinson/bumi-watch-nemotron,JavaScript,0,,
+fixfork,https://github.com/tuyentran4992/fixfork,Python,0,coding-agent,"Fork three hypotheses, race them in sandboxes, keep the fix that passes. | Nebius Global AI Hackathon 2026 (Coding & Agentic Engineering)"
+MatchdayDB,https://github.com/AagamS06/MatchdayDB,Python,1,,
+StierDev,https://github.com/kmmohaimenulhaque-code/StierDev,Python,0,,
+scopecheck,https://github.com/Straya-United/scopecheck,JavaScript,0,fact-check/verification;legal/contracts,"Catch the gaps between a contractor's scope and a supplier's quote. NVIDIA Nemotron on Nebius Token Factory, with exact source-line evidence for every finding. Nebius x NVIDIA Global AI Hackathon 2026."
+Nion-Nebius,https://github.com/SanjeeV-15/Nion-Nebius,JavaScript,0,voice/speech,Nion: Your Personal Voice Companion
+verity-v1-,https://github.com/shabihahmedkhan007-glitch/verity-v1-,HTML,0,,
+learners-permit,https://github.com/thiagopari/learners-permit,Python,0,physical-ai/robotics;GOV/CIVIC*;agent-eval/benchmark,"Robots earn the right to be commanded by AI: GR00T skills licensed by Nebius evals, Cedar RBAC, Nemotron planner"
+mechanics,https://github.com/ErnestoAvedillo/mechanics,Python,0,,My  own web page
+cited,https://github.com/omkarmalji/cited,JavaScript,0,,"Honest AI visibility checks for local businesses, built with NVIDIA Nemotron, Nebius Token Factory and Tavily"
+clearway,https://github.com/Ramy888/clearway,Python,0,coding-agent;security/guardrails;ACCESSIBILITY*,"Test-drive your home in a wheelchair before you change it: agents propose the fix, an independent auditor refuses any fix that fails physics or ADA code. Nemotron on Nebius Token Factory."
+commitment-keeper,https://github.com/Nish459/commitment-keeper,Python,0,personal-ai/memory,"A private personal AI that finds the promises in your notes and email, does the research and drafting behind each one with cited sources, and shows exactly what left your machine. Nothing is sent without your approval. Nemotron on Nebius Token Factory, Tavily for research."
+ATLAS,https://github.com/lainx06/ATLAS,Python,0,,
+Interregnum,https://github.com/git791/Interregnum,TypeScript,0,,
+ai-visual-explorer,https://github.com/modelosdegestion8b-commits/ai-visual-explorer,JavaScript,0,,
+AI-Moderator,https://github.com/jsharonsweety28-ai/AI-Moderator,JavaScript,0,,
+geeza,https://github.com/ssaglin19/geeza,Python,0,,
+GroundTruth,https://github.com/Isaaco3349/GroundTruth,Python,0,,
+waveweaver-global-agent,https://github.com/goBuildRun/waveweaver-global-agent,HTML,0,,
+vplan,https://github.com/boelnasr/vplan,Python,0,fact-check/verification,"LLMs plan, physics verifies: NVIDIA Nemotron plans Franka Panda pick-and-place, deterministic checks verify it before anything moves (Nebius x NVIDIA Global AI Hackathon, Physical AI)"
+A.T.I.D.E.,https://github.com/gab-lap/A.T.I.D.E.,Python,0,,"""Autonomous & Teleoperated Intervention in Degraded Environments."""
+Mindmate,https://github.com/basaaria123/Mindmate,Python,0,,
+proofforge,https://github.com/trinath122/proofforge,Python,0,,
+FIXSI,https://github.com/Raghav-06/FIXSI,JavaScript,0,,for nvidia_nebius hackathon
+supertaco,https://github.com/1tsDaksh/supertaco,Python,0,,
+mentora,https://github.com/paulmelvin-dev/mentora,JavaScript,0,,
+Nebius-X-Nvidia-,https://github.com/Harshaisdumb/Nebius-X-Nvidia-,Python,0,,
+Precedent,https://github.com/A-dvika/Precedent,JavaScript,0,,
+sayproof,https://github.com/kaiser-data/sayproof,Python,0,fact-check/verification,Fact-check your talk before your audience does. Nemotron on Nebius + Tavily. Nebius x NVIDIA Global AI Hackathon.
+chaser,https://github.com/vigohan95/chaser,TypeScript,0,,Chaser: accounts-receivable agent on PayPal Agent Toolkit + Vercel AI SDK (PayPal AI Hackathon entry)
+shahid,https://github.com/Hashim-Alsharif/shahid,Python,0,fact-check/verification;sre/incident,Bilingual evidence-based web log triage using NVIDIA Nemotron on Nebius Token Factory.
+hangtime,https://github.com/iblametitus/hangtime,Python,0,,
+Scout-AI,https://github.com/umar-akhtar-designer/Scout-AI,Python,0,,
+-claim-auditor,https://github.com/Miribrahim12/-claim-auditor,Python,0,fact-check/verification;security/guardrails, AI fact-checker: dual NVIDIA Nemotron judges on Nebius Token Factory with Tavily search
+NIVIDIA,https://github.com/Deepaliluthra185/NIVIDIA,Python,0,,
+tattvaswarm,https://github.com/deliciosoradha/tattvaswarm,Python,0,personal-ai/memory,Dharmagate Agentic Shield (TattvaSwarm) — sovereign personal AI swarm (Nebius x NVIDIA Global AI Hackathon 2026)
+datapilot,https://github.com/kalpitphogat/datapilot,Python,0,,AI data analyst: NVIDIA Nemotron on Nebius Token Factory + Tavily
+Nebius,https://github.com/monudevdil0301-ux/Nebius,Python,0,,
+nebius-personal-ai,https://github.com/TheNeuralWars/nebius-personal-ai,Python,0,,
+triton-mutant-gate,https://github.com/alexxony/triton-mutant-gate,Python,1,fact-check/verification;coding-agent,"Mutant Replay: plant bugs in a Triton kernel, check whether your tests catch them in a Nebius sandbox, and let Nemotron write the missing tests (verified by execution)."
+heritage-plate,https://github.com/ishtrain07/heritage-plate,Python,0,,
+repro,https://github.com/princemittalr/repro,Python,0,,
+offramp,https://github.com/vj-io/offramp,Python,0,voice/speech,"Prove which closed-LLM call sites NVIDIA Nemotron on Nebius Token Factory can take over, then open the PR."
+re-entry,https://github.com/Reuben-Alex/re-entry,Python,0,coding-agent;legal/contracts,"Prove smart-contract bugs by execution, then prove the fix. Nemotron on Nebius Token Factory."
+Coldcheck,https://github.com/GalenRobles/Coldcheck,Python,0,physical-ai/robotics,"Physical AI cold-chain checker: Tavily + Nemotron on Nebius Token Factory decide if a product is still usable, shown on real Arduino hardware."
+PatchTree,https://github.com/icodesAS/PatchTree,Python,0,fact-check/verification;coding-agent,"Agent that forks sandboxes to try, verify, and stress-test code patches before trusting them — built for the Nebius x NVIDIA Global AI Hackathon."
+agroclima-agent-nebius,https://github.com/jaime-sql/agroclima-agent-nebius,,0,,AgroClima Agent: coffee-rust advisor for El Salvador on Nebius Token Factory + NVIDIA Nemotron (Nebius x NVIDIA Global AI Hackathon 2026)
+societymitra,https://github.com/swapnilchaudhari007/societymitra,Python,1,,🏘️ SocietyMitra — AI co-secretary for housing societies. Agent on NVIDIA Nemotron via Nebius Token Factory. Nebius × NVIDIA Global AI Hackathon.
+agentforge-ai,https://github.com/venkatkrish98/agentforge-ai,TypeScript,0,fact-check/verification;coding-agent,"AgentForge AI: Autonomous AI-Assisted Coding, Safe Sandbox Execution, and Evidence-Backed Test Repair — Nebius x NVIDIA Global AI Hackathon"
+codefork,https://github.com/Maukthik/codefork,Python,1,,
+muffle-plus-plus,https://github.com/ps131-cell/muffle-plus-plus,Python,0,,Federated multi-omic cancer survival model (NVIDIA FLARE) with a Nemotron tumor-board agent on Nebius Token Factory and Tavily literature search
+megapatch,https://github.com/oryamx/megapatch,Python,0,coding-agent,"Rank what matters, prove it is exploitable, patch it, and re-test. Nebius x NVIDIA hackathon"
+AI-voice2text,https://github.com/TomNguyen132006/AI-voice2text,Python,0,voice/speech,
+Bridgepath,https://github.com/dhriti211/Bridgepath,Python,0,,
+council-watch,https://github.com/Gooreum/council-watch,Python,0,GOV/CIVIC*,"Your city council's agenda, read for you. NVIDIA Nemotron on Nebius Token Factory + Tavily. Nebius x NVIDIA Global AI Hackathon."
+scamshield,https://github.com/maikunari/scamshield,Python,0,fact-check/verification;security/guardrails;scam/fraud,A private scam guard for elderly parents: Nemotron on Nebius Token Factory + Tavily evidence. Nebius x NVIDIA Global AI Hackathon.
+blindspot-ai,https://github.com/rsm-wew068/blindspot-ai,JavaScript,0,physical-ai/robotics;ACCESSIBILITY*,"AI-assisted testing for autonomous-driving edge cases, with reproducible simulations and failure analysis."
+examproof,https://github.com/1aifanatic/examproof,JavaScript,0,physical-ai/robotics,A practice run for your quiz: simulated students (Nemotron 3 Nano) + head teacher (Nemotron 3 Ultra) on Nebius Token Factory
+shiguang,https://github.com/IAN010102/shiguang,HTML,0,,"拾光小本 Little Finds — 把看到的、想去的、想買的收進來,每天只看三件的手帳風收藏 PWA。Grace Studio."
+Kt-Intelligence,https://github.com/Swa-hub/Kt-Intelligence,Python,0,,"Engineering knowledge, reimagined."
+Citation-Checker,https://github.com/ishprasad/Citation-Checker,Python,0,fact-check/verification,"An app that takes a research paper, examines each of its citations and checks whether the claims made in these citations match what's in the referenced papers."
+-Nebius-x-NVIDIA-Global-AI-Hackathon,https://github.com/govindrd/-Nebius-x-NVIDIA-Global-AI-Hackathon,,0,,
+luffytaro,https://github.com/ayushmanmehta-apurwa/luffytaro,Python,0,,
+jaga,https://github.com/ShermaineYap/jaga,Python,1,fact-check/verification;security/guardrails;scam/fraud,Jaga: a private scam guardian for Malaysian seniors. NVIDIA Nemotron on Nebius Token Factory + Tavily verification + Hermes Agent in NVIDIA OpenShell.
+nvidiahackaton,https://github.com/xackerlud31337/nvidiahackaton,Python,0,,
+laulu-app,https://github.com/miko-kortelainen/laulu-app,TypeScript,0,,
+rumbo,https://github.com/eliambalbuena/rumbo,TypeScript,0,,
+SegSense,https://github.com/Blop77/SegSense,Python,0,coding-agent;personal-ai/memory,"Agentic debugger for C memory bugs. Compiles with AddressSanitizer, finds the crash, patches it with NVIDIA Nemotron on Nebius Token Factory, and re-tests until it passes."
+Ledgermind,https://github.com/RoboDevelopX/Ledgermind,Python,0,,
+Headstart,https://github.com/NarmalaSk/Headstart,Python,0,,
+bfb-demo,https://github.com/Bangkah/bfb-demo,Python,0,coding-agent;agent-eval/benchmark,Deliberately buggy demo package - eval target for BangkahFixBot (Nebius x NVIDIA hackathon)
+RECALLOS,https://github.com/SPSQZ/RECALLOS,JavaScript,0,personal-ai/memory;SMALL-BUSINESS/ECOM*,initial
+asset-assistant,https://github.com/SOMASEKAR17/asset-assistant,Python,0,personal-ai/memory,
+faulttwin,https://github.com/Rashed-Almasri5505/faulttwin,Python,0,health/clinical;physical-ai/robotics,An edge AI agent that catches open-circuit switch faults in inverters and checks its diagnosis on a physics digital twin before it acts.
+BangkahFixBot,https://github.com/Bangkah/BangkahFixBot,Python,0,,
+testpilot,https://github.com/Jacob-Met/testpilot,Python,1,coding-agent;agent-eval/benchmark,"Agent that writes, runs and repairs regression tests for a diff. Nebius x NVIDIA Global AI Hackathon entry (Token Factory / Nemotron)."
+courseflow,https://github.com/eseeyuh/courseflow,Python,0,fact-check/verification,Evidence-backed academic navigation: turns fragmented LMS content into a verified academic execution graph. Nebius x NVIDIA hackathon project.
+kairos-jenny,https://github.com/Gaurav-Codetek/kairos-jenny,Python,0,,
+mutagent,https://github.com/Sarmax04/mutagent,Python,0,coding-agent,"An AI agent that writes tests, then proves they’re good by planting bugs and measuring how many the tests catch."
+PFP-Darwinism,https://github.com/TruJ0e/PFP-Darwinism,Python,0,,
+RecallGuard,https://github.com/seantw0301/RecallGuard,Python,0,personal-ai/memory;security/guardrails;SMALL-BUSINESS/ECOM*,Counterfactual memory replay for personal AI (Nebius x NVIDIA Nemotron hackathon)
+NibuisXNVIDIA,https://github.com/25a31a4353/NibuisXNVIDIA,JavaScript,0,,A working AI system built on independent infrastructure using NVIDIA open-source models and Nebius AI Cloud. Developed for the NVIDIA x Nebius Global AI Hackathon.
+receipts,https://github.com/laa1991/receipts,Python,0,fact-check/verification;personal-ai/memory;security/guardrails,"A personal AI that shows its work: auditable memory, receipts for every claim, and an honest experiment write-up"
+pamaral-git,https://github.com/pamaral-git/pamaral-git,,0,,description of whoami
+nod,https://github.com/Aadil12m/nod,Python,0,,
+es-fraude,https://github.com/ramsesavi94-maker/es-fraude,TypeScript,0,scam/fraud,A second opinion before you fall for a scam: NVIDIA Nemotron + Tavily check suspicious messages against official Mexican sources
+patchproof,https://github.com/Pranuthiii/patchproof,Python,0,coding-agent;security/guardrails,AI security fixes that show their receipts
+Navo,https://github.com/rahulyyadav/Navo,TypeScript,1,,this is a travel partner app. 
+payonproof,https://github.com/Daniel221287/payonproof,JavaScript,0,legal/contracts,"PayOnProof: an AI accounts-payable agent that pays construction subcontractors only for work it can prove, through PayPal Payouts (sandbox), with exact human approval and PayPal readback."
+scam-shield,https://github.com/angiebecerra020/scam-shield,Python,0,voice/speech;scam/fraud,Catches scam phone calls while they happen and alerts the family in their language. NVIDIA Nemotron on Nebius Token Factory + Tavily + Twilio.
+daily-reflection,https://github.com/hadiux0295/daily-reflection,JavaScript,0,personal-ai/memory,"Reflection-journal MCP server + web sim; Nemotron 3 Super on Nebius Token Factory with provenance chips and a deterministic crisis check. Reflection, not prediction."
+exposurelens,https://github.com/natrajexplore/exposurelens,Python,1,,
+xvimo,https://github.com/DataGuy-Eterniti/xvimo,Python,0,finance/trading;SMALL-BUSINESS/ECOM*,"Xvimo is a WhatsApp-native AI agent that lets ordinary people in Nigeria and across Africa check a suspicious message, payment request, link or ""investment opportunity"" before they send money. "
+socialspark-hackathon-release,https://github.com/DiscoverAIDani/socialspark-hackathon-release,JavaScript,0,,"SocialSpark hackathon release — AI-assisted social media drafting for Facebook, Instagram, LinkedIn, and TikTok, with privacy checks and manual scheduling."
+shield-nhi,https://github.com/kebostrade/shield-nhi,Python,0,personal-ai/memory,"SHIELD-NHI — always-on AI agent for non-human identity governance, with a human-approval gate. Nebius x NVIDIA Global AI Hackathon (Personal AI track): reasoning served live by NVIDIA Nemotron on Nebius Token Factory. MIT."
+meshcfo-control-tower,https://github.com/icohangar-ops/meshcfo-control-tower,Python,0,,MeshCFO Control Tower — governed ICFR remediation agent on Nebius Token Factory + NVIDIA Nemotron (Nebius x NVIDIA Global AI Hackathon)
+nemoguard-ai,https://github.com/janiya2/nemoguard-ai,TypeScript,0,security/guardrails;legal/contracts,"🛡️ Autonomous Enterprise Legal & Regulatory Intelligence Engine. Powered by NVIDIA Nemotron-70B on the Nebius 8x H100 GPU Token Factory, NeMo Guardrails (Colang 2.0), and Tavily AI Precedent Search. Built for the Nebius x NVIDIA Global AI Hackathon."
+Organizador-Inteligente-de-Contas,https://github.com/isacbrs/Organizador-Inteligente-de-Contas,Python,1,,Gestão inteligente de faturas. Desenvolvido para o Nebius x NVIDIA Global AI Hackathon.
+draft-pick-evaluator,https://github.com/ChampionshipCube-Sloan2027/draft-pick-evaluator,Python,0,,"Draft Pick Evaluator: a decision-support tool that ranks NBA prospects against a team’s needs, then uses an NVIDIA Nemotron model on Nebius Token Factory to explain the recommendation and risks. Built for the Nebius x NVIDIA Global AI Hackathon."
+waterline,https://github.com/UgaTheDev/waterline,TypeScript,0,cost-routing;physical-ai/robotics,"Street-level flood depth from photos + vehicle-aware routing. Cosmos Reason 2 on Nebius AI Cloud, Nemotron on Token Factory."
+nemesis-studio,https://github.com/C6Sucrose/nemesis-studio,,0,,Nemesis Studio — Autonomous Prompt-to-Playable HD-2D JRPG Engine (Nvidia x Nebius Global AI Hackathon)
+jevaga,https://github.com/mattspaulding/jevaga,TypeScript,0,,A Galaga-style shooter flown by an AI pilot that learns from its deaths.
+Rescue-bot,https://github.com/ashaz3256/Rescue-bot,Python,0,,
+slash-agent,https://github.com/Wolfe-Jam/slash-agent,TypeScript,1,cost-routing,"An agent for hire: quotes each coding job, books the right NVIDIA Nemotron model on Nebius Token Factory, and proves the cost with a receipt."
+agentmart-platform,https://github.com/shanto12/agentmart-platform,JavaScript,0,physical-ai/robotics,"AgentMart platform: Supabase edge API (schema market), web console (Netlify), SDKs, docs"
+unlapsed,https://github.com/pratham2402/unlapsed,Python,0,,A private renewal agent for document chains
+ActuallyAnson,https://github.com/ActuallyAnson/ActuallyAnson,,0,,
+nvidia-hackethon,https://github.com/niharjoshi2003/nvidia-hackethon,TypeScript,0,jobs/hiring,A 60-second spoken interview drill with an evaluator that cannot give feedback it can't cite.
+Nebius-x-NVIDIA,https://github.com/designerajitrawat-ux/Nebius-x-NVIDIA,Python,0,,
+forkfix,https://github.com/jessecalvin08/forkfix,Python,0,coding-agent,"Coding agent that forks Nebius Sandbox snapshots at code-changing steps, prunes branches with a judge model, and submits the best patch."
+PHAZE,https://github.com/spoonzerr/PHAZE,Python,0,health/clinical,"A Worldwide Haze Tracker, that warns users whenever the PSI has hit the unhealthy range in their respective regions"
+ResearchX,https://github.com/vishavmehra/ResearchX,Python,0,fact-check/verification;personal-ai/memory,"Evidence-first research assistant for machine-learning literature: cited answers, field-level grounding, contradiction detection, abstention, Research Trace, Knowledge Map and eight research analyses on NVIDIA Nemotron models."
+NemotronCoder,https://github.com/Manimaran-tech/NemotronCoder,Python,0,coding-agent,Vision-Augmented Autonomous Coding Agent powered by NVIDIA Nemotron via Nebius Token Factory
+FRIDAY,https://github.com/johan-g-thekkel/FRIDAY,Python,1,, A PROJECT FOR AURA INSPIRED FROM AVENGERS IRON MAN
+opportunity-shield,https://github.com/alexpanwien512-png/opportunity-shield,TypeScript,0,personal-ai/memory,Personal AI agent that vets paid opportunities and exposes bounty traps — Nemotron on Nebius Token Factory + Tavily
+patchwright,https://github.com/rohith95-p/patchwright,Python,0,coding-agent,A bug-fixing agent that only ships fixes it can prove. NVIDIA Nemotron on Nebius Token Factory.
+attest,https://github.com/a252937166/attest,Python,0,coding-agent,"A coding agent that has to prove its patch before you merge it: sealed acceptance tests, mutants, a recorded verdict rule and a Proof Bundle you can re-check offline. NVIDIA Nemotron on Nebius Token Factory and Sandboxes."
+finfold-growth-agent,https://github.com/joeymilano/finfold-growth-agent,TypeScript,0,,"Finfold — an AI growth operator: one update becomes platform-native drafts for 14 channels, with outcomes tracked. Powered by NVIDIA Nemotron on Nebius Token Factory. Apache-2.0."
+plantmind,https://github.com/Ar0umian/plantmind,Python,0,,
+agrofield-agent,https://github.com/rodiagro-ui/agrofield-agent,Python,0,fact-check/verification;SMALL-BUSINESS/ECOM*,Evidence-before-action scouting coordinator for post-storm soybean fields. Nemotron 3 on Nebius Token Factory + deterministic safety gates. Nebius x NVIDIA Global AI Hackathon 2026.
+rackready-ai,https://github.com/koshasolanki/rackready-ai,Python,0,cost-routing,"Cost model for AI data center halls: current vs future-ready racks, with NVIDIA Nemotron on Nebius Token Factory"
+Milo,https://github.com/Anurag-334/Milo,Python,0,coding-agent,coding agent
+quilldeck-nemotron,https://github.com/Quilldeck/quilldeck-nemotron,TypeScript,0,,
+doppel,https://github.com/Maukthik/doppel,Python,1,,
+aeroagent,https://github.com/r00tnomade/aeroagent,Python,0,,
+repoguard-Ai,https://github.com/MaxGamer-coder/repoguard-Ai,TypeScript,0,security/guardrails,
+nebius-patchforge,https://github.com/ArtyormSatori/nebius-patchforge,Python,0,coding-agent,
+TraceBack,https://github.com/ActuallyAnson/TraceBack,C++,0,sre/incident;finance/trading,Deterministic-first incident investigator for multi-service backends (Nebius x NVIDIA hackathon)
+loanlens,https://github.com/abdulmannaan502/loanlens,Python,0,,"AI agent that exposes predatory loan apps: true APR, RBI red flags, live lender checks. NVIDIA Nemotron on Nebius Token Factory."
+nvidia-best-apps-and-agents,https://github.com/Axon-Enjin/nvidia-best-apps-and-agents,,0,fact-check/verification;security/guardrails;health/clinical,PhilHealth claims-auditor research for the Nebius x NVIDIA Best Apps and Agents track
+voyager-vlml-hackathon,https://github.com/Zxy876/voyager-vlml-hackathon,Python,0,fact-check/verification;personal-ai/memory,"MVE hackathon line for Nebius x NVIDIA Global AI Hackathon (Personal AI track): Voyager-style skill learning loop with DB-verified success, running on Nebius Token Factory + NVIDIA Nemotron"
+labelhand,https://github.com/StephenSook/labelhand,TypeScript,0,legal/contracts,Compiles EPA pesticide labels into clause-cited rules with NVIDIA Nemotron on Nebius Token Factory and finds the hours every label in a tank mix allows spraying.
+agenteco-nebius-qloo,https://github.com/SannyDermawan/agenteco-nebius-qloo,TypeScript,0,,
+memora,https://github.com/devnet-microsystems/memora,Python,0,,
+rimaz-nemotron-copilot,https://github.com/maghlifiissam-art/rimaz-nemotron-copilot,JavaScript,0,,Creator copilot for RIMAZ powered by NVIDIA Nemotron models on Nebius Token Factory.
+pickinggeek002,https://github.com/JamesChenPoChih/pickinggeek002,Python,0,finance/trading,This app keep investment simple.
+notes-to-mastery,https://github.com/silentify5672/notes-to-mastery,Python,0,,AI study companion built for the Nebius x NVIDIA Global AI Hackathon
+arween-nexus,https://github.com/thanamethawat-cmyk/arween-nexus,TypeScript,0,,
+clinicdesk,https://github.com/megha-bytes/clinicdesk,Python,0,security/guardrails;health/clinical,"Safe, multilingual AI front desk for clinics: LangGraph + NeMo Guardrails + Nemotron on Nebius Token Factory, with A2A."
+crossfarm,https://github.com/Gluflex/crossfarm,JavaScript,0,ENERGY/GRID/CLIMATE*,Find the farmers who already farm your field's future climate
+relay,https://github.com/AsafMeizner/relay,Python,0,fact-check/verification;sre/incident,"Relay: evidence-linked incident handoffs with exact source quotes and mandatory human review, built for the Nebius x NVIDIA hackathon (Nemotron on Nebius Token Factory)."
+NOVA,https://github.com/ThebigJH/NOVA,,1,,NOVA AI for Nebius x NVIDIA Global AI Hackathon
+swarm,https://github.com/daryl-micah/swarm,TypeScript,0,physical-ai/robotics,A focus group of hundreds of simulated customers for your landing page. Nebius x NVIDIA hackathon.
+sharegate,https://github.com/nagasakarenta/sharegate,Python,0,voice/speech,"Turn your AI chats into team knowledge, safely and in your own voice. NVIDIA Nemotron 3 on Nebius Token Factory."
+fixpilot-ai,https://github.com/sanidhyaagrawal17/fixpilot-ai,Python,0,coding-agent,"Autonomous 5-Stage Code Debugging Agent powered by NVIDIA Nemotron-3, Nebius Token Factory, and Tavily Search."
+prysma-competitive-intel,https://github.com/driftedslinky/prysma-competitive-intel,Python,1,,"Prysma is a multi-agent competitive intelligence platform that monitors your competitive landscape, detects market changes, and delivers actionable strategic analysis — powered by NVIDIA Nemotron models on Nebius Token Factory."
+pex,https://github.com/josepha-mayo/pex,Python,0,coding-agent,Goal-aware supervisor for the coding agents you already run.
+AI-Productivity-Flow-Nebius,https://github.com/uzerkayat2004-gif/AI-Productivity-Flow-Nebius,Python,0,,
+MCP-Forge,https://github.com/Prasannaverse13/MCP-Forge,HTML,0,personal-ai/memory,
+teamloop-team,https://github.com/JrKrishh/teamloop-team,Python,0,,"Live progress from every teammate's AI coding session on one board, no status updates. Nebius x NVIDIA hackathon."
+OpsPilot,https://github.com/syedataiba12311-coder/OpsPilot,TypeScript,0,SMALL-BUSINESS/ECOM*,"Manage sales, inventory, and AI purchase order workflows in one simple dashboard."
+confidant,https://github.com/nvmmonsalud/confidant,Python,0,personal-ai/memory,A personal AI that can prove what it didn't send. Nemotron (Bolt/Lightning/Ultra) + Nebius Token Factory + Tavily + Hermes Agent. Nebius x NVIDIA Global AI Hackathon — Personal AI track.
+adverse-media-screener,https://github.com/Onwuagba/adverse-media-screener,Python,0,,
+noai,https://github.com/SilentKeyTech/noai,TypeScript,0,personal-ai/memory,"A personal AI that answers questions about your private life without the model ever seeing it. Local encrypted vault, on-device retrieval, and a hash chained receipt of every token that leaves your machine."
+mendly,https://github.com/senkivskyy/mendly,Python,0,,
+shadow-futuregraph,https://github.com/Satwik-P28/shadow-futuregraph,Python,0,coding-agent;personal-ai/memory,"Counterfactual future debugging for personal AI — find, repair, and safely execute plan failures before they happen."
+scam-checker,https://github.com/Asae01/scam-checker,Python,0,fact-check/verification;scam/fraud,"Paste a suspicious message. Get a verdict, the evidence behind it, what to do next, and a ready-to-send report."
+hackathon-ideas-judged,https://github.com/nickthelegend/hackathon-ideas-judged,,0,,
+callback,https://github.com/lk-nyoka/callback,TypeScript,0,,
+allen-hackathon,https://github.com/BaileyClark33/allen-hackathon,Python,0,,
+sandheal,https://github.com/AyaanShaheer/sandheal,Python,0,,
+nemotron-data-forge,https://github.com/Mxhesh-07/nemotron-data-forge,Python,0,,"Turn any topic into a graded, de-duplicated, fine-tuning-ready dataset using NVIDIA Nemotron on Nebius Token Factory, grounded with Tavily."
+Mimi,https://github.com/zalkabsi/Mimi,Python,0,fact-check/verification;security/guardrails,"Evidence-first npm vulnerability triage: review package grounding, bounded checks, coverage, and a maintainer-ready verdict in one dossier."
+nexus-decision-memory,https://github.com/thisararukshan00-bit/nexus-decision-memory,Python,0,personal-ai/memory,"An AI that remembers not only what you decided, but why. Captures your decisions with their reasons and assumptions, then flags when new information breaks them."
+AI-Gym-Coach-Nebius,https://github.com/dorhaimbob-web/AI-Gym-Coach-Nebius,TypeScript,0,,
+private-ai-workmate,https://github.com/saad07072/private-ai-workmate,Python,1,,
+oriera-worldchat,https://github.com/leslie520-bye/oriera-worldchat,JavaScript,0,,
+Nebius-x-NVIDIA-Global-AI-Hackathon-Codename-DataMedic,https://github.com/takuto02/Nebius-x-NVIDIA-Global-AI-Hackathon-Codename-DataMedic,Python,0,,
+Nebius_hackathon,https://github.com/sanjay-ks23/Nebius_hackathon,Python,0,,
+rowglass,https://github.com/adeelfalaksher900-creator/rowglass,JavaScript,0,,"SQL repair workbench with reduced counterexamples, independent SQLite checks, and a Nebius Token Factory / NVIDIA Nemotron adapter. Live inference setup pending."
+Talverin,https://github.com/shoumik4571/Talverin,TypeScript,0,personal-ai/memory,Talverin — Local-first Personal AI Assistant with full app control. Built with NVIDIA Nemotron-3.5-Lightning on Nebius Token Factory.
+tilly,https://github.com/techsplot/tilly,TypeScript,0,,
+seedbridge,https://github.com/Meshydra/seedbridge,Python,0,,"Founders submit ideas, NVIDIA Nemotron models on Nebius Token Factory review them and match them to grants, VCs, prizes and accelerators. Nebius x NVIDIA Global AI Hackathon."
+CareerOrbit,https://github.com/Arhanpg/CareerOrbit,Python,0,jobs/hiring,
+fixproof,https://github.com/my5757980/fixproof,Python,0,fact-check/verification;coding-agent,"Autonomous agent that fixes bugs in public Python repositories and proves every fix with tests. NVIDIA Nemotron models; the harness, not the model, decides whether a fix is verified."
+STATELOCK_AI,https://github.com/Likith11011/STATELOCK_AI,Python,0,,
+ghostfix-ai,https://github.com/vermanitin21/ghostfix-ai,Python,2,fact-check/verification,Autonomous verified software repair agent powered by NVIDIA Nemotron and Nebius Token Factory.
+neuro-nemotron,https://github.com/akshatanand-cell/neuro-nemotron,JavaScript,0,,
+margin,https://github.com/hansonq888/margin,Python,0,voice/speech,A study companion that reads your iPad handwriting and tutors you by voice. NVIDIA Nemotron on Nebius Token Factory.
+samaunmahmud,https://github.com/samaunmahmud/samaunmahmud,,0,,
+dira-nemetron,https://github.com/Jeremiah-Sakuda/dira-nemetron,TypeScript,0,,Dira v2: a personal commitment agent for the Nebius x NVIDIA Global AI Hackathon.
+personal-agent,https://github.com/NarenRamakrishnan/personal-agent,Python,0,,
+PromiseOs,https://github.com/Raj-max-pixal/PromiseOs,HTML,0,personal-ai/memory,"🧠 Privacy-first Personal AI that remembers your commitments, reasons with NVIDIA Nemotron via Nebius Token Factory, and turns intentions into focused action."
+tenantwise,https://github.com/NabeelAhmedKab1r/tenantwise,TypeScript,0,REAL-ESTATE/HOUSING*,
+Project-X,https://github.com/OmLNGupta/Project-X,JavaScript,0,security/guardrails;sre/incident,Autonomous Incident & Vulnerability Triage Agent built with NVIDIA Nemotron on Nebius Token Factory.
+steward,https://github.com/preethamsolanki28/steward,Python,0,,
+CodeGaurd,https://github.com/risrajawat/CodeGaurd,JavaScript,0,coding-agent;security/guardrails,"CodeGuard is an AI-powered VS Code extension that automatically reviews your codebase, detects bugs, security issues, runtime errors, and applies intelligent fixes to improve code quality."
+appeal-ai,https://github.com/hastikacheddy/appeal-ai,Python,0,health/clinical,"Fight a health-insurance denial: NVIDIA Nemotron on Nebius Token Factory + Tavily turn a denial letter into a cited, ready-to-send appeal."
+bantay-ilog,https://github.com/krstndiane/bantay-ilog,TypeScript,0,voice/speech,"An old phone that watches the river and warns neighbors early. Built for the Nebius x NVIDIA Global AI Hackathon (Physical AI track). Nemotron 3 Nano Omni reads a painted river gauge, and an alert agent warns officials and households in Filipino."
+omniaudit-nim,https://github.com/alimurtaza9dev-ctrl/omniaudit-nim,Python,0,,
+nebius-hackathon,https://github.com/Maharshi-fyuf/nebius-hackathon,,0,,
+haq,https://github.com/shivanshuJags/haq,Python,0,,
+voicecare-scheduler,https://github.com/pham-canh/voicecare-scheduler,Python,0,voice/speech;health/clinical,"Voice booking for elderly clinic patients — speak to book, nothing books without a spoken yes. NLU on NVIDIA Nemotron via Nebius Token Factory."
+fugu,https://github.com/Anton15K/fugu,Python,0,fact-check/verification;personal-ai/memory;security/guardrails,"Fugu — agentic, evidence-backed security auditor for AI-agent extensions (skills / MCP servers / plugins). Nebius x NVIDIA Global AI Hackathon."
+pham-canh,https://github.com/pham-canh/pham-canh,,0,voice/speech;LOGISTICS/MOBILITY*,"Building agent tooling and shipping the receipts: harness kits, voice agents, and the post-mortems nobody asked for"
+assemblyai-voice-agent,https://github.com/pham-canh/assemblyai-voice-agent,Python,0,voice/speech;health/clinical,"AssemblyAI voice agent for clinic booking: real-time STT + Gemini NLU + YES-gated booking, per-stage latency in ms. No live demo URL — run locally."
+planti,https://github.com/genesisbarrios/planti,TypeScript,0,,Less guessing. More growing.
+crewops-nebius-nvidia-hackathon,https://github.com/kashu94/crewops-nebius-nvidia-hackathon,,0,,
+Opustron,https://github.com/Opustron66/Opustron,Python,0,coding-agent,Hackathon repo
+sim-to-table,https://github.com/FreddyWHV/sim-to-table,Python,0,,NVIDIA x Nebius Hackathon Berlin 2026 – Physical AI: Sim to Table (SO-101 pick & place)
+expense-agent,https://github.com/rhredwan10556/expense-agent,Python,0,sre/incident;finance/trading;cost-routing,"An AI-powered personal finance agent that understands plain English or Bangla. Log expenses by chatting, ask questions like ""how much did I spend on food this week?"", and get weekly summaries with saving tips. Built with an NVIDIA Nemotron model on Nebius Token Factory for the Nebius x NVIDIA Global"
+issuepilot,https://github.com/Sourendas/issuepilot,Python,0,,IssuePilot — Nebius Token Factory + NVIDIA Nemotron issue triage for the Nebius x NVIDIA hackathon.
+cerrojo,https://github.com/ramsesavi94-maker/cerrojo,TypeScript,0,coding-agent,Agent that proves and fixes data leaks in AI-built Supabase apps (Nebius x NVIDIA hackathon)
+HarmoniQ,https://github.com/alaikalhamdi/HarmoniQ,TypeScript,0,health/clinical;physical-ai/robotics,"Closed-loop Physical AI agent that triages real-time MCU FFT & voltage telemetry with Nemotron Nano, diagnoses faults via Tavily & Nemotron Ultra on Nebius, and autonomously stabilizes hardware."
+nearmiss-nvidia-nebius,https://github.com/hudasol/nearmiss-nvidia-nebius,Python,0,physical-ai/robotics;LOGISTICS/MOBILITY*,A Physical AI safety experimentation platform for simulating warehouse near-misses and stress-testing safety interventions under changing physical conditions.
+clusterdoctor,https://github.com/vishalbanwari26/clusterdoctor,Python,0,fact-check/verification;LOGISTICS/MOBILITY*,"Evidence-driven agentic root-cause analysis for AI inference and GPU fleets, on NVIDIA Nemotron via Nebius Token Factory"
+hubris,https://github.com/kaiser1x/hubris,TypeScript,0,,Nebius X NVIDIA Hack
+phantom-grid-nebius-nvidia,https://github.com/jackhu24-ship-it/phantom-grid-nebius-nvidia,Python,0,sre/incident;physical-ai/robotics;ENERGY/GRID/CLIMATE*,PHANToM GRID :: Autonomous Physical AI & Edge SRE Orchestrator (Nebius x NVIDIA Global AI Hackathon)
+tether,https://github.com/men16922/tether,Python,0,,GapCloser: an agent that closes the Sim2Real gap with NVIDIA Newton + Nemotron 3 on Nebius Token Factory
+Agric_orion,https://github.com/darish500/Agric_orion,Python,0,ENERGY/GRID/CLIMATE*,
+errly,https://github.com/ZadowHax/errly,TypeScript,0,,Errly is an open-source vibe-coded VSCode extension made during the Nebius x NVIDIA AI Hackathon in 2026. It's used to help beginners and explain what their programming errors mean in plain english while also giving them suggestions on how to solve it. I cannot guarantee that this will still work in
+Argus,https://github.com/munadirkhan/Argus,Python,1,,"An always-on AI agent that lives on your computer, notices what you're working on, and works without being asked.  Built for the Nebius x NVIDIA Global AI Hackathon "
+Nebius-X-NVIDIA-Hackathon-Project,https://github.com/davidhernandez0771/Nebius-X-NVIDIA-Hackathon-Project,Python,0,,
+Katlego-tech,https://github.com/Katlego-tech/Katlego-tech,,0,,Profile README
+patchpilot,https://github.com/Zhiyilang/patchpilot,Python,0,coding-agent,PatchPilot — agentic code reviewer & auto-fix running on Nebius Token Factory + NVIDIA Nemotron (stdlib only).
+TodaysWatch,https://github.com/gunnerhowe/TodaysWatch,TypeScript,0,,
+NVIDIA,https://github.com/skanda137/NVIDIA,Python,0,,
+ProofPatch,https://github.com/VaibhavSoni24/ProofPatch,Python,0,fact-check/verification;coding-agent,"Autonomous AI bug fixing with reproducible tests, verified patches, and evidence-backed reports."
+claimcheck,https://github.com/dhivan-r-v/claimcheck,Python,0,fact-check/verification;scam/fraud;SMALL-BUSINESS/ECOM*,AI fact-checker for Indian WhatsApp forwards. Paste a message or screenshot in any language - ClaimCheck checks it against gov.in sources and fact-checkers and replies SCAM / VERIFIED / UNVERIFIED in your language. NVIDIA Nemotron on Nebius Token Factory + Tavily
+pixel2place,https://github.com/ggkollective/pixel2place,Python,1,physical-ai/robotics,"Work order to placed parts: a Nemotron-coordinated SO-101 assembly cell in Isaac Sim, with Cosmos3-Nano layout planning."
+PARSEC,https://github.com/Kunsh162007/PARSEC,Python,0,,
+gnosis,https://github.com/vkvr-2007/gnosis,Python,0,,
+Nvidia,https://github.com/aditweb13/Nvidia,Python,0,,
+ripple-room,https://github.com/martiaaguilera/ripple-room,Python,0,fact-check/verification;coding-agent;physical-ai/robotics,"See the chain reaction. Fix the day. A live-event disruption simulator: NVIDIA Nemotron on Nebius Token Factory proposes fixes, a CP-SAT verifier proves them."
+ai-research-copilot,https://github.com/palsahab0525/ai-research-copilot,Python,0,,
+mello,https://github.com/Sppdd/mello,TypeScript,0,voice/speech,a character that lives on the screen of you kids phone. 
+QuincyGB,https://github.com/QuincyGB/QuincyGB,,0,,Quincy Brown — B2B Account Manager building autonomous AI agents
+hearsay,https://github.com/needsbuilder/hearsay,Python,0,coding-agent;security/guardrails,"Checks what coding agents say about the outside world (versions, CVE fixes, licences, documented parameters, deprecations) against primary sources, with a cited URL and a verbatim quote."
+bidverdict,https://github.com/akramahmed1/bidverdict,TypeScript,0,legal/contracts,"Sourced bid/no-bid research agent for small federal contractors, built on NVIDIA Nemotron via Nebius Token Factory with Tavily."
+Nebius-x-NVIDIA-Global-AI-Hackathon,https://github.com/ayaanahmed05/Nebius-x-NVIDIA-Global-AI-Hackathon,JavaScript,0,,Hackathon Project for Nebius x NVIDIA Global AI Hackathon
+leaf,https://github.com/risshabs22-quantified/leaf,Python,0,,
+agentcover-sovereign,https://github.com/TheDub-lab/agentcover-sovereign,Python,0,coding-agent,Giving an AI agent your bank or email access is a disaster waiting to happen. AgentCover Sovereign fixes that. We've built a sovereign governance engine that ensures your AI can only do exactly what you authorized—and not a penny or a byte more
+second-shift,https://github.com/mgraves-centrix/second-shift,Python,0,personal-ai/memory;cost-routing;jobs/hiring,The assistant that interrogates your idea before spending compute on it. Overnight artifact generation with a morning interview loop.
+regnav,https://github.com/TaelyKim0119/regnav,Python,0,,
+Project,https://github.com/Anantkumarpandey17/Project,TypeScript,1,,
+personal-ai-nebius-nemotron,https://github.com/emad-malik/personal-ai-nebius-nemotron,Python,0,,
+whydunit,https://github.com/Sumit99589/whydunit,Python,0,fact-check/verification;coding-agent,"AI detectives that find out why your metrics dropped, prove it, fix it, and verify the fix"
+caselink-pro,https://github.com/Stripathee/caselink-pro,Python,0,,
+expenses,https://github.com/ramibch/expenses,Python,0,,Expenses Tracker
+hearthnote,https://github.com/RuiCodex-dev/hearthnote,JavaScript,0,,Hearthnote: a private notebook for families caring for someone at home. NVIDIA Nemotron on Nebius Token Factory.
+Tessera,https://github.com/SACHHH05/Tessera,Python,0,,
+Parallax,https://github.com/sethgoisso-pixel/Parallax,Python,0,,
+devsecguard-ai,https://github.com/sherafganzafar/devsecguard-ai,Python,0,security/guardrails,"   Real-time DevSecOps guardrail: scans every push for leaked secrets and vulnerabilities using NVIDIA Nemotron on Nebius Token Factory, and blocks risky code."
+Quantum-Circuit-Emulator-on-an-FPGA,https://github.com/Teaquilla/Quantum-Circuit-Emulator-on-an-FPGA,Python,0,finance/trading,
+booked,https://github.com/HuttyBuddy/booked,Python,0,,"Open-source AI sales agent for local service businesses — answers leads, books estimates, collects deposits. Triple-hackathon entry (Nebius x NVIDIA, PayPal AI, Code for a Billion)."
+Widem-Desk-Agent,https://github.com/widem-ai/Widem-Desk-Agent,JavaScript,0,personal-ai/memory;cost-routing,"One AI service desk, two doors: a chat page for customers and an MCP endpoint for AI agents. Both quote the same price and book the same slot. Runs NVIDIA Nemotron on Nebius Token Factory. Live demo inside."
+clearance,https://github.com/krishramkumar13007/clearance,Python,0,personal-ai/memory,Give permission once. Your assistant knows when to ask again. A permission layer for personal AI assistants.
+portfolio-coach,https://github.com/Tanju42/portfolio-coach,Python,0,personal-ai/memory,"Personal Portfolio Coach — MCP-powered, Nebius Token Factory + NVIDIA open source (Hackathon build)"
+couponlive-demo,https://github.com/dhananjaykpandey/couponlive-demo,Python,0,fact-check/verification,"“Live-verified coupon platform for India, rebuilding its scraper and validator with Nebius Token Factory.”"
+sycoscan,https://github.com/lawrencevdp/sycoscan,Python,1,,Made for Nebius x NVIDIA Global AI Hackathon
+cliente-fantasma,https://github.com/eriktaveras/cliente-fantasma,Python,0,coding-agent,Test your sales chatbot against synthetic customers in regional Spanish before real customers do. Nemotron on Nebius Token Factory.
+apollo,https://github.com/vidigoat/apollo,JavaScript,0,,"A behavioural lockfile for npm: every new release runs in a Nebius sandbox beside the one before it, and NVIDIA Nemotron explains what changed — before you upgrade."
+sentinelOT,https://github.com/ToniGift/sentinelOT,Python,0,,
+orderpicker_hackathon,https://github.com/nikitashiwach2001/orderpicker_hackathon,Python,0,,
+why,https://github.com/guptaatharva/why,Python,0,coding-agent;security/guardrails,"Turns the decisions behind agent-written code into executable guard tests, checked on every PR, merge and dependency upgrade."
+MarketPulse,https://github.com/Ishimwefabrice/MarketPulse,TypeScript,0,,SME competitive intel agent — Nebius Nemotron + Tavily
+CivicClosure,https://github.com/ayushmanmehta-apurwa/CivicClosure,Python,0,GOV/CIVIC*,
+nemotron-forge,https://github.com/habib-analyst/nemotron-forge,Python,0,,Agentic coding engineer on NVIDIA Nemotron via Nebius Token Factory — Nebius x NVIDIA Global AI Hackathon
+feature-scientist,https://github.com/socialibrary/feature-scientist,Python,0,,Feature Scientist: autonomous ML feature-discovery agent (hackathon)
+antidote,https://github.com/usv240/antidote,Python,0,legal/contracts,"Pesticide-label photo to cited poisoning guidance and medico-legal record, for emergency doctors. Nebius Token Factory + NVIDIA Nemotron 3. Apache-2.0"
+sieve,https://github.com/usv240/sieve,Python,0,health/clinical,Offline-capable repair copilot for biomedical equipment technicians. Oxygen-concentrator-first. Nebius Token Factory + NVIDIA Nemotron 3. Apache-2.0
+TacitBridge,https://github.com/final-bench/TacitBridge,Python,1,physical-ai/robotics,"Glasses to robot skill, through a local VLM. Nebius x NVIDIA Global AI Hackathon 2026, Physical AI track."
+glassbox,https://github.com/Yoh5/glassbox,Python,0,,"The flight recorder for AI agents: tamper-evident decision records, and the path from an action back to the byte that caused it."
+agentsquad-nebius-maintenance,https://github.com/piechockidaniel/agentsquad-nebius-maintenance,C#,0,fact-check/verification,Sandbox-verified dependency repair with Nebius Token Factory and NVIDIA Nemotron.
+sentinel,https://github.com/talacha/sentinel,Python,0,fact-check/verification;security/guardrails,"Sentinel Core is a self-hosted compliance checker. Give it a document and your company's reference policy (the ""vault""). Sentinel returns a rule-by-rule verdict with cited evidence. It does the review a compliance analyst does by hand today, and the sensitive data never leaves compute you control."
+resolve,https://github.com/jkaczmarczyk96-code/resolve,TypeScript,0,,"Avenli turns complex problems into researched, reviewable action plans with NVIDIA Nemotron, Nebius Token Factory, Tavily and Supabase."
+gpu-proof,https://github.com/dhruvil-codes/gpu-proof,Python,0,,
+Kin,https://github.com/UBayouski/Kin,Python,1,,
+bureaucracy-navigator,https://github.com/banksythequantLab/bureaucracy-navigator,Python,0,GOV/CIVIC*,"Government forms explained, filled, checked and tracked in your language. Nebius x NVIDIA hackathon entry (Nemotron + Tavily)."
+Errata,https://github.com/ojassug/Errata,Python,0,,
+guestimator,https://github.com/banksythequantLab/guestimator,JavaScript,0,cost-routing,"Guestimator - AI price estimates from live comparables, listed on your own eBay account"
+nogain-private-study-copilot,https://github.com/priyanshiy1312-ui/nogain-private-study-copilot,Python,1,security/guardrails;jobs/hiring,"Private always-on study & career copilot: Nemotron on Nebius, sandboxed with NVIDIA OpenShell, fully audited."
+hack2win,https://github.com/alvinluo-tech/hack2win,Python,0,coding-agent,Autonomous Hackathon & Production-Grade MVP Orchestration Skill for AI Coding Agents. From adversarial research to 10k+ LOC full-stack delivery.
+nebius-personal-ai,https://github.com/fawad07/nebius-personal-ai,Python,0,personal-ai/memory;voice/speech,"Private voice assistant reasoning with NVIDIA Nemotron on Nebius Token Factory — memory, notes, Tavily web search. Nebius x NVIDIA Hackathon (Personal AI)."
+yaad,https://github.com/devilking7x/yaad,TypeScript,0,personal-ai/memory,"Yaad — a personal AI that remembers you. Persistent memory + reusable skills, powered by NVIDIA Nemotron on Nebius Token Factory. Personal AI track submission for the Nebius x NVIDIA Global AI Hackathon."
+nebius-contractlens,https://github.com/Vcode2407/nebius-contractlens,JavaScript,0,legal/contracts,Contract-driven API regression checks with a bounded Nebius NVIDIA-model adapter.
+fair-shift,https://github.com/StuartYo/fair-shift,TypeScript,0,,"Checks an hourly worker's pay against the current official minimum wage and overtime rules, citing each rule. NVIDIA Nemotron on Nebius Token Factory + Tavily."
+CONTRACTRISKMANAGER,https://github.com/GargiLaulkar/CONTRACTRISKMANAGER,Python,0,sre/incident;legal/contracts;REAL-ESTATE/HOUSING*,"AI contract risk analyzer: flags risky clauses in leases, NDAs and terms of service, explains them in plain English and suggests fairer wording. Multi-stage pipeline on NVIDIA Nemotron via Nebius Token Factory."
+StudyTrace,https://github.com/TanmayJaiswal-IITBH/StudyTrace,Python,0,,
+casewake,https://github.com/Jingxx32/casewake,Python,0,fact-check/verification;coding-agent;agent-eval/benchmark,An AI QA agent that turns historical defects into evidence-backed regression tests.
+soc-agent-GHOST-,https://github.com/Mastoor2002/soc-agent-GHOST-,Python,0,security/guardrails,Generative Hunting & Operations Security Toolkit
+FinanzPr-fer,https://github.com/Obumbratio/FinanzPr-fer,Python,0,,
+parallax,https://github.com/spuentesp/parallax,TypeScript,0,,
+agentgrow-bookings,https://github.com/brainupgrade-in/agentgrow-bookings,Python,0,health/clinical;SMALL-BUSINESS/ECOM*,"WhatsApp front desk for chiropractic clinics: NVIDIA Nemotron on Nebius Token Factory books patients, flags emergencies and wins back revenue."
+nebius-hackathon-recall,https://github.com/Haresh-16/nebius-hackathon-recall,Python,0,personal-ai/memory;SMALL-BUSINESS/ECOM*,
+nebiusxnvidiahack26,https://github.com/wongywrongy/nebiusxnvidiahack26,Python,0,,
+fanfit,https://github.com/brainupgrade-in/fanfit,Python,0,fact-check/verification,"Sponsorship partners whose fans already love your brand: an agent that ranks artists, podcasts, shows and creators by Qloo taste affinity, with evidence. Qloo Agentic Hackathon 2026."
+nebius-agentic-app,https://github.com/lvzuojing/nebius-agentic-app,Python,0,personal-ai/memory,Multi-agent research assistant on open infrastructure: NVIDIA open models via Nebius — Nebius x NVIDIA Global AI Hackathon 2026 submission.
+VeriLoop,https://github.com/S-jais/VeriLoop,TypeScript,0,,
+Nebius-x-NVIDIA,https://github.com/jacklachan/Nebius-x-NVIDIA,Python,0,,
+yupdar-concierge,https://github.com/anandradragon-png/yupdar-concierge,JavaScript,0,,"AI concierge for YupDar: explains your Gift, finds the reading you need and sells it with PayPal in one conversation. NVIDIA Nemotron on Nebius Token Factory."
+nebius-global-ai-hackathon,https://github.com/jlhpacheco/nebius-global-ai-hackathon,Python,1,,"Podrá Navega — bilingual (EN/ES) cancer-navigation copilot for Latinas Contra Cancer. Human-in-the-loop: nothing is sent without a navigator's approval. Built on Nebius Token Factory, NVIDIA Nemotron, and Tavily."
+LifeOS,https://github.com/joelblakewasajja-design/LifeOS,Jupyter Notebook,0,personal-ai/memory,Personal AI system built on Nebius + NVIDIA Nemotron.
+NemoFold,https://github.com/ellmos-ai/NemoFold,Python,1,fact-check/verification;personal-ai/memory,"Private, evidence-first document agent with persistent local memory, exact citations, reversible actions, and bounded Nemotron reasoning."
+Half-Life,https://github.com/pinkdapop/Half-Life,Python,0,,The half life of all information is limited.
+marketsignal,https://github.com/Siz09/marketsignal,Python,0,,
+claim-back,https://github.com/lahari936/claim-back,Python,0,fact-check/verification,
+dry-run-tutor,https://github.com/Abdelmohaymn/dry-run-tutor,Dart,0,,
+Jawab-GST,https://github.com/lahari936/Jawab-GST,Python,0,,
+Call-Flow,https://github.com/lethrelldouglas/Call-Flow,Python,0,voice/speech;legal/contracts;REAL-ESTATE/HOUSING*,"24/7 AI front desk for property managers: answers tenant calls, opens work orders, phones the right contractor, texts the tenant, and runs a live ops board. NVIDIA Nemotron on Nebius Token Factory, Retell, Twilio, Tavily."
+deployguard-ai,https://github.com/gevalinho/deployguard-ai,TypeScript,0,security/guardrails;sre/incident,
+aegis,https://github.com/yogeshchoudhary555/aegis,Python,0,personal-ai/memory;cost-routing;agent-eval/benchmark,"🛡️ AEGIS — your always-on personal AI agent: arena tournaments, website recon, app forging, smart routing. NVIDIA Nemotron on Nebius Token Factory."
+chief-of-staff-nebius-nvidia,https://github.com/yogeshchoudhary555/chief-of-staff-nebius-nvidia,Python,0,personal-ai/memory,Chief of Staff — always-on private personal AI agent. Built on Nebius Token Factory + NVIDIA Nemotron + Tavily. Nebius x NVIDIA Global AI Hackathon entry.
+cutroom,https://github.com/NoBanks/cutroom,JavaScript,0,personal-ai/memory,CUTROOM: a virtual cutting room. NVIDIA Nemotron agents cut your footage and build a real Shotcut timeline over MCP. Nebius x NVIDIA Global AI Hackathon.
+NEXORA_AI_CODING_AGENT,https://github.com/YashAI060/NEXORA_AI_CODING_AGENT,Python,0,,
+co2-scrubber-governed-agent,https://github.com/pandaGaume/co2-scrubber-governed-agent,TypeScript,0,,
+Nebius_Nvidia_Hackathon-2026,https://github.com/hacky-man/Nebius_Nvidia_Hackathon-2026,,0,,Nebius x NVIDIA Global AI Hackathon - Building the next frontier of AI on open infrastructure
+medic2,https://github.com/cipoklean/medic2,Python,0,coding-agent;agent-eval/benchmark,"Self-healing AI agents: NVIDIA Nemotron on Nebius Token Factory triages a broken agent, Tavily pulls current docs, Ultra writes the patch, and the agent's own check decides. Benchmarked with ablations."
+catalogbridge,https://github.com/sabira-khan/catalogbridge,Python,1,SMALL-BUSINESS/ECOM*,"Migrates vendor product catalogs from any source into any target marketplace schema, with multilingual output and human review"
+Nitish-1303,https://github.com/Nitish-1303/Nitish-1303,,0,,Config files for my GitHub profile.
+vizli,https://github.com/rishulmatta/vizli,TypeScript,0,voice/speech,"Visual explanations that follow your voice. Speak, and the canvas points, highlights, draws and edits — NVIDIA Nemotron on Nebius Token Factory, React/SVG, XState."
+Agentic-Reprofix,https://github.com/Ritik7nehra/Agentic-Reprofix,Python,0,fact-check/verification;health/clinical,"Autonomous agent that reproduces, diagnoses, repairs, and verifies broken ML repositories — powered by NVIDIA Nemotron and deterministic verification."
+Nebius-x-NVIDIA-Hackathon,https://github.com/smanika3/Nebius-x-NVIDIA-Hackathon,,0,,
+talkback,https://github.com/ProttoyDip/talkback,Python,2,personal-ai/memory;voice/speech,"Full-duplex voice assistant you can interrupt. Listens while it talks, recovers from interruptions, and calls tools mid-conversation. Built on NVIDIA open models and Nebius AI Cloud for the Nebius x NVIDIA Global AI Hackathon."
+nemotron-healer-go,https://github.com/kujiu27/nemotron-healer-go,Go,2,health/clinical,Autonomous Code Self-Healing & Diagnostic Agent powered by NVIDIA Nemotron on Nebius Token Factory & Tavily Search
+awesome-free-models,https://github.com/12britz/awesome-free-models,,2557,,"A curated list of free AI models, APIs, and tools you can use without paying a cent."
+nebius-nvidia-agentic-studio,https://github.com/liutingqiu/nebius-nvidia-agentic-studio,HTML,0,cost-routing,Autonomous Agentic Studio powered by NVIDIA Nemotron 3-tier routing and Nebius serverless GPU token factory
+Personal-Bot,https://github.com/GarvChopra/Personal-Bot,Python,0,,
+iba-triage,https://github.com/jemiridaniel/iba-triage,Python,0,health/clinical,Fever-triage copilot for Nigerian primary health workers — Nemotron on Nebius Token Factory + live outbreak intel via Tavily.
+sparecycle,https://github.com/Golden007-prog/sparecycle,TypeScript,0,fact-check/verification,"Evidence-backed batch recovery planning for laptop refurbishers, powered by NVIDIA Nemotron on Nebius."
+yuehen-yunxu-benyuan,https://github.com/yuehen-yunxu-benyuan/yuehen-yunxu-benyuan,C#,0,,yuehen yunxu benyuan AI Agent
+beforehand,https://github.com/launzi/beforehand,Python,0,personal-ai/memory,"Beforehand: a personal AI that knows before you ask. Nemotron on Nebius Token Factory, Tavily, Chrome extension."
+business-banking-navigator,https://github.com/InnokentyB/business-banking-navigator,JavaScript,0,,Synthetic-data SME banking preparation workspace built for the Nebius x NVIDIA Global AI Hackathon
+bolt-agent-control-plane,https://github.com/ondmindmanagement-hub/bolt-agent-control-plane,JavaScript,0,,Governed AI-agent execution prototype for Nebius x NVIDIA hackathon
+kreyon-nebius,https://github.com/Reussitess30/kreyon-nebius,,0,,
+nebius-platform-feedback,https://github.com/sonawaneutkarsh/nebius-platform-feedback,,0,,Feedback-only entry for the Nebius x NVIDIA Global AI Hackathon (feedback track)
+nebius-paperwork-assistant,https://github.com/rohinimaidamwar/nebius-paperwork-assistant,Python,0,personal-ai/memory,
+crossfire,https://github.com/omarjson/crossfire,Python,0,,Crossfire — the AI that disagrees with you well. AI debate sparring gym on NVIDIA Nemotron via Nebius.
+Greenlit,https://github.com/sriramsowmithri9807/Greenlit,Python,0,,
+Personal-AI-Agent,https://github.com/liewyuen0113/Personal-AI-Agent,TypeScript,0,,
+redline,https://github.com/sami5436/redline,TypeScript,0,,AI due diligence with receipts — NVIDIA Nemotron on Nebius Token Factory + Tavily
+sitesage,https://github.com/986036734/sitesage,Python,0,,
+AutoSec-Patch,https://github.com/ArrafiNurHafiz/AutoSec-Patch,Python,0,coding-agent,
+a-thousand-lives,https://github.com/GOGOMJ5010/a-thousand-lives,HTML,0,,
+polygraph,https://github.com/Thanatos9404/polygraph,Python,0,fact-check/verification;coding-agent,Every pull request makes claims. Polygraph checks them by experiment: it runs the base and head code side by side on NVIDIA Nemotron + Nebius Token Factory.
+countertrace,https://github.com/Jeremiah-Sakuda/countertrace,Python,0,fact-check/verification,A FIFO verification workbench for FPGA learners: explain failures and validate repairs against unchanged checks.
+clutch-ai,https://github.com/PriyanshiUpadhyay1207/clutch-ai,Python,0,,
+deepulse-ai,https://github.com/Bhoomirathi28/deepulse-ai,Python,0,,
+khatapilot,https://github.com/ShlokVasandani/khatapilot,Python,0,SMALL-BUSINESS/ECOM*,"WhatsApp-native back office for small shops. Nemotron on Nebius reads Hinglish messages into a ledger, code validates, a human presses send. Nebius x NVIDIA hackathon."
+eunhasu03,https://github.com/eunhasu03/eunhasu03,,0,,
+FINCH,https://github.com/HCHAPS404/FINCH,TypeScript,0,,
+counterexample,https://github.com/EF-Code/counterexample,TypeScript,0,,
+Tripwire,https://github.com/arnavgupta2004/Tripwire,Python,0,personal-ai/memory;security/guardrails,"Security-first personal AI assistant with provenance tracking, prompt-injection defense, and a flow firewall for safe agent–tool interactions."
+mitra,https://github.com/Alvnvnc/mitra,Python,0,personal-ai/memory,"Always-on, private personal AI with persistent memory + reusable skills — NVIDIA Nemotron via Nebius Token Factory. Built for the NVIDIA x Nebius Global AI Hackathon (Personal AI track)."
+parlaylab,https://github.com/1804devs/parlaylab,Python,0,,
+noetherpilot,https://github.com/KD-code-99/noetherpilot,Python,0,,A bounded NVIDIA mathematical proposal loop with independent checking and retained feedback
+SyntheticLab,https://github.com/JayBorse/SyntheticLab,TypeScript,0,,
+DevSweep-AI,https://github.com/Drishya-code/DevSweep-AI,Python,1,,"DevSweep AI is an AI-powered workspace hygiene agent that understands what an AI coding workflow created, identifies stale or regenerable artifacts, and safely cleans them without breaking the project."
+finaigent,https://github.com/witherzillavn5-coder/finaigent,Python,0,finance/trading,Secure Financial AI Agent - Hackathon Project
+Wire-Harness-Robot-2,https://github.com/rezahendi/Wire-Harness-Robot-2,Python,1,physical-ai/robotics,"A robot cell that builds wire harnesses: NVIDIA Nemotron plans, Isaac GR00T N1.7 routes the wire, force control seats it."
+agent-crash-recorder,https://github.com/jenniferagnessaldanha-alt/agent-crash-recorder,Python,0,,
+hanbridge-ai,https://github.com/kdjkdj1234567890-bit/hanbridge-ai,Python,0,,HanBridge AI - Korean-English Business Communication AI Agent (Nebius x NVIDIA Hackathon)
+Agent-Safety-Auditor,https://github.com/purunjay-bhardwaj/Agent-Safety-Auditor,Python,0,security/guardrails,
+robotforge,https://github.com/Pytro001/robotforge,Python,0,physical-ai/robotics,"Describe a robot in one sentence. Nemotron designs it, physics trials tune its gait, and it comes back walking with CAD and a parts list."
+autocom,https://github.com/sujoy-saha/autocom,JavaScript,0,,
+NVIDIA-NEBIUS-Hackathon,https://github.com/Swayam976/NVIDIA-NEBIUS-Hackathon,Python,0,,
+Bstudio,https://github.com/DhruvilP757/Bstudio,Vue,0,,
+shelfwise,https://github.com/Bowen1314/shelfwise,TypeScript,0,,"Readers' advisory and collection-development agent for libraries and indie bookshops, built on Qloo's taste graph and NVIDIA Nemotron on Nebius Token Factory"
+fork-ai-decision-app,https://github.com/Jeswanthsurya-debug/fork-ai-decision-app,TypeScript,0,,"Fork shows where each choice leads. AI agents debate your decision, then a glowing path splits into two futures with a clear verdict. Built with NVIDIA Nemotron on Nebius + Tavily."
+legit-scam-checker,https://github.com/Jeswanthsurya-debug/legit-scam-checker,TypeScript,0,fact-check/verification;scam/fraud,"Legit checks any message, link, offer or screenshot for scams. Highlights the tricks, verifies the sender, and gives a calm verdict. Built with NVIDIA Nemotron on Nebius + Tavily."
+shieldon-nebius-challenge,https://github.com/Fami80/shieldon-nebius-challenge,TypeScript,0,finance/trading,Governed AI business investigation agent built for the Nebius x NVIDIA Global AI Hackathon.
+nizam-radar,https://github.com/abdulazizamori/nizam-radar,Python,0,,
+polly,https://github.com/SHARJIDH/polly,,0,,
+RuleForge,https://github.com/UrwaSultana320/RuleForge,,0,,"RuleForge is an AI-powered autonomous workflow builder that converts plain-English business rules into executable, tested, and self-correcting automation using NVIDIA Nemotron on Nebius Token Factory."
+escrowease,https://github.com/Devadi321/escrowease,Python,0,,Freelancer escrow with an AI referee — PayPal sandbox + AI verdicts
+axiom1,https://github.com/popimpin/axiom1,Python,0,personal-ai/memory,memory
+taste-brief,https://github.com/ShenJun93/taste-brief,JavaScript,0,fact-check/verification,"Taste brief for small Vietnamese hospitality businesses: what visitors from Seoul, Tokyo or Sydney favour in your city, from Qloo's taste graph, every claim cited. Qloo Agentic Hackathon."
+ForgeXi,https://github.com/phamtoanbaoquan23121985/ForgeXi,,0,,
+ibramind-infrarisk-ai,https://github.com/mohamedwoli5188-netizen/ibramind-infrarisk-ai,Python,0,,IBRAMIND InfraRisk AI — Nebius x NVIDIA Global AI Hackathon 2026
+anywhere-stack,https://github.com/VGBRO/anywhere-stack,Python,0,coding-agent;personal-ai/memory,"Repo-centric modular agent stack powered by NVIDIA Nemotron on Nebius — Personal AI track, NVIDIA × Nebius Global AI Hackathon"
+robogauntlet,https://github.com/mlkmas/robogauntlet,Python,0,coding-agent;physical-ai/robotics,"Adaptive stress testing for robot policies: Nemotron plans the tests, Nebius Serverless Jobs runs them in parallel, Cosmos Reason explains every failure, and each round hunts the policy's weak spots."
+Lecta,https://github.com/Tany0625/Lecta,Kotlin,0,,AI based app which helps students get organized
+Nebius-Nvidia,https://github.com/ZNLong2203/Nebius-Nvidia,Python,0,coding-agent,"A coding agent that repairs failing tests by searching a tree of forked Nebius Sandboxes states, with NVIDIA Nemotron 3 on Nebius Token Factory. Opens the fix as a pull request."
+rainb,https://github.com/bonzonic/rainb,,0,,
+MahiMind,https://github.com/mahi-8/MahiMind,TypeScript,1,personal-ai/memory;SMALL-BUSINESS/ECOM*,Your personal shopping assistant .
+sovereign-copilot,https://github.com/glatinone/sovereign-copilot,Python,0,personal-ai/memory,"Private autonomous engineering copilot with Temporal Architectural Memory, powered by NVIDIA Nemotron on Nebius Token Factory."
+callismatic,https://github.com/axxess-triaxis/callismatic,Python,0,voice/speech;SMALL-BUSINESS/ECOM*,"A personal secretary AI agent with a phone operator built in -- manages WhatsApp, calendar, CRM, notes, and to-dos, and triages the voicemails you'd never check. Strands Agents SDK + Bedrock, AssemblyAI, and CALL-E."
+FixLoop,https://github.com/PradheebanAnandhan/FixLoop,Python,0,,
+GhostTrace,https://github.com/JishnuuUwU/GhostTrace,Python,0,,
+sentinel-triage,https://github.com/tarun8600/sentinel-triage,JavaScript,0,,AI SOC analyst agent — Nemotron-powered alert triage with Tavily threat-intel enrichment. Nebius x NVIDIA Global AI Hackathon.
+VGBRO,https://github.com/VGBRO/VGBRO,,0,,Config files for my GitHub profile.
+MatchCred,https://github.com/CryptoMaya2/MatchCred,JavaScript,0,fact-check/verification,Credential verification and opportunity eligibility platform
+nebius-global-ai-hackathon-2026,https://github.com/najmunnaharhira/nebius-global-ai-hackathon-2026,Python,0,,
+homestead-gate,https://github.com/fuckbigtech-ai/homestead-gate,Python,0,personal-ai/memory;cost-routing,homestead: a personal AI assistant that can't be talked into spending your money. Nemotron plans; a second Nemotron model and you must approve everything it sends.
+trace-fieldguard,https://github.com/ElkeDikoume/trace-fieldguard,,1,security/guardrails,Work in progress. Private-by-design field intake for frontline workers: identifying details are removed on the device before any AI model sees a note. Nebius x NVIDIA Global AI Hackathon entry by Trace Case LLC. Synthetic data only.
+clarify,https://github.com/shyler-web/clarify,,0,,
+VETO,https://github.com/ShaileshSethi/VETO,Python,0,,
+tajmed-agent,https://github.com/Fopen1/tajmed-agent,Python,0,health/clinical,TajMed Agent — Russian/Tajik medical decision-support agent (MQEA-EW + NVIDIA Nemotron via Nebius). Nebius x NVIDIA Global AI Hackathon.
+campus-ai-safety-sentinel,https://github.com/eshairfan2020/campus-ai-safety-sentinel,,0,security/guardrails;sre/incident,AI watchdog that scans student apps for security flaws and performs post‑incident digital forensics using NVIDIA Nemotron models on Nebius Token Factory. Built for the Nebius x NVIDIA Global AI Hackathon.
+kept,https://github.com/SakxamShrestha/kept,TypeScript,0,,"A commitment ledger for your inbox. Every promise, both directions, with receipts. Built on NVIDIA Nemotron via Nebius Token Factory."
+dow-oracle,https://github.com/RivaldiMurpia/dow-oracle,TypeScript,0,,
+IncidentPilot,https://github.com/wyxaivv1018-collab/IncidentPilot,Python,0,fact-check/verification;sre/incident,Evidence-driven incident response using NVIDIA Nemotron on Nebius Token Factory.
+inferdoc,https://github.com/waqasm86/inferdoc,Python,0,,The inferdoc tool is created for Nebius TokenFactory.
+claimscout,https://github.com/Sipsee/claimscout,Python,1,fact-check/verification,An AI agent that finds class action settlements you actually qualify for. NVIDIA Nemotron on Nebius Token Factory + Tavily.
+interview-copilot,https://github.com/pintu544/interview-copilot,HTML,0,jobs/hiring,Interview Copilot — your AI wingman for job interviews. Real-time CV-grounded answers via NVIDIA Nemotron on Nebius. Built for the Nebius x NVIDIA Global AI Hackathon.
+Jacks,https://github.com/BSIDDESH/Jacks,Python,0,,
+reach-ai,https://github.com/BLVCK-MAMBA-6/reach-ai,Python,0,fact-check/verification,"A private, always-on AI agent that discovers, verifies, and ranks global opportunities, then recommends your next best action."
+perceivision,https://github.com/placiddark/perceivision,Python,0,personal-ai/memory,"PERCEIVISION -- an always-on personal AI with persistent memory, reusable skills, chosen tool access, cross-workflow execution. Nebius x NVIDIA Global AI Hackathon, Personal AI track"
+AI-Experiment-Debugger-Agent,https://github.com/shokoufeh-na/AI-Experiment-Debugger-Agent,Python,0,coding-agent,Built for the Nebius x NVIDIA Global AI Hackathon 2026.
+001mbilal,https://github.com/001mbilal/001mbilal,,0,,My personal repository
+FacturaGuard,https://github.com/agbozo1/FacturaGuard,Python,0,coding-agent;security/guardrails,"Nebius x NVIDIA Hackathon Submission - Flag Romanian e-Factura invoice errors before ANAF does. Nemotron on Nebius explains issues in plain English and fixes the XML, so foreign founders and Romanian SMEs ease the burden on accountants."
+radem-hutis-nebius-agent,https://github.com/rademglobal-prog/radem-hutis-nebius-agent,Python,0,,"RADEM HUTIS Human Transformation Intelligence agent powered by NVIDIA Nemotron and Nebius AI infrastructure for readiness assessment, transformation intelligence, and human-centric decision support."
+codeAudit-agent,https://github.com/aminaahsan925/codeAudit-agent,Python,0,,
+pacti-pathway-agent,https://github.com/kcadet/pacti-pathway-agent,TypeScript,0,jobs/hiring,Synthetic-data HVAC career-exploration demo for the Nebius x NVIDIA Global AI Hackathon (NVIDIA Nemotron via Nebius Token Factory)
+jobie-agent,https://github.com/kitfunso/jobie-agent,Python,1,,
+personal-ai-memory,https://github.com/Harshit-Batra2008/personal-ai-memory,TypeScript,0,personal-ai/memory,"Personal AI that captures, organizes, summarizes, and prioritizes important information."
+paceline,https://github.com/Bowen1314/paceline,TypeScript,0,,Milestone billing where 'invoice paid' is a real dependency in the plan. PayPal Invoicing (sandbox) + Nemotron on Nebius. PayPal AI Hackathon entry.
+nemo,https://github.com/FalconAuSoleil/nemo,TypeScript,0,,
+repo-surgeon,https://github.com/Shriiisti/repo-surgeon,Python,0,coding-agent,
+omnibrief,https://github.com/yashpadaliya08/omnibrief,TypeScript,0,,Autonomous market & technical due-diligence engine powered by NVIDIA Nemotron on Nebius Token Factory. 
+gigagent-nebius,https://github.com/michaelwoolum50-cmyk/gigagent-nebius,Python,0,,Autonomous gig-work agent powered by NVIDIA Nemotron on Nebius Token Factory — Nebius x NVIDIA Hackathon (Best Apps & Agents)
+executed-pivots-public,https://github.com/naidx0/executed-pivots-public,Python,0,,"Reward an agent's terminal step by what it did, not by what it typed. Pays 94 working steps where the keystroke reward pays 26. Served as a NeMo Gym resources server."
+Enerloop,https://github.com/Hnn3y/Enerloop,TypeScript,0,,
+hackathon-radar,https://github.com/arcade-red-team/hackathon-radar,,0,,"Curated hackathon prize radar - $10K+, online, solo OK"
+Nebius-x-NVIDIA-Global-Al-Hackathon,https://github.com/GhullamQadir/Nebius-x-NVIDIA-Global-Al-Hackathon,HTML,1,,
+Repopilot,https://github.com/sharanu-patil33/Repopilot,,0,,Autonomous AI software-engineering agent — Nebius x NVIDIA Global AI Hackathon 2026
+Nebius_Nvidia,https://github.com/Palam-Varsha7/Nebius_Nvidia,Python,0,,
+gdg-devfest-mv-oct-2026,https://github.com/bourkefloyd/gdg-devfest-mv-oct-2026,Go,0,,
+E-L,https://github.com/shaelegowski7/E-L,,0,personal-ai/memory,"Always-on private personal AI on NVIDIA Nemotron via Nebius Token Factory (Nebius x NVIDIA Hackathon, Personal AI track)"
+best-take-explainer,https://github.com/firebreathingunicorn/best-take-explainer,Python,0,,NVIDIA Nemotron 3 Super on Nebius Token Factory: explains the Mily app's best-take decisions (why this photo + caption). Stdlib-only.
+NebiusNvidia,https://github.com/archipelagoing/NebiusNvidia,,0,,NebiusxNvidia Hackathon ft archipelagoing
+nebius-nvidia-hackathon-guide,https://github.com/Unnati-23/nebius-nvidia-hackathon-guide,HTML,0,,"3 project ideas for the Nebius x NVIDIA Global AI Hackathon, by @aiwithunnati"
+ai-lead-qualification-agent,https://github.com/Shorunkemanuel/ai-lead-qualification-agent,Python,0,,
+palissy-open-research-lab,https://github.com/xtensionlabs/palissy-open-research-lab,HTML,0,,
+AI_Engineering_Company_Plan,https://github.com/rdeekshith17/AI_Engineering_Company_Plan,,0,,
+lotline,https://github.com/vamsi920/lotline,TypeScript,0,fact-check/verification;personal-ai/memory;SMALL-BUSINESS/ECOM*,"Evidence-led recall reconciliation: inventory, lot matching, human review, and response packets with Nemotron on Nebius."
+nebius-research-agent,https://github.com/ntoledo319/nebius-research-agent,Python,0,,
+gnv-openusd-demo,https://github.com/gonduras/gnv-openusd-demo,Python,1,personal-ai/memory,"GNV public demo: six-axis art schema, lineage sidecars, append-only agent board + MCP server (Nebius x NVIDIA hackathon submission slice)"
+project-brain,https://github.com/Sanjay18bala/project-brain,Python,0,fact-check/verification,"Evidence-backed project state engine — reconstructs project state from GitHub + Slack, detects conflicts and downstream risk (Nebius x NVIDIA Global AI Hackathon)"
+Ringly,https://github.com/aagneye/Ringly,Dart,0,,
+NetPulse,https://github.com/faris-learns/NetPulse,HTML,0,,
+nemotron-sentinel,https://github.com/Ishant5436/nemotron-sentinel,Python,0,fact-check/verification,Autonomous Deterministic Developer Safety & Verification Agent powered by NVIDIA Nemotron on Nebius Token Factory & Tavily
+Nebius-x-NVIDIA-Global-AI-Hackathon,https://github.com/gnshx/Nebius-x-NVIDIA-Global-AI-Hackathon,Python,0,,
+poketerior,https://github.com/MrDingSan/poketerior,JavaScript,0,legal/contracts,"AI poker coach: NVIDIA Nemotron 3 Super via Nebius Token Factory reasons over computed ranges, equity and legal actions"
+AutoFlowApp,https://github.com/2500715198-creator/AutoFlowApp,Python,0,,
+nebius-codeguard,https://github.com/kuker24/nebius-codeguard,Python,0,fact-check/verification;coding-agent;security/guardrails,"CodeGuard: evidence-gated coding agent — NVIDIA Nemotron on Nebius Token Factory writes code+tests, Contree sandboxes verify, gates accept/reject"
+Rafiki,https://github.com/ErnestKapesa/Rafiki,TypeScript,0,personal-ai/memory,AI Assistant 
+Sightline,https://github.com/MohammedPathariya/Sightline,,0,health/clinical;physical-ai/robotics,"Reliability-aware parking availability system that combines occupancy detection, camera-health checks, and multimodal AI to prevent unreliable camera data from driving automated parking updates."
+Meira,https://github.com/KoralZakai/Meira,TypeScript,0,personal-ai/memory,"מאירה — a proactive personal assistant that plans backwards from arrival and gets you out of the door on time. Nebius Token Factory + NVIDIA Nemotron 3, Tavily live search, Hebrew-first. Nebius x NVIDIA Global AI Hackathon, Personal AI track."
+scout,https://github.com/iliasabk/scout,Python,0,personal-ai/memory;cost-routing,"Scout — always-on funding agent. Nemotron 3-tier routing on Nebius Token Factory, Tavily research, persistent memory."
+family-health-ai,https://github.com/YASHWANTH0210/family-health-ai,Python,0,health/clinical,Multi-agent family health system using Nebius and NVIDIA
+culturalmaxxing-scout,https://github.com/NodrrS/culturalmaxxing-scout,Python,0,SMALL-BUSINESS/ECOM*,"Finds Berlin's cultural fashion shops, checks them against their Impressum and drafts consent-first listings. NVIDIA Nemotron on Nebius Token Factory + Tavily."
+sentinel-physical-memory,https://github.com/realxpen/sentinel-physical-memory,TypeScript,0,personal-ai/memory,SENTINEL — AI memory and operating layer for the physical world.
+grasshopper,https://github.com/hteker853-source/grasshopper,Python,0,,
+Clapback,https://github.com/lluisestape-upc/Clapback,Python,1,voice/speech;cost-routing,"Room acoustics from a phone: clap or sweep, RT60 and ISO 3382 values, decay curves, modes, 3D clarity maps and a budgeted treatment plan. NVIDIA Nemotron on Nebius."
+heisenbug,https://github.com/matricphase-dot/heisenbug,Python,0,coding-agent,"Classify flaky tests by CAUSE, not frequency — differential execution over forked sandbox state. Nebius Token Factory + NVIDIA Nemotron."
+balancelab,https://github.com/dlane25/balancelab,Python,0,coding-agent;physical-ai/robotics,"Automated game-balance testing: a Nemotron agent writes your game's simulator, runs thousands of matches on Nebius, and fixes broken units."" Judges see this on the repo page."
+znak-forge-nebius-nvidia-2026,https://github.com/HumbleDrummer/znak-forge-nebius-nvidia-2026,Python,0,fact-check/verification;coding-agent,ZNAK FORGE — evidence-gated coding agent runtime for the Nebius x NVIDIA Global AI Hackathon 2026
+cleanroom-nemotron,https://github.com/jprakash120/cleanroom-nemotron,JavaScript,0,finance/trading,Cleanroom — a privacy-governed data-investigation workspace with a Nemotron investigation copilot powered by Nebius Token Factory. Nebius x NVIDIA Global AI Hackathon entry.
+Nebius-Nvidia-AI-Agent,https://github.com/ArujFatima/Nebius-Nvidia-AI-Agent,Python,0,personal-ai/memory,"An AI agent assistant built with FastAPI, Streamlit, and NVIDIA Nemotron."
+quarterback,https://github.com/SahirSSharma/quarterback,TypeScript,0,cost-routing,"Before you drop a class, know what it costs you. UCSD drop-deadline decisions and degree re-planning with NVIDIA Nemotron on Nebius Token Factory."
+null-point-agent,https://github.com/utlityapps/null-point-agent,Python,0,,
+promise-ledger,https://github.com/assafbar2/promise-ledger,TypeScript,0,fact-check/verification,"Evidence-backed customer commitments for the Nebius × NVIDIA Global AI Hackathon. Built, available, and verified are not the same thing."
+verified-delivery-copilot,https://github.com/panoskokmotos/verified-delivery-copilot,TypeScript,0,fact-check/verification,"AI agent that checks nonprofit delivery photos against every donated item, on NVIDIA Nemotron via Nebius Token Factory"
+presentation-copilot,https://github.com/khasedd/presentation-copilot,Python,0,,
+the-courtroom,https://github.com/Karthik1319/the-courtroom,Python,0,security/guardrails;legal/contracts,Adversarial multi-agent code auditor (Nebius x NVIDIA Hackathon)
+pcc-causal-debugger,https://github.com/HussainAther/pcc-causal-debugger,,0,coding-agent,
+hack-tracker,https://github.com/tanishque-rangu/hack-tracker,TypeScript,0,,
+bottletree-appraiser,https://github.com/banksythequantLab/bottletree-appraiser,JavaScript,0,cost-routing;SMALL-BUSINESS/ECOM*,"Bottle Tree - Antique Price AI Guess-estimator: photograph an antique, get an identification, price range and listing from NVIDIA Nemotron on Nebius. Nebius x NVIDIA Global AI Hackathon entry by Banksy AI LLC."
+Nebius-x-NVIDIA-Global-AI-Hackathon,https://github.com/LeoEckert/Nebius-x-NVIDIA-Global-AI-Hackathon,,0,,
+marketguard,https://github.com/bonzonic/marketguard,Python,0,security/guardrails,
+Chess-Coach-Agent-Nebius-x-NVIDIA-Global-AI-Hackathon-Project,https://github.com/abandiwadekar005-rgb/Chess-Coach-Agent-Nebius-x-NVIDIA-Global-AI-Hackathon-Project,Python,0,,
+airlock,https://github.com/emezac/airlock,Ruby,0,sre/incident,A full pipeline
+flowfit-nebius-nvidia-hackathon,https://github.com/sujin29292939-dev/flowfit-nebius-nvidia-hackathon,TypeScript,0,fact-check/verification,FlowFit prototype for the Nebius x NVIDIA Global AI Hackathon — verified AI execution infrastructure using NVIDIA Nemotron on Nebius Token Factory.
+900,https://github.com/Sppdd/900,Python,0,,
+SWARMOS,https://github.com/bhavesh200628-debug/SWARMOS,Python,0,physical-ai/robotics;LOGISTICS/MOBILITY*,One nervous system for an entire robot fleet. Physical AI orchestration for heterogeneous AMRs on Nebius Token Factory & NVIDIA Nemotron.
+DeepAudit-AI,https://github.com/fokrulanthro16-eng/DeepAudit-AI,TypeScript,0,fact-check/verification,Autonomous Enterprise Due-Diligence & Forensic Fact-Checking Engine for Nebius x NVIDIA Hackathon 2026
+doppel,https://github.com/pravoobi/doppel,TypeScript,0,,
+postmortem,https://github.com/jawad66108/postmortem,TypeScript,1,,
+nebius-tavily-briefing,https://github.com/daniel-he-emory/nebius-tavily-briefing,Python,0,,Topic briefing CLI: Tavily search/extract + Nebius Token Factory (NVIDIA Nemotron) — Nebius x NVIDIA Global AI Hackathon
+nvidiahack,https://github.com/gojosatorou999/nvidiahack,,0,coding-agent,Greenlight: dependency-upgrade fixing agent for the Nebius x NVIDIA Global AI Hackathon
+nebius-nvidia-ai-hackathon-starter,https://github.com/fruteroclub/nebius-nvidia-ai-hackathon-starter,TypeScript,0,,"Hermes Buddy hackathon starter: full-stack Vite/React + Hono, wired to Nebius Token Factory (Nemotron) and Tavily. Nebius x NVIDIA ready."
+79,https://github.com/Sppdd/79,TypeScript,0,,
+synesthetic-palette,https://github.com/IXGeniusXI/synesthetic-palette,Python,0,fact-check/verification;personal-ai/memory,"Personal AI design co-pilot: any sense in, a verified design system out. Nebius Token Factory + NVIDIA Nemotron."
+proofpulse,https://github.com/kbytehub0x/proofpulse,TypeScript,0,,
+Archon,https://github.com/CodeWithEugene/Archon,Python,1,fact-check/verification,"Autonomous, sandbox-verified software repair and AI-stack migration, running on Nebius Token Factory and NVIDIA Nemotron."
+form-friend,https://github.com/adarsh6980/form-friend,JavaScript,0,,Form Friend - Ireland bureaucracy co-pilot for international students and immigrants. Nebius x NVIDIA Global AI Hackathon 2026 entry.
+open-loops,https://github.com/DrunkWiz/open-loops,Python,1,personal-ai/memory,"AI chief of staff for every promise you make, and every promise made to you. Nebius x NVIDIA Global AI Hackathon (Personal AI Track)."
+NVIDEA,https://github.com/UnknownGod2011/NVIDEA,C#,0,,
+duo-physical-ai,https://github.com/avatar196kc/duo-physical-ai,,0,personal-ai/memory,"DUO — Personal AI가 Physical AI가 되는 순간 (Nebius x NVIDIA Global AI Hackathon, Physical AI Track)"
+anvil,https://github.com/MOHAMEDPARVEZMAHAROOF/anvil,Python,0,coding-agent,"Anvil — autonomous AI coding engineer: give it a coding task, it plans, writes, runs, and tests the code."
+SentinelX,https://github.com/vishwa-10147/SentinelX,Python,1,security/guardrails;sre/incident;finance/trading,"SentinelX — Autonomous AI Security Engineer powered by NVIDIA Nemotron + Nebius. Detects threats, investigates them, safely reproduces behavior, generates and validates defenses, then requires human approval before deployment."
+Investigacion-hackatons,https://github.com/SantiagoOroz/Investigacion-hackatons,,0,finance/trading,Investigación: Hackatones remotas a futuro
+FAM_DEMO,https://github.com/Aryasree20/FAM_DEMO,Python,0,,
+paperwise,https://github.com/shaikhmubin02/paperwise,Python,0,personal-ai/memory,The AI that reads your scary mail. NVIDIA Nemotron on Nebius Token Factory + Tavily. Nebius x NVIDIA Global AI Hackathon (Personal AI).
+maryamsohail32,https://github.com/maryamsohail32/maryamsohail32,,1,,
+Virta,https://github.com/apn201/Virta,Python,2,ENERGY/GRID/CLIMATE*,Nemotron reasoning on household power consumption
+synapse,https://github.com/jhaabhijeet864/synapse,Python,0,,Privacy-first ambient desktop AI — Nebius x NVIDIA Hackathon
+voiceledger,https://github.com/Darkjay123/voiceledger,TypeScript,0,voice/speech,"Voice-first bookkeeping for cash traders. Speak a sale or snap your sales book, get clean records. Built on Nebius Token Factory + NVIDIA Nemotron."
+NucleusNexusV7,https://github.com/tihon5678900-lab/NucleusNexusV7,,2,,V10 GOLDEN 386Hz ID 67948310724 - GIEO HẠT BÌNH AN
+FlakeProof,https://github.com/TahaKotwal12/FlakeProof,Python,0,,
+New--1,https://github.com/Harish-karanam/New--1,HTML,0,,
+flake-hunter,https://github.com/Nitish-1303/flake-hunter,TypeScript,0,coding-agent,"Finds your flaky tests, proves the root cause, opens the fix PR. Nebius x NVIDIA Global AI Hackathon."
+agent-reliability-lab,https://github.com/michaelhuntertv7-ops/agent-reliability-lab,Python,0,fact-check/verification,"A bounded Nemotron-powered reliability layer that makes tool use, retries, failures, evidence, and token consumption visible."
+gatebrief-ai,https://github.com/midoco/gatebrief-ai,Python,0,,
+mutiny,https://github.com/TusharTechs/mutiny,Python,0,,Runs both versions of your code on the same generated inputs and hands you the input where they disagree. Built on NVIDIA Nemotron and Nebius Sandboxes.
+scoutline,https://github.com/kaushik-regeti-07/scoutline,TypeScript,1,,Autonomous competitive-intelligence agent — tiered Nemotron models on Nebius Token Factory + Tavily. Built for the Nebius x NVIDIA Global AI Hackathon.
+project125,https://github.com/AntrikshH90/project125,JavaScript,0,,Antriksh's Project Collection
+AgentForge,https://github.com/MOHITPRADHAN35/AgentForge,TypeScript,1,,⚡ Autonomous Software Testing & Repair Agent powered by NVIDIA Nemotron on Nebius Token Factory (Nebius x NVIDIA Hackathon)
+HACKATHON-NETLIGHT,https://github.com/Baltsar/HACKATHON-NETLIGHT,TypeScript,0,,Källan — WIP first-10-seconds director. Nebius x NVIDIA Global AI Hackathon. NVIDIA Nemotron on Token Factory + Tavily. MIT. Product will change.
+Dredge-echo-agent,https://github.com/QueenFi703/Dredge-echo-agent,Python,0,,"Evolving Context & Heuristic Orchestration. Echo meets DREDGE. A persistent cognitive layer for AI agents, inspired by the DREDGE architecture."
+kaggle-vllm-nebius,https://github.com/kaggle-vllm/kaggle-vllm-nebius,Python,0,,
+nemotron-auto-dev-agent,https://github.com/aml00zayed-alt/nemotron-auto-dev-agent,Python,0,personal-ai/memory,AI-powered autonomous coding assistant built with NVIDIA Nemotron and Nebius Token Factory
+Vanguard,https://github.com/rohanjain1648/Vanguard,Python,0,security/guardrails,
+omniagent-finance,https://github.com/huyhoang2k5/omniagent-finance,Python,0,finance/trading,Autonomous multi-agent financial reconciliation and cashflow intelligence engine. Built for Nebius x NVIDIA Global AI Hackathon 2026.
+Drap-govbid-autopilet-,https://github.com/Parth2149/Drap-govbid-autopilet-,TypeScript,0,,
+juan294_sutura,https://github.com/actions-marketplace-validations/juan294_sutura,TypeScript,0,,
+erc-ai,https://github.com/elena-ercai/erc-ai,TypeScript,0,,AI-powered pre-export risk advisory for exporters and SMEs.
+ap-guardian,https://github.com/NiTeSH9860/ap-guardian,Python,0,security/guardrails;legal/contracts,Autonomous AP reconciliation agent — cross-checks invoices against POs/contracts and flags discrepancies with citation-grounded findings. Built with NVIDIA Nemotron on Nebius Token Factory for the Nebius x NVIDIA Global AI Hackathon.
+Ma1la3ka,https://github.com/Ma1la3ka/Ma1la3ka,,0,,
+NxN,https://github.com/Mikoo/NxN,Python,0,,Nebius x NVIDIA Global AI Hackathon
+2026-09-nebius_NVIDIA-merge-ready,https://github.com/cesar-finlandia/2026-09-nebius_NVIDIA-merge-ready,TypeScript,0,,
+Swarmforge,https://github.com/sampreeth0x/Swarmforge,Python,0,,
+apu-nemotron,https://github.com/EZFRICA/apu-nemotron,Python,0,,
+residuecheck,https://github.com/BriceZemba/residuecheck,Python,0,,
+QuantFlow-AI,https://github.com/brysyl/QuantFlow-AI,TypeScript,0,finance/trading,Agentic Custom & Border Control Room
+research-copilot,https://github.com/begoa-spec/research-copilot,JavaScript,0,,
+math-quest,https://github.com/banksythequantLab/math-quest,JavaScript,0,,Math Quest: Goblin Grove - K-5 math RPG with an NVIDIA Nemotron Dungeon Master on Nebius Token Factory (Nebius x NVIDIA Global AI Hackathon 2026)
+cwp7-resource-shield-ai,https://github.com/infogatel2/cwp7-resource-shield-ai,Python,0,,CWP7 resource shield AI
+painsearch,https://github.com/pranavsinghpatil/painsearch,Python,0,fact-check/verification;coding-agent,"Evidence-first pain-point discovery — collect real complaints, gate with discovery test, no invented ideas"
+klausul,https://github.com/ExploreandReconnect/klausul,Python,0,fact-check/verification,"EU motor insurance, read with its own evidence. Open source, MIT."
+nexus-hardware-doctor,https://github.com/Little-Boy-z-NeXus/nexus-hardware-doctor,Python,0,health/clinical;physical-ai/robotics,AI doctor for policy-constrained ESP32 hardware diagnosis and recovery.
+Nebius-x-NVIDIA,https://github.com/shi1720/Nebius-x-NVIDIA,JavaScript,0,fact-check/verification;personal-ai/memory;finance/trading;SMALL-BUSINESS/ECOM*,RecallRoom — evidence-backed food recall investigations using NVIDIA Nemotron on Nebius Token Factory
+sipa-signal-forge,https://github.com/soulinpsyabstract/sipa-signal-forge,,0,personal-ai/memory,Self-hosted personal AI agent: LoRA fine-tuning + vLLM serving on Nebius GPU. Built for the Nebius x NVIDIA Global AI Hackathon.
+nvidia-x-nebius-personal-ai,https://github.com/RenatoMignone/nvidia-x-nebius-personal-ai,,1,personal-ai/memory,Agent-first discovery and delivery workspace for the Nebius × NVIDIA Global AI Hackathon 2026 — Personal AI track.
+braincache-os,https://github.com/braincache-me/braincache-os,Swift,0,sre/incident,"BrainCache OS — open-source privacy-first activity recorder for macOS + Workflow Studio that turns work logs into reusable agent skills, powered by NVIDIA Nemotron on Nebius Token Factory"
+behavioral-disagreement-gate,https://github.com/minjun0208/behavioral-disagreement-gate,Python,0,coding-agent,A completion gate for coding agents: candidates that behave differently don't get to report success
+Nebius_repo,https://github.com/CVasilopoulos/Nebius_repo,Python,0,,
+eduskillshub-nemotron-automation,https://github.com/kazamr460-ship-it/eduskillshub-nemotron-automation,PHP,0,SMALL-BUSINESS/ECOM*,"AI content automation for eduskillshub.site: Nebius Token Factory + NVIDIA Nemotron generate marketplace copy, published via a Make.com workflow. Nebius x NVIDIA Global AI Hackathon submission."
+devpost-nebius-x-nvidia-global-ai-hackathon-30790,https://github.com/gil906/devpost-nebius-x-nvidia-global-ai-hackathon-30790,Python,0,,Devpost Maker: Nebius x NVIDIA Global AI Hackathon [challenge 30790]
+missionaryx-nebius,https://github.com/itwasmatias/missionaryx-nebius,Python,0,coding-agent,MissionaryX governed coding agent for the Nebius x NVIDIA Global AI Hackathon
+Ticket-Triage-Copilot,https://github.com/Ayush-web28/Ticket-Triage-Copilot,Python,0,,
+DiviAI,https://github.com/israel9281284-hue/DiviAI,Python,0,personal-ai/memory;voice/speech,A voice assistant backend powered by Flask and NVIDIA Nemotron via OpenRouter for the Nebius x NVIDIA Global AI Hackathon.
+Agent-sales,https://github.com/AnuarBarrera/Agent-sales,Python,0,,Proyect from Nebius x NVIDIA Global AI Hackathon
+netguard-ai,https://github.com/abdihakiimjamaal99-collab/netguard-ai,Python,0,security/guardrails;sre/incident,AI-powered network and system incident-response copilot built for the Nebius x NVIDIA Global AI Hackathon.
+blackbox-council,https://github.com/tirth6851/blackbox-council,Python,0,coding-agent;security/guardrails;GOV/CIVIC*,An auditable pre-action policy gate that stress-tests AI-agent decisions before execution.
+repomedic,https://github.com/Almario1/repomedic,Python,0,fact-check/verification;coding-agent,"Autonomous CI-repair agent: reproduces failures in Nebius Token Factory Sandboxes, tournaments candidate patches in parallel sandbox branches, and opens PRs only for verified fixes. Built for the Nebius x NVIDIA Global AI Hackathon."
+ClipMind,https://github.com/Tejash-Pathak-1905/ClipMind,Python,0,,"“Python Windows clipboard daemon that intercepts events, classifies content, and uses LLMs for explain, summarize, translate, and multi‑item paste automation."
+sky-net,https://github.com/vectordyne-temp/sky-net,Python,0,coding-agent;physical-ai/robotics;LOGISTICS/MOBILITY*,"Clearance runtime for AI-operated drone fleets. Agents propose, the tower clears, only cleared flights move. Nemotron agents, deterministic judge, two-world conformance test."
+YK-StudioPM,https://github.com/YK-StudioPM/YK-StudioPM,,0,,YK Studio プロフィール
+sandforge,https://github.com/AntrikshH90/sandforge,TypeScript,1,coding-agent,"Autonomous PR agent: plan -> patch -> test -> branch/backtrack, powered by NVIDIA Nemotron on Nebius Token Factory Sandboxes (checkpoint branching). Built for Nebius x NVIDIA Global AI Hackathon."
+Neuroml-X,https://github.com/theyash006/Neuroml-X,Python,0,,"NEUROML-X upgrades TRACE TOXIC AI into an intelligent cyberbullying detection system by combining Machine Learning, NLP, and NVIDIA Nemotron through Nebius Token Factory. It detects toxic content, analyzes context, assesses risk, explains decisions, and recommends safer moderation actions."
+ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty,https://github.com/rootuser39/ARGUS-Autonomous-Runtime-for-Governed-User-Sovereignty,Python,0,,
+small-stake-sentinel,https://github.com/LcccCcccCcccc/small-stake-sentinel,JavaScript,0,,
+guardian-agent,https://github.com/Loothore907/guardian-agent,TypeScript,1,security/guardrails,A capability firewall for AI agents
+agent-shield,https://github.com/gabi-ma1/agent-shield,Python,0,,
+quoteprobe,https://github.com/zaeem-rafiq/quoteprobe,TypeScript,0,,
+aingineering,https://github.com/ozkite/aingineering,TypeScript,0,,Project for the Nebius x NVIDIA Global AI Hackathon
+wattwise,https://github.com/ut1776/wattwise,Python,0,ENERGY/GRID/CLIMATE*,AI agent that reschedules GPU workloads to run when the grid is cleanest
+flowpilot,https://github.com/airbate/flowpilot,Python,0,,"Plain-English web process automation copilot — Nemotron plans on Nebius Token Factory, Tavily reads the web, Playwright executes. Nebius x NVIDIA Global AI Hackathon entry."
+relay-gate,https://github.com/anhminhzui-dev/relay-gate,Python,0,voice/speech;SMALL-BUSINESS/ECOM*,"A safety gate for coding-agent trajectories: six deterministic rules first, one relayed judge call only when they cannot decide"
+Incident-commander,https://github.com/johnnjugunastudent/Incident-commander,TypeScript,0,fact-check/verification;coding-agent;sre/incident;finance/trading,"An evidence-backed AI incident responder that investigates outages, proposes tested code fixes, and keeps humans in control."
+offby,https://github.com/dejaikeem/offby,Python,0,voice/speech,A forecast referee for LLM batch jobs — stops the job at call 10 and names the assumption that broke. Nebius x NVIDIA Global AI Hackathon entry.
+HydroFlow-OS,https://github.com/ratel4150/HydroFlow-OS,,0,,
+branchguard,https://github.com/ChidiEbube123/branchguard,Python,0,security/guardrails,
+countercheck,https://github.com/Bembaby/countercheck,JavaScript,0,fact-check/verification,Evidence-first invoice reconciliation that challenges its own findings.
+sudo_x,https://github.com/salmansanusisani/sudo_x,Python,0,,
+digital-queue-platform,https://github.com/thato899/digital-queue-platform,TypeScript,0,REAL-ESTATE/HOUSING*,"Multi-tenant digital queue, booking, and payment SaaS platform"
+Nebius-x-NVIDIA-Global-AI-Hackathon,https://github.com/mojealterego/Nebius-x-NVIDIA-Global-AI-Hackathon,Python,0,,
+portverdict,https://github.com/dorakingx/portverdict,TypeScript,0,fact-check/verification,"Evidence-first NVIDIA model migration trials on Nebius: branch, falsify, select—or abstain."
+alicelabs-voxtutor,https://github.com/eddyflores100-lang/alicelabs-voxtutor,TypeScript,0,,VoxTutor - tutor personal de ingles por voz con memoria persistente. By AliceLabs
+nebius-nvidia,https://github.com/ritwikareddykancharla/nebius-nvidia,,0,,Nebius x NVIDIA Global AI Hackathon project - Nemotron on Nebius Token Factory
+sudd-nebius-hackathon,https://github.com/bryanfranco888-lang/sudd-nebius-hackathon,HTML,0,,SUD-D Core backend and frontend for Nebius x NVIDIA Hackathon
+coppice,https://github.com/morpheus-csmith/coppice,Python,0,,Code-repair agent that searches over execution state. Nemotron 3 on Nebius Token Factory.
+Nebius-x-NVIDIA-Global-AI-Hackathon,https://github.com/TWILIGHTCLOUDCODERZ/Nebius-x-NVIDIA-Global-AI-Hackathon,,0,, Aviation — Irregular Operations (IROPS) Recovery Copilot
+promisekeeper,https://github.com/agentaiventure-dot/promisekeeper,Python,0,voice/speech,"What did they promise, and did they keep it? Commitment ledger from support calls, NVIDIA Nemotron on Nebius Token Factory."
+DevStudio-AI,https://github.com/al13n-x-v0x/DevStudio-AI,JavaScript,1,,
+autopoiesis,https://github.com/jamallwinn/autopoiesis,TypeScript,0,coding-agent,Autopoiesis (AUTO) — tokenized coding agent for the Nebius x NVIDIA Global AI Hackathon
+Faultwright,https://github.com/ashishaggrawal/Faultwright,,0,coding-agent,"Faultwright watches your process. When it breaks, Faultwright fixes it."
+NexusIntelligence,https://github.com/ShinyDataTech/NexusIntelligence,Python,0,,
+maternaguard,https://github.com/ekpenyongasuquo/maternaguard,Python,0,security/guardrails,
+glitch-garden-cloud,https://github.com/Laolex/glitch-garden-cloud,TypeScript,0,coding-agent,Glitch Garden Cloud — deterministic flaky-test divergence + NVIDIA Nemotron reasoning on Nebius Token Factory (Coding and Agentic Engineering track)
+nebius_nvidia,https://github.com/patrickjcraig/nebius_nvidia,,0,,Project for the Nebius x NVIDIA Global AI Hackathon
+skylar857,https://github.com/skylar857/skylar857,,0,,
+indie-app-ops-agent-nemotron,https://github.com/YK-StudioPM/indie-app-ops-agent-nemotron,Python,0,,"Indie App Ops Agent, Nemotron edition — an operations agent for solo app developers, running NVIDIA Nemotron on Nebius Token Factory. Submitted to the Nebius x NVIDIA Global AI Hackathon."
+FlowPilot----Autonomous-Document-Ops-Agent,https://github.com/Likky1510/FlowPilot----Autonomous-Document-Ops-Agent,HTML,0,,"FlowPilot is an intelligent document processing system that autonomously handles incoming invoices, receipts, and forms. It extracts structured data, detects anomalies, and takes action without human intervention updating a ledger or escalating to humans when needed."
+SafeCode-AI,https://github.com/barnabas47/SafeCode-AI,HTML,0,,
+query-letter-copilot,https://github.com/iancuileana83-lab/query-letter-copilot,HTML,0,,"AI-powered query letter analyzer for freelance writers, built with Nemotron via Nebius Token Factory"
+CIDM-SIM-Parallel-Futures,https://github.com/Mr-wuff/CIDM-SIM-Parallel-Futures,Python,0,,
+free-llm-credits,https://github.com/Moh4696/free-llm-credits,Python,8,fact-check/verification,"Every platform giving out free LLM/AI credits, free tiers, and GPU compute — with confidence tags on every claim. Verified 2026-08-04."
+opencolin,https://github.com/opencolin/opencolin,,4,,GitHub profile README
+stellar-ai-guide-br,https://github.com/kaankacar/stellar-ai-guide-br,,1,,"Brazil-focused Stellar AI guide for hackathon builders, covering PIX, Etherfuse TESOURO, BRZ, Stellar dev setup, and free AI tooling."
+free-ai-api-docs,https://github.com/01RG0/free-ai-api-docs,HTML,0,,
