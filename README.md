@@ -57,7 +57,7 @@ make demo      # serves the API on :8000; then curl localhost:8000/health
 | `make verify-envelope` | No | Purity (no `httpx`/`openai`/`socket` import in the decision path), 500-snapshot determinism, 20 rule fixtures, calibration invariants |
 | `make replay` | No | Replays the fixture corpus through both arms and writes `ReplayResult` records to `runs/replay/` |
 | `make params` | No | Prints every normal→degraded value and fails if any degraded value is less conservative |
-| `make batch` | — | **Does not exist.** The Nebius Serverless Job lane is Phase C |
+| `make batch` | No | Runs the 1,000-action synthetic session through the envelope and both replay arms; writes `runs/headline_statistics.json` and a verifiable pack in `runs/replay_pack/`. Local process; the Nebius Serverless runner is still Phase C |
 
 With a key (only needed once the planner exists):
 

@@ -153,3 +153,98 @@ export interface Fixture {
   snapshot: SensorSnapshot
   proposal: ActionProposal
 }
+
+/** One arm of a two-arm replay, transcribed from `$defs/ReplayResult`. */
+export interface ReplayResult {
+  replay_id: string
+  decision_id: string
+  arm: 'envelope_off' | 'envelope_on'
+  simulator: string
+  sim_version: string
+  ran_at: string
+  seed: number
+  outcome: 'completed' | 'collided' | 'out_of_bounds'
+  collision: {
+    with: string
+    at_t_ms: number
+    penetration_mm: number | null
+    contact_point: { x: number; y: number }
+  } | null
+  trajectory_sha256: string
+  /** [x_mm, y_mm, t_ms] samples, at the simulator's fixed 2 mm step. */
+  trajectory_points: [number, number, number][]
+  still_image_path: string | null
+  metrics: {
+    distance_mm: number
+    duration_ms: number
+    clearance_mm: number | null
+    notes: string
+  }
+}
+
+export interface ReplayComparison {
+  decision_id: string | null
+  rule_id: string | null
+  outcome: Outcome
+  envelope_off: ReplayResult
+  envelope_on: ReplayResult
+  collision_prevented: boolean
+  geometry_check: boolean
+}
+
+/** `runs/headline_statistics.json`, written by `jobs/batch_1000_eval.py`. */
+export interface HeadlineStatistics {
+  schema: string
+  generated_by: string
+  source: string
+  session: {
+    seed: number
+    actions: number
+    families: Record<string, number>
+    sha256: string
+    cadence_hz: number
+  }
+  headline: {
+    actions_planned: number
+    vetoes_enforced: number
+    collisions_shipped_under_envelope: number
+    collisions_prevented: number
+  }
+  prevented: {
+    total: number
+    collisions: number
+    boundary_excursions: number
+    by_rule: Record<string, number>
+  }
+  vetoes: {
+    total: number
+    by_rule: Record<string, number>
+  }
+  decisions: Record<string, number>
+  /** Refusals and clamps the 2-D model cannot witness, by rule. Includes V3/V5 clamps, so it is
+   *  not a veto count and deliberately does not live under `vetoes`. */
+  decisions_without_geometric_counterfactual: Record<string, number>
+  shipped: { collisions: number; boundary_excursions: number }
+  determinism: {
+    envelope_version: string
+    profile: string
+    calibration_provenance: string
+    session_reproducible: boolean
+  }
+  acceptance: {
+    elapsed_ms: number
+    under_15_seconds: boolean
+    zero_shipped_collisions: boolean
+  }
+  environment: Record<string, string>
+  caveats: string[]
+  sandbox_pack?: {
+    schema: string
+    pack_sha256: string
+    content_sha256: string
+    counts: Record<string, number>
+    network_required: boolean
+    verified: boolean
+    verify_command: string
+  }
+}

@@ -10,6 +10,10 @@ import { defineConfig, type Plugin } from 'vite'
  *  dashboard that evaluates stale fixtures is worse than one that says it cannot load them. */
 const FIXTURE_DIR = fileURLToPath(new URL('../data/fixtures/snapshots', import.meta.url))
 
+/** Written by `jobs/batch_1000_eval.py`. Served read-only so the headline bar shows the real
+ *  numbers instead of zeros — and shows an explicit "not generated" state when it is absent. */
+const STATISTICS_FILE = fileURLToPath(new URL('../runs/headline_statistics.json', import.meta.url))
+
 /**
  * Serves the committed fixtures read-only at `/fixtures/`.
  *
@@ -52,6 +56,22 @@ function fixtureBridge(): Plugin {
 
         response.setHeader('content-type', 'application/json')
         response.end(readFileSync(file, 'utf8'))
+      })
+
+      server.middlewares.use('/stats/headline.json', (request, response) => {
+        if (request.method !== 'GET' && request.method !== 'HEAD') {
+          response.statusCode = 405
+          response.end('{"error":"read only"}')
+          return
+        }
+        if (!existsSync(STATISTICS_FILE)) {
+          response.statusCode = 404
+          response.setHeader('content-type', 'application/json')
+          response.end('{"error":"runs/headline_statistics.json has not been generated"}')
+          return
+        }
+        response.setHeader('content-type', 'application/json')
+        response.end(readFileSync(STATISTICS_FILE, 'utf8'))
       })
     },
   }

@@ -9,7 +9,7 @@ SHELL := /bin/bash
 BACKEND := backend
 RUN := cd $(BACKEND) && uv run --extra dev
 
-.PHONY: help sample test lint format typecheck schema taxonomy params fixtures check demo serve verify-envelope replay clean
+.PHONY: help sample test lint format typecheck schema taxonomy params fixtures check demo serve verify-envelope replay batch clean
 
 help: ## Show the available targets
 	@echo "Reflex — available commands"
@@ -76,6 +76,9 @@ verify-envelope: ## Purity, determinism, rules, calibration and the fixture corp
 
 replay: ## Replay the fixture corpus through the two-arm simulator
 	$(RUN) python ../jobs/replay_all.py --from-fixtures
+
+batch: ## Run the 1,000-action session, write runs/headline_statistics.json and the sandbox pack
+	$(RUN) python ../jobs/batch_1000_eval.py
 
 clean: ## Remove caches and virtualenvs
 	find . -type d -name "__pycache__" -prune -exec rm -rf {} +

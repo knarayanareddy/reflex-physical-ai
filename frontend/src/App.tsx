@@ -17,9 +17,11 @@
  * 3. **Simulation is never disguised.** When the calibration profile is synthetic the API says
  *    `simulation_badge_required`, and the badge is rendered in the header *and* on the scene.
  *
- * The counterfactual control is honest about its scope: it draws the decision's own intended vs
- * shipped action, which is real, and it does not claim a collision — the two-arm geometric replay
- * (`jobs/replay_all.py`) has no HTTP endpoint, so its result cannot be fetched here.
+ * The counterfactual control draws the decision's own intended vs shipped action, which is real
+ * but makes no collision claim. A collision claim needs the two-arm simulator, so the per-row
+ * "simulate replay" control posts the decision to `POST /v1/replay` and animates the two
+ * trajectories the backend returns. The browser never simulates anything itself: a canvas that
+ * computed its own collisions would be a second, unaudited safety model.
  */
 
 import {
@@ -27,12 +29,30 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 import { ChevronRight, Radio, ShieldAlert } from 'lucide-react'
 
-import { evaluateRequest, fetchEnvelopeInfo, fetchFixture, fetchFixtureNames } from './api'
-import type { Decision, EnvelopeInfo, Outcome, RuleResult, RuleTraceEntry, Severity } from './types'
+import {
+  evaluateRequest,
+  fetchEnvelopeInfo,
+  fetchFixture,
+  fetchFixtureNames,
+  fetchHeadlineStatistics,
+  fetchReplay,
+} from './api'
+import type {
+  Decision,
+  EnvelopeInfo,
+  HeadlineStatistics,
+  Outcome,
+  ReplayComparison,
+  ReplayResult,
+  RuleResult,
+  RuleTraceEntry,
+  Severity,
+} from './types'
 
 /* ------------------------------------------------------------------ tokens */
 
@@ -143,6 +163,12 @@ export default function App() {
   const [fixtureError, setFixtureError] = useState<string | null>(null)
   const [fixtureName, setFixtureName] = useState<string>('')
 
+  const [stats, setStats] = useState<HeadlineStatistics | null>(null)
+  const [statsError, setStatsError] = useState<string | null>(null)
+  const [statsLoading, setStatsLoading] = useState(true)
+
+  const [replayOf, setReplayOf] = useState<Decision | null>(null)
+
   const [ledger, setLedger] = useState<Decision[]>([])
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [overlay, setOverlay] = useState<'shipped' | 'intended'>('shipped')
@@ -165,6 +191,18 @@ export default function App() {
 
   useEffect(() => {
     void loadInfo()
+    void (async () => {
+      setStatsLoading(true)
+      const headline = await fetchHeadlineStatistics()
+      if (headline.ok) {
+        setStats(headline.value)
+        setStatsError(null)
+      } else {
+        setStats(null)
+        setStatsError(headline.error)
+      }
+      setStatsLoading(false)
+    })()
     void (async () => {
       const names = await fetchFixtureNames()
       if (names.ok) {
@@ -255,6 +293,8 @@ export default function App() {
   return (
     <div className="shell">
       <Header info={info} onRetry={() => void loadInfo()} />
+
+      <HeadlineBar stats={stats} error={statsError} loading={statsLoading} />
 
       <main className="columns">
         <section className="column" aria-label="Scene and verdict">
@@ -395,10 +435,22 @@ export default function App() {
               setSelectedIndex(index)
               setOverlay('intended')
             }}
+            onSimulateReplay={(index) => {
+              setSelectedIndex(index)
+              setReplayOf(ledger[index] ?? null)
+            }}
             overlay={overlay}
           />
         </section>
       </main>
+
+      {replayOf && (
+        <ReplayPanel
+          decision={replayOf}
+          keepOut={info.rig.keep_out_volume}
+          onClose={() => setReplayOf(null)}
+        />
+      )}
     </div>
   )
 }
@@ -775,10 +827,11 @@ function VerdictPanel({
           </button>
         </div>
         <p className="counterfactual-note">
-          The counterfactual draws this decision's own <span className="mono">intended_action</span>{' '}
-          against its <span className="mono">shipped_action</span>. It makes no collision claim: the
-          two-arm geometric replay lives in <span className="mono">jobs/replay_all.py</span> and has no
-          HTTP endpoint, so its result cannot be fetched here.
+          This overlay draws the decision's own <span className="mono">intended_action</span> against
+          its <span className="mono">shipped_action</span> and makes no collision claim. For the
+          collision, press <span className="mono">simulate replay</span> on a ledger row: that posts
+          the decision to <span className="mono">POST /v1/replay</span> and animates the two
+          trajectories the backend returned.
         </p>
       </div>
     </div>
@@ -867,12 +920,14 @@ function LedgerPanel({
   selectedIndex,
   onSelect,
   onCounterfactual,
+  onSimulateReplay,
   overlay,
 }: {
   decisions: Decision[]
   selectedIndex: number | null
   onSelect: (index: number) => void
   onCounterfactual: (index: number) => void
+  onSimulateReplay: (index: number) => void
   overlay: 'shipped' | 'intended'
 }) {
   return (
@@ -894,6 +949,7 @@ function LedgerPanel({
               <th scope="col">outcome</th>
               <th scope="col">rule</th>
               <th scope="col">limits</th>
+              <th scope="col">replay</th>
               <th scope="col" aria-label="counterfactual" />
             </tr>
           </thead>
@@ -910,6 +966,20 @@ function LedgerPanel({
                 </td>
                 <td className="ledger__rule">{decision.rule_id ?? '—'}</td>
                 <td className="ledger__rule">{decision.parameter_set}</td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn"
+                    data-testid="simulate-replay"
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      onSimulateReplay(index)
+                    }}
+                    title="Play the two-arm replay: envelope OFF vs envelope ON"
+                  >
+                    simulate replay
+                  </button>
+                </td>
                 <td>
                   <button
                     type="button"
@@ -937,4 +1007,465 @@ function LedgerPanel({
       </p>
     </div>
   )
+}
+
+/* ------------------------------------------------------------ headline bar */
+
+const integer = new Intl.NumberFormat('en-US')
+
+/**
+ * The batch job's headline numbers, at the top of the page.
+ *
+ * The one thing this bar must never do is show zeros when the statistics file is missing:
+ * "0 Collisions Shipped" is the project's central claim, and manufacturing it out of an
+ * absent file would be the exact failure mode this project exists to criticise. So an absent
+ * file produces an instruction, not a number.
+ */
+function HeadlineBar({
+  stats,
+  error,
+  loading,
+}: {
+  stats: HeadlineStatistics | null
+  error: string | null
+  loading: boolean
+}) {
+  if (loading) {
+    return (
+      <div className="headline headline--muted" role="status">
+        loading headline statistics…
+      </div>
+    )
+  }
+
+  if (!stats) {
+    return (
+      <div className="headline headline--missing" role="status" data-testid="headline-missing">
+        <strong>No headline statistics.</strong>{' '}
+        <span>
+          Nothing is displayed rather than zeros — run{' '}
+          <code>python jobs/batch_1000_eval.py</code> to write{' '}
+          <code>runs/headline_statistics.json</code>.
+        </span>
+        {error ? <span className="headline__error"> ({error})</span> : null}
+      </div>
+    )
+  }
+
+  const { headline, session, acceptance, sandbox_pack } = stats
+  const shipped = headline.collisions_shipped_under_envelope
+  const prevented = stats.prevented
+
+  return (
+    <div className="headline" role="status" data-testid="headline-bar">
+      <div className="headline__figures">
+        <span className="headline__item">
+          <b>{integer.format(headline.actions_planned)}</b> Actions Planned
+        </span>
+        <span className="headline__dot" aria-hidden>
+          ·
+        </span>
+        <span
+          className="headline__item"
+          data-tone={shipped === 0 ? 'safe' : 'veto'}
+          title="Shipped collisions under the envelope, measured by replaying both arms of all 1,000 actions"
+        >
+          <b>{integer.format(shipped)}</b> Collisions Shipped
+        </span>
+        <span className="headline__dot" aria-hidden>
+          ·
+        </span>
+        <span className="headline__item" data-tone="veto">
+          <b>{integer.format(headline.vetoes_enforced)}</b> Hard Vetoes Enforced
+        </span>
+        <span className="headline__dot" aria-hidden>
+          ·
+        </span>
+        <span
+          className="headline__item"
+          data-tone="telemetry"
+          title={
+            `${stats.prevented.collisions} swept segments entered the keep-out volume or an ` +
+            `obstacle under envelope-off. By rule: ` +
+            Object.entries(stats.prevented.by_rule)
+              .map(([rule, count]) => `${rule} ${count}`)
+              .join(', ') +
+            `. Together with the boundary excursions below that is ${prevented.total} adverse ` +
+            'end-states the envelope stopped (runs/headline_statistics.json → prevented.total).'
+          }
+        >
+          <b>{integer.format(stats.prevented.collisions)}</b> Collisions Prevented in Sim
+        </span>
+        <span className="headline__dot" aria-hidden>
+          ·
+        </span>
+        <span
+          className="headline__item"
+          data-tone="telemetry"
+          title={
+            'Clamped plans (V5) whose envelope-off arm would have left the allowed workspace. ' +
+            'These are not contacts, so they are reported separately instead of being added to ' +
+            'the collision count.'
+          }
+        >
+          <b>{integer.format(stats.prevented.boundary_excursions)}</b> Boundary Excursions Avoided
+        </span>
+      </div>
+
+      <div className="headline__meta">
+        <span className="chip chip--sim">synthetic session</span>
+        <span title={stats.source}>seed {session.seed}</span>
+        <span>
+          {integer.format(session.actions)} actions · {acceptance.elapsed_ms.toFixed(0)} ms
+        </span>
+        {sandbox_pack && (
+          <span title={`pack ${sandbox_pack.pack_sha256}\n${sandbox_pack.verify_command}`}>
+            pack {sandbox_pack.verified ? 'verified' : 'unverified'} ·{' '}
+            {sandbox_pack.content_sha256.slice(0, 10)}…
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ----------------------------------------------------------- replay overlay */
+
+/**
+ * The two-arm replay for one decision, drawn on a canvas.
+ *
+ * Both trajectories are *recorded results* returned by `POST /v1/replay`: red is what the
+ * planner asked for with no safety layer, green is what actually shipped. Nothing is
+ * computed here — the browser draws points it was given, which is the only way a collision
+ * claim on this page can be worth anything.
+ */
+function ReplayPanel({
+  decision,
+  keepOut,
+  onClose,
+}: {
+  decision: Decision
+  keepOut: { x: [number, number]; y: [number, number] }
+  onClose: () => void
+}) {
+  const [comparison, setComparison] = useState<ReplayComparison | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let alive = true
+    setComparison(null)
+    setError(null)
+    void (async () => {
+      const result = await fetchReplay(decision)
+      if (!alive) return
+      if (result.ok) setComparison(result.value)
+      else setError(result.error)
+    })()
+    return () => {
+      alive = false
+    }
+  }, [decision])
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  return (
+    <div className="replay-backdrop" onClick={onClose}>
+      <section
+        className="replay"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Two-arm replay"
+        data-testid="replay-panel"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <header className="replay__head">
+          <div>
+            <h2 className="panel__title">Two-arm replay</h2>
+            <p className="replay__sub mono">
+              {decision.rule_id ?? decision.outcome} · {decision.decision_id.slice(0, 14)}
+            </p>
+          </div>
+          <button className="btn" type="button" onClick={onClose}>
+            close
+          </button>
+        </header>
+
+        {error && (
+          <p className="status-line status-line--error">
+            replay unavailable: {error}. The canvas stays empty rather than animating a
+            trajectory the backend did not produce.
+          </p>
+        )}
+
+        {!comparison && !error && <p className="panel__note mono">POST /v1/replay…</p>}
+
+        {comparison && (
+          <>
+            <ReplayCanvas comparison={comparison} keepOut={keepOut} />
+            <div className="replay__verdicts">
+              <ReplayArm arm={comparison.envelope_off} tone="veto" label="envelope OFF — as requested" />
+              <ReplayArm arm={comparison.envelope_on} tone="safe" label="envelope ON — as shipped" />
+            </div>
+            <p className="replay__note">
+              {comparison.collision_prevented
+                ? 'The unguarded arm fails and the shipped arm does not: this is the collision the envelope prevented.'
+                : comparison.envelope_off.outcome === comparison.envelope_on.outcome
+                  ? 'Both arms end the same way here — this decision is a limit change, not a prevented collision.'
+                  : 'The arms differ, but not in a way this 2-D model can call a collision.'}{' '}
+              Simulated by <span className="mono">{comparison.envelope_off.simulator}</span>; positions
+              only, no contact dynamics.
+            </p>
+          </>
+        )}
+      </section>
+    </div>
+  )
+}
+
+function ReplayArm({ arm, tone, label }: { arm: ReplayResult; tone: 'veto' | 'safe'; label: string }) {
+  const verdict =
+    arm.outcome === 'collided'
+      ? `collided with ${arm.collision?.with ?? 'an obstacle'} at ${arm.collision?.at_t_ms ?? '?'} ms`
+      : arm.outcome === 'out_of_bounds'
+        ? 'left the allowed workspace'
+        : arm.trajectory_points.length <= 1
+          ? 'did not move'
+          : `completed in ${arm.metrics.duration_ms.toFixed(0)} ms`
+
+  return (
+    <div className={`replay__arm replay__arm--${tone}`}>
+      <span className={`chip chip--${tone === 'veto' ? 'veto' : 'allow'}`}>{arm.outcome}</span>
+      <div>
+        <p className="replay__arm-label">{label}</p>
+        <p className="replay__arm-verdict mono">{verdict}</p>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Plays both trajectories at once: time advances, each arm advances along its own samples.
+ * The red arm stops where it fails; the green arm stops where it finishes (or immediately,
+ * when the envelope shipped nothing).
+ */
+function ReplayCanvas({
+  comparison,
+  keepOut,
+}: {
+  comparison: ReplayComparison
+  keepOut: { x: [number, number]; y: [number, number] }
+}) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const [playing, setPlaying] = useState(true)
+  const [progress, setProgress] = useState(0)
+
+  const off = comparison.envelope_off
+  const on = comparison.envelope_on
+  const span = Math.max(off.metrics.duration_ms, on.metrics.duration_ms, 1)
+
+  useEffect(() => {
+    setProgress(0)
+    setPlaying(true)
+  }, [comparison])
+
+  useEffect(() => {
+    if (!playing) return
+    let frame = 0
+    let started: number | null = null
+    const durationMs = 2200
+    const step = (now: number) => {
+      if (started === null) started = now
+      const next = Math.min(1, (now - started) / durationMs)
+      setProgress(next)
+      if (next < 1) frame = requestAnimationFrame(step)
+      else setPlaying(false)
+    }
+    frame = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(frame)
+  }, [playing, comparison])
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    drawReplay(canvas, comparison, keepOut, progress, span)
+  }, [comparison, keepOut, progress, span])
+
+  return (
+    <div className="replay__canvas-wrap">
+      <canvas
+        ref={canvasRef}
+        className="replay__canvas"
+        data-testid="replay-canvas"
+        width={720}
+        height={360}
+        role="img"
+        aria-label="Two trajectories: the unguarded intended path and the shipped path"
+      />
+      <div className="replay__controls">
+        <button
+          className="btn"
+          type="button"
+          onClick={() => {
+            if (progress >= 1) setProgress(0)
+            setPlaying((value) => !value)
+          }}
+        >
+          {playing ? 'pause' : progress >= 1 ? 'replay' : 'play'}
+        </button>
+        <button
+          className="btn"
+          type="button"
+          onClick={() => {
+            setProgress(0)
+            setPlaying(true)
+          }}
+        >
+          restart
+        </button>
+        <span className="mono muted">
+          t = {(progress * span).toFixed(0)} / {span.toFixed(0)} ms
+        </span>
+      </div>
+    </div>
+  )
+}
+
+function drawReplay(
+  canvas: HTMLCanvasElement,
+  comparison: ReplayComparison,
+  keepOut: { x: [number, number]; y: [number, number] },
+  progress: number,
+  span: number,
+): void {
+  const context = canvas.getContext('2d')
+  if (!context) return
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
+  const cssWidth = canvas.clientWidth || canvas.width
+  const cssHeight = canvas.clientHeight || canvas.height
+  if (canvas.width !== Math.round(cssWidth * dpr) || canvas.height !== Math.round(cssHeight * dpr)) {
+    canvas.width = Math.round(cssWidth * dpr)
+    canvas.height = Math.round(cssHeight * dpr)
+  }
+  context.setTransform(dpr, 0, 0, dpr, 0, 0)
+  context.clearRect(0, 0, cssWidth, cssHeight)
+
+  const off = comparison.envelope_off.trajectory_points
+  const on = comparison.envelope_on.trajectory_points
+  const xs = [...off, ...on].map(([x]) => x).concat([keepOut.x[0], keepOut.x[1]])
+  const ys = [...off, ...on].map(([, y]) => y).concat([keepOut.y[0], keepOut.y[1]])
+  const minX = Math.min(...xs)
+  const maxX = Math.max(...xs)
+  const minY = Math.min(...ys)
+  const maxY = Math.max(...ys)
+  const pad = 28
+  const scale = Math.min(
+    (cssWidth - pad * 2) / Math.max(maxX - minX, 1),
+    (cssHeight - pad * 2) / Math.max(maxY - minY, 1),
+  )
+  const offsetX = (cssWidth - (maxX - minX) * scale) / 2
+  const offsetY = (cssHeight - (maxY - minY) * scale) / 2
+  const px = (x: number) => offsetX + (x - minX) * scale
+  const py = (y: number) => cssHeight - (offsetY + (y - minY) * scale)
+
+  const styles = getComputedStyle(document.documentElement)
+  const colour = (name: string, fallback: string) => styles.getPropertyValue(name).trim() || fallback
+
+  // The keep-out volume, in hazard yellow: the thing the red arm drives into.
+  context.save()
+  context.fillStyle = 'rgba(255, 234, 0, 0.10)'
+  context.strokeStyle = colour('--color-hazard', '#FFEA00')
+  context.setLineDash([5, 4])
+  context.lineWidth = 1
+  context.fillRect(
+    px(keepOut.x[0]),
+    py(keepOut.y[1]),
+    px(keepOut.x[1]) - px(keepOut.x[0]),
+    py(keepOut.y[0]) - py(keepOut.y[1]),
+  )
+  context.strokeRect(
+    px(keepOut.x[0]),
+    py(keepOut.y[1]),
+    px(keepOut.x[1]) - px(keepOut.x[0]),
+    py(keepOut.y[0]) - py(keepOut.y[1]),
+  )
+  context.restore()
+
+  const drawArm = (
+    points: [number, number, number][],
+    tint: string,
+    duration: number,
+    dashed: boolean,
+  ) => {
+    if (points.length === 0) return
+    const elapsed = progress * span
+    const cut = duration <= 0 ? points.length : points.filter(([, , t]) => t <= elapsed).length
+    const visible = cut === 0 ? points.slice(0, 1) : points.slice(0, cut)
+
+    context.save()
+    context.strokeStyle = tint
+    context.lineWidth = 2.5
+    context.setLineDash(dashed ? [6, 5] : [])
+    context.beginPath()
+    visible.forEach(([x, y], index) => {
+      const sx = px(x)
+      const sy = py(y)
+      if (index === 0) context.moveTo(sx, sy)
+      else context.lineTo(sx, sy)
+    })
+    context.stroke()
+    context.restore()
+
+    const [lastX, lastY] = visible[visible.length - 1]
+    context.save()
+    context.fillStyle = tint
+    context.beginPath()
+    context.arc(px(lastX), py(lastY), 4, 0, Math.PI * 2)
+    context.fill()
+    context.restore()
+    return { x: lastX, y: lastY }
+  }
+
+  // Green first so a failing red arm stays visible on top.
+  const onEnd = drawArm(
+    on,
+    colour('--color-safe', '#00E676'),
+    comparison.envelope_on.metrics.duration_ms,
+    false,
+  )
+  const offEnd = drawArm(
+    off,
+    colour('--color-veto', '#FF1744'),
+    comparison.envelope_off.metrics.duration_ms,
+    true,
+  )
+
+  // The collision marker appears only when the animation has actually reached the failure.
+  const failure = comparison.envelope_off.collision
+  if (failure && offEnd && progress * span >= failure.at_t_ms - 1e-6) {
+    const cx = px(failure.contact_point.x)
+    const cy = py(failure.contact_point.y)
+    context.save()
+    context.strokeStyle = colour('--color-veto', '#FF1744')
+    context.lineWidth = 3
+    context.beginPath()
+    context.moveTo(cx - 7, cy - 7)
+    context.lineTo(cx + 7, cy + 7)
+    context.moveTo(cx + 7, cy - 7)
+    context.lineTo(cx - 7, cy + 7)
+    context.stroke()
+    context.restore()
+  }
+  if (onEnd && on.length <= 1) {
+    context.save()
+    context.fillStyle = colour('--color-text-secondary', '#94A3B8')
+    context.font = '12px ui-monospace, monospace'
+    context.fillText('shipped: no motion', px(onEnd.x) + 10, py(onEnd.y) + 4)
+    context.restore()
+  }
 }

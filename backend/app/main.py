@@ -24,6 +24,7 @@ from app.config import settings
 from app.contracts import ContractViolation, validate_payload
 from app.decision_ledger import record_decision, veto_ledger_path
 from app.envelope import EnvelopeInputError, ParameterError, Ruleset, envelope_version, evaluate, load_ruleset
+from app.replay import compare
 
 app = FastAPI(
     title="Reflex — Deterministic Edge Safety Envelope & Cloud Replay for Physical AI",
@@ -50,6 +51,14 @@ class EvaluateRequest(BaseModel):
     snapshot: dict[str, Any] = Field(description="A $defs/SensorSnapshot")
     proposal: dict[str, Any] = Field(description="A $defs/ActionProposal, from any source")
     requested_mode: Literal["normal", "degraded", "simulation"] = "normal"
+
+
+class ReplayRequest(BaseModel):
+    """A decision that has already been made, to be replayed down both arms."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    decision: dict[str, Any] = Field(description="A $defs/EnvelopeDecision, as returned by /evaluate")
 
 
 @app.get("/health")
@@ -146,6 +155,39 @@ def evaluate_endpoint(request: EvaluateRequest) -> dict[str, Any]:
 
     record_decision(decision)
     return decision
+
+
+@app.post("/v1/replay")
+def replay_endpoint(request: ReplayRequest) -> dict[str, Any]:
+    """Replay one recorded decision down both arms and return the comparison.
+
+    ``envelope_off`` executes the action the planner asked for with no safety layer;
+    ``envelope_on`` executes what shipped (nothing, after a veto). Deterministic: the response
+    is a function of the decision, the rig and the calibration, and of nothing else — no clock,
+    no network, no model. Both arms are validated against ``$defs/ReplayResult`` before they
+    leave this process, because a record the contract rejects is not evidence.
+    """
+    try:
+        validate_payload("EnvelopeDecision", request.decision)
+    except ContractViolation as exc:
+        raise HTTPException(
+            status_code=422, detail={"contract": exc.defname, "problems": exc.problems}
+        ) from exc
+
+    active = ruleset()
+    bounds = active.policy.mapping("V5_WORKSPACE_BOUND", "allowed_volume")
+    ceiling = active.params_for(request.decision["parameter_set"]).number(
+        "V3_VELOCITY_LIMIT", "max_velocity_mm_s"
+    )
+    comparison = compare(request.decision, active.rig, bounds, ceiling)
+    for arm in ("envelope_off", "envelope_on"):
+        try:
+            validate_payload("ReplayResult", comparison[arm])
+        except ContractViolation as exc:  # pragma: no cover - a bug in app.replay, not in input
+            raise HTTPException(
+                status_code=500, detail={"contract": exc.defname, "problems": exc.problems}
+            ) from exc
+    return comparison
 
 
 if __name__ == "__main__":  # pragma: no cover - exercised by `make demo`
