@@ -24,6 +24,8 @@ from typing import Any
 from app.envelope.params import MODES, Ruleset
 from app.envelope.rules import (
     DEGRADE,
+    PROPOSAL_KINDS,
+    PROPOSAL_SOURCES,
     RULES,
     STOPPING_RESULTS,
     Context,
@@ -53,8 +55,6 @@ _ACTION_PROPOSAL_REQUIRED = (
     "issued_at",
     "ttl_ms",
 )
-_KINDS = {"move_to", "push", "grasp", "release", "home", "wait", "retract"}
-_SOURCES = {"cloud_ultra", "cloud_nano", "cloud_gr00t", "cosmos_reason", "edge_local", "hardcoded_sequence"}
 
 
 class EnvelopeInputError(ValueError):
@@ -139,7 +139,7 @@ def _looks_like_action_proposal(proposal: Mapping[str, Any]) -> bool:
     """Cheap structural gate, mirroring $defs/ActionProposal without a schema library."""
     if any(key not in proposal for key in _ACTION_PROPOSAL_REQUIRED):
         return False
-    if proposal.get("kind") not in _KINDS or proposal.get("source") not in _SOURCES:
+    if proposal.get("kind") not in PROPOSAL_KINDS or proposal.get("source") not in PROPOSAL_SOURCES:
         return False
     velocity = proposal.get("velocity_limit")
     if isinstance(velocity, bool) or not isinstance(velocity, (int, float)) or velocity <= 0:
@@ -147,8 +147,17 @@ def _looks_like_action_proposal(proposal: Mapping[str, Any]) -> bool:
     force = proposal.get("force_limit")
     if force is not None and (isinstance(force, bool) or not isinstance(force, (int, float))):
         return False
-    if not isinstance(proposal.get("target_pose"), Mapping):
+    pose = proposal.get("target_pose")
+    if not isinstance(pose, Mapping):
         return False
+    # $defs/ActionProposal requires x, y and z on every proposal, whatever its kind. If this
+    # check were laxer than the contract, a proposal the contract rejects would be copied
+    # verbatim into `intended_action` and the resulting decision would fail validation at the
+    # ledger — a refusal that cannot be recorded is a refusal that did not happen.
+    for axis in ("x", "y", "z"):
+        value = pose.get(axis)
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            return False
     if not isinstance(proposal.get("preconditions"), list):
         return False
     if not isinstance(proposal.get("expected_end_state"), Mapping):
