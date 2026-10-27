@@ -1,12 +1,18 @@
 # Reflex — a deterministic veto layer for robot actions, with receipts
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-2ea44f?style=for-the-badge)](https://knarayanareddy.github.io/reflex-physical-ai/)
+
+**▶ [Open the live demo](https://knarayanareddy.github.io/reflex-physical-ai/)** — the dashboard, in a
+browser, with nothing installed. It replays a 10-second session recorded from the real envelope: scrub
+to frame 41 for the veto, then press **simulate replay** for the two-arm counterfactual.
+
 > A cloud planner proposes; a local, deterministic envelope refuses. Every refusal is written to a
 > ledger with the sensor state that caused it, and replayed twice — once with the envelope off, once
 > with it on — so the record shows what the refusal prevented instead of asserting that it mattered.
 
 **Measured, on 1,000 synthetic actions (2026-10-26):**
 
-> ### 1,000 Actions Planned · 420 Vetoes Enforced · 248 Collisions Prevented · 0 Collisions Shipped
+> ### 1,000 Actions Planned · 420 Vetoes Enforced · 248 Prevented (170 contacts + 78 boundary excursions) · 0 Shipped
 
 | Number | Value | Where it comes from |
 |---|---:|---|
@@ -27,8 +33,8 @@ because both measure the run rather than the session (`reports/D-T20-T21.TASK_RE
 envelope-off arm entered the keep-out volume or an obstacle, plus 78 clamped joint-limit actions whose
 envelope-off arm would have left the allowed workspace. The dashboard prints the two figures
 separately — **170 collisions, 78 boundary excursions** — because adding a boundary excursion to a
-collision count would overstate the result by 46%. The banner above keeps the ticket's wording and the
-JSON's field name.
+collision count would overstate the result by 46%. The banner above states the split rather than the
+field name: `collisions_prevented` is the JSON's key, not a description of what it counts.
 
 **What this is not.** The session is **synthetic**: `runs/headline_statistics.json` says so in its
 `source` field, and every decision is stamped `mode=simulation`. No hardware ran, no camera existed,
@@ -119,7 +125,7 @@ Use `make demo-check` for the same checks without leaving a server running.
 
 | Command | Needs a key? | What it actually does |
 |---|:---:|---|
-| `make check` | No | Everything CI runs: ruff, mypy, `$ref` resolution, every schema law, taxonomy strictness, calibration invariants, 20 fixtures, 431 tests |
+| `make check` | No | Everything CI runs: ruff, mypy, `$ref` resolution, every schema law, taxonomy strictness, calibration invariants, 20 fixtures, 431 tests (430 + 1 bundle-dependent) |
 | `make demo` | No | The 10-second session (V2 veto → interlock → ledger line → both replay arms), then serves API :8000 and dashboard :5173 |
 | `make demo-check` | No | The same session and HTTP probes, then exits 0 and stops the servers |
 | `make sample` | No | The contract and ledger fixture tests only |

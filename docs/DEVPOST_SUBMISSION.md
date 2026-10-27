@@ -1,11 +1,40 @@
 # Reflex — Devpost submission
 
 **Live demo:** <https://knarayanareddy.github.io/reflex-physical-ai/>
-**Video:** `docs/media/reflex-demo.mp4` (2:45)
+**Video:** **TODO_VERIFY(hosting)** — not yet uploaded. The file to be hosted is `docs/media/reflex-demo.mp4`
+(2:45); the placeholder that must be replaced before submitting is `https://youtu.be/<VIDEO_ID>`.
 **Repository:** <https://github.com/knarayanareddy/reflex-physical-ai>
 
 Everything below is checkable from the repository. Where a figure is not measured, the row says so
 instead of estimating — the same rule the README and `LIMITATIONS.md` follow.
+
+### The headline
+
+> **1,000 Actions Planned · 420 Vetoes Enforced · 248 Prevented (170 contacts + 78 boundary excursions) · 0 Shipped**
+
+`248 Prevented` is the sum of two distinct things — 170 actions whose envelope-off arm entered the
+keep-out volume or an obstacle, and 78 clamped joint-limit actions whose envelope-off arm would have
+left the allowed workspace. The dashboard and the JSON keep them separate; the JSON field is
+`collisions_prevented`, which is a key, not a description of what it counts.
+
+### For judges — 60 seconds, no install
+
+1. Open <https://knarayanareddy.github.io/reflex-physical-ai/>. There is no login and no backend; the
+   page is a static replay of a recorded session, so it cannot fail to start.
+2. The timeline sits at **frame 41 / 100 · t = 4.0 s** on load. That frame is the point of the whole
+   project: the planner proposed a legal-looking move, the envelope found an intruder inside the
+   keep-out volume, and returned `VETO V2_KEEP_OUT_OCCUPIED`. The envelope then latches, and all 59
+   later proposals are refused by V1.
+3. Press **simulate replay**. Two arms run the same decision: envelope **off** collides with the
+   keep-out volume at (150.0, 0.0) mm after 5.3 s of travel; envelope **on** ships nothing — the arm
+   does not move, `distance_mm: 0.0`. That is the claim — not "the model is safe", but "the thing that
+   refuses is local, deterministic, and keeps receipts".
+4. Scrub the timeline to any frame and read the ten interlocks: each row shows the value the rule
+   used, so a refusal can be audited without trusting prose.
+
+The status chip in the page header reads **`replay/bundle.json · recorded, not live`**, and that is
+deliberate: the replay is a recording of the envelope, not a telemetry stream from a robot. See
+`LIMITATIONS.md`.
 
 ---
 
@@ -34,7 +63,7 @@ session (video 1:45–2:10).
 |---|---|---|
 | 10-second session | `make demo` · video 0:15–0:45 | 100 proposals at 10 Hz, the tool tip advancing 10 → 70 mm, an intruder at t=4.0 s, `VETO V2_KEEP_OUT_OCCUPIED`, the interlock latching so all 59 later proposals are refused by V1 |
 | Operator dashboard | `make demo` → `:5173` · video 0:45–1:15 | Scene, all ten interlocks with the value each rule used, telemetry and the ledger |
-| Two-arm replay | dashboard → **simulate replay** · video 1:15–1:45 | The same decision with the envelope off (collides with the keep-out volume at 150.0 mm) and on (0.0 mm travelled) |
+| Two-arm replay | dashboard → **simulate replay** · video 1:15–1:45 | The same decision with the envelope off (collides with the keep-out volume at (150.0, 0.0) mm) and on (ships nothing; `distance_mm: 0.0`) |
 | Network cut | `scripts/network_cut.py` · video 1:45–2:10 | The same plan, allowed under normal parameters, refused under degraded ones — the TTL ceiling tightened before the plan arrived |
 | Static site | <https://knarayanareddy.github.io/reflex-physical-ai/> | The recorded session replayed in the browser with **no backend**, scrubbable frame by frame |
 
@@ -82,6 +111,10 @@ Reproduced from `LIMITATIONS.md` §3; every row has a number.
   dashboard shows a permanent badge and the video says it out loud.
 - **No measured Sandbox run.** The replay pack verifies offline (`pack verified`), but no SDK call
   exists to execute it inside a Token Factory Sandbox (`TODO_VERIFY(sandbox-sdk)`).
+- **The video is not hosted yet.** `docs/media/reflex-demo.mp4` (2:45 = 164.77 s, 10.7 MB / 10.2 MiB)
+  exists in the repository, but no public URL does: the submission field is a `TODO_VERIFY(hosting)`
+  placeholder (`https://youtu.be/<VIDEO_ID>`) that must be replaced with a real upload before the form
+  is sent.
 - **The video is generated, not filmed.** It is a Playwright screencast of the real build at
   1920×1080 with 125 % page zoom; the terminal lines are captured stdout of the commands shown, not a
   TTY recording. There is no voiceover track — the script's spoken column is delivered as on-screen
@@ -95,7 +128,7 @@ Reproduced from `LIMITATIONS.md` §3; every row has a number.
 | **Use of Token Factory** | *Not met at runtime.* The integration surface exists (`app/tf/`), the ledger format does too, and the tiering matrix shows where the numbers would land — but no call has been made, so no number is claimed |
 | **Real-world usefulness** | The refusal path is the product: an occupied keep-out volume, a stale camera, an unreachable cloud. Each is a committed fixture with a near-miss twin |
 | **Originality** | The receipt. Every decision is a validated record; the demo's ledger line is the demo |
-| **Completeness** | 431 tests, `make check` green, a static site anyone can open, a 2:45 video, and a limitations file that lists what does not work |
+| **Completeness** | 431 tests — 430 + 1 that needs the generated replay bundle, which is gitignored, so a fresh clone reports 430 passed, 1 skipped, `make check` green, a static site anyone can open, a 2:45 video, and a limitations file that lists what does not work |
 
 ## Reproduce it
 
