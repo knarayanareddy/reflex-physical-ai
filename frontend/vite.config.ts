@@ -77,18 +77,44 @@ function fixtureBridge(): Plugin {
   }
 }
 
-export default defineConfig({
-  plugins: [react(), fixtureBridge()],
-  server: {
-    // The preview host is not localhost; bind all interfaces and accept the proxied Host.
-    host: '0.0.0.0',
-    port: 5173,
-    strictPort: true,
-    allowedHosts: true,
-    proxy: {
-      // Same-origin in the browser; the dev server forwards to the API. Never hard-code the
-      // API host into client code.
-      '/v1': { target: 'http://127.0.0.1:8000', changeOrigin: true },
+/** The repository's GitHub Pages URL is a project page, so the site lives under a sub-path. */
+const PAGES_BASE = '/reflex-physical-ai/'
+
+export default defineConfig(({ mode }) => {
+  // `npm run build -- --mode pages` produces the GitHub Pages bundle:
+  //
+  //   * assets are emitted under /reflex-physical-ai/ (a project page is not served from the root);
+  //   * the client switches to static replay (`staticReplay.ts` reads the same `MODE`), because
+  //     Pages serves files and nothing else — there is no /v1 to proxy to.
+  //
+  // Every other mode keeps `base: '/'`, so `make demo` (dev server on :5173) is unchanged. Making the
+  // base unconditional would break the demo's UI probe and every existing screenshot for a benefit
+  // only one deployment needs.
+  const pages = mode === 'pages'
+
+  return {
+    base: pages ? PAGES_BASE : '/',
+    plugins: [react(), fixtureBridge()],
+    build: pages
+      ? {
+          // Keep the bundle's own layout: `public/replay/bundle.json` is copied verbatim and the
+          // client fetches it from BASE_URL, so no hashing or inlining is needed for it.
+          outDir: 'dist',
+          emptyOutDir: true,
+          sourcemap: false,
+        }
+      : {},
+    server: {
+      // The preview host is not localhost; bind all interfaces and accept the proxied Host.
+      host: '0.0.0.0',
+      port: 5173,
+      strictPort: true,
+      allowedHosts: true,
+      proxy: {
+        // Same-origin in the browser; the dev server forwards to the API. Never hard-code the
+        // API host into client code.
+        '/v1': { target: 'http://127.0.0.1:8000', changeOrigin: true },
+      },
     },
-  },
+  }
 })

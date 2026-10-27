@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reflex — terminal</title>
+    <!--
+      The video's terminal cards.
+
+      This page renders *captured* output: `scripts/record-demo.ts` runs the real command, writes its
+      stdout to /capture/<name>.json, and this page types the command and streams the lines back.
+      Nothing here invents a line — the terminal is a rendering of what the program actually printed,
+      and the same output is in the build log and in reports/. A screenshot of a fake terminal would
+      be a fabricated receipt, which is the exact thing this project is about.
+    -->
+    <style>
+      :root {
+        --bg: #0f172a;
+        --bg-2: #1e293b;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --border: #334155;
+        --veto: #ff1744;
+        --safe: #00e676;
+        --telemetry: #38bdf8;
+        --hazard: #ffea00;
+        --mono: ui-monospace, "DejaVu Sans Mono", "Liberation Mono", Menlo, monospace;
+        --body: "Inter", "Open Sans", system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: var(--body); }
+      body { overflow: hidden; }
+
+      .card {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        display: grid;
+        place-content: center;
+        gap: 18px;
+        padding: 8vw;
+        background: radial-gradient(circle at 30% 20%, #1b2942 0%, #0f172a 60%);
+        transition: opacity 900ms ease;
+      }
+      .card.is-gone { opacity: 0; pointer-events: none; }
+      /* `display: grid` above beats the UA stylesheet's `[hidden] { display: none }`, so the card
+         was painted over the terminal on every page load. Restore the attribute's meaning. */
+      .card[hidden] { display: none; }
+      .card__kicker { color: var(--telemetry); font-family: var(--mono); font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase; }
+      .card__title { margin: 0; font-size: 82px; line-height: 1.05; letter-spacing: -0.02em; }
+      .card__sub { margin: 0; color: var(--muted); font-size: 30px; }
+      .card__rule { width: 220px; height: 4px; background: var(--veto); }
+
+      .term { display: flex; flex-direction: column; height: 100%; padding: 40px 56px 0; }
+      .term__bar {
+        display: flex; align-items: center; gap: 14px;
+        padding-bottom: 18px; border-bottom: 1px solid var(--border);
+        color: var(--muted); font-family: var(--mono); font-size: 21px;
+      }
+      .dot { width: 14px; height: 14px; border-radius: 50%; }
+      .term__body {
+        flex: 1; overflow: hidden; padding: 26px 0 40px;
+        font-family: var(--mono); font-size: 23px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere;
+      }
+      .line { min-height: 1.5em; }
+      .line--dim { color: var(--muted); }
+      .line--rule { color: var(--border); }
+      .line--title { color: var(--text); font-weight: 700; }
+      .line--veto { color: var(--veto); font-weight: 700; }
+      .line--safe { color: var(--safe); }
+      .line--warn { color: var(--hazard); }
+      .line--key { color: var(--telemetry); }
+      .prompt { color: var(--safe); }
+      .caret::after { content: "▌"; animation: blink 1s steps(2, start) infinite; }
+      @keyframes blink { to { visibility: hidden; } }
+
+      .overlay {
+        position: absolute; right: 56px; bottom: 56px; width: 720px;
+        background: rgba(30, 41, 59, 0.96); border: 1px solid var(--border); border-left: 4px solid var(--hazard);
+        border-radius: 8px; padding: 22px 26px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+      .overlay__title { margin: 0 0 14px; color: var(--hazard); font-family: var(--mono); font-size: 20px; letter-spacing: 0.12em; text-transform: uppercase; }
+      .overlay table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 21px; }
+      .overlay td { padding: 5px 0; }
+      .overlay td:last-child { text-align: right; color: var(--hazard); }
+      .overlay td:nth-child(2) { color: var(--muted); text-align: right; padding-right: 16px; }
+      .overlay__note { margin: 12px 0 0; color: var(--muted); font-size: 17px; }
+    </style>
+  </head>
+  <body>
+    <div class="card" id="card" hidden>
+      <div class="card__rule"></div>
+      <p class="card__kicker" id="card-kicker">offline demo</p>
+      <h1 class="card__title" id="card-title"></h1>
+      <p class="card__sub" id="card-sub"></p>
+    </div>
+
+    <div class="term">
+      <div class="term__bar">
+        <span class="dot" style="background: #ff1744"></span>
+        <span class="dot" style="background: #ffea00"></span>
+        <span class="dot" style="background: #00e676"></span>
+        <span id="bar-title">reflex — ~/reflex-physical-ai</span>
+      </div>
+      <div class="term__body" id="body"></div>
+    </div>
+
+    <div class="overlay" id="overlay" hidden>
+      <p class="overlay__title">degraded parameters, in force</p>
+      <table id="overlay-rows"></table>
+      <p class="overlay__note" id="overlay-note">
+        Read from <span style="font-family: var(--mono)">GET /v1/envelope/info</span> at record
+        time. Every degraded value moves in the conservative direction — the loader refuses a
+        profile where one does not.
+      </p>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(location.search)
+      const capture = params.get('c') ?? 'demo'
+      const body = document.getElementById('body')
+
+      const cls = (line) => {
+        if (/^\s*PASS\b/.test(line)) return 'line line--safe'
+        if (/DEMO PASS|DEMO CHECK PASS/.test(line)) return 'line line--safe'
+        if (/VETO|collided|refused/.test(line)) return 'line line--veto'
+        if (/^\s*(=|-)+\s*$/.test(line)) return 'line line--rule'
+        if (/^(Reflex|timeline|the veto|motion|the ledger|the counterfactual|envelope latency|checks|serving)/.test(line)) return 'line line--key'
+        if (/SYNTHETIC/.test(line)) return 'line line--warn'
+        if (/^\s*"|^\s{2,}\S/.test(line)) return 'line line--dim'
+        return 'line'
+      }
+
+      const addLine = (text, extra = '') => {
+        const el = document.createElement('div')
+        el.className = cls(text) + extra
+        el.textContent = text === '' ? '\u00a0' : text
+        body.appendChild(el)
+        // Keep roughly the last screenful: a terminal that grows forever scrolls the interesting
+        // line off the top before the camera has finished on it.
+        while (body.scrollHeight > body.clientHeight && body.firstChild) {
+          const hidden = body.scrollHeight - body.clientHeight
+          if (hidden < 40) break
+          body.removeChild(body.firstChild)
+        }
+        return el
+      }
+
+      async function typeCommand(prompt, command) {
+        const line = document.createElement('div')
+        line.className = 'line'
+        const promptEl = document.createElement('span')
+        promptEl.className = 'prompt'
+        promptEl.textContent = prompt
+        const text = document.createElement('span')
+        text.className = 'caret'
+        line.append(promptEl, text)
+        body.appendChild(line)
+        for (const ch of command) {
+          text.textContent += ch
+          await new Promise((r) => setTimeout(r, 55))
+        }
+        text.classList.remove('caret')
+        await new Promise((r) => setTimeout(r, 420))
+        return line
+      }
+
+      async function showCard(title, kicker, sub, ms) {
+        const card = document.getElementById('card')
+        document.getElementById('card-title').textContent = title
+        document.getElementById('card-kicker').textContent = kicker
+        document.getElementById('card-sub').textContent = sub
+        card.hidden = false
+        await new Promise((r) => setTimeout(r, ms))
+        card.classList.add('is-gone')
+        await new Promise((r) => setTimeout(r, 900))
+        card.hidden = true
+      }
+
+      async function overlayFromInfo() {
+        const response = await fetch('/reflex-physical-ai/replay/bundle.json')
+        const bundle = await response.json()
+        const rules = Object.fromEntries(bundle.info.rules.map((r) => [r.rule_id, r]))
+        const rows = [
+          ['V3 max velocity', 'V3_VELOCITY_LIMIT', 'max_velocity_mm_s', ' mm/s'],
+          ['V6 swept inflation', 'V6_COLLISION_PREDICTED', 'swept_volume_inflation_mm', ' mm'],
+          ['V6 lookahead', 'V6_COLLISION_PREDICTED', 'lookahead_ms', ' ms'],
+          ['V10 clear hold', 'V10_HUMAN_PRESENCE', 'clear_hold_ms', ' ms'],
+          ['V9 plan TTL ceiling', 'V9_PLAN_MALFORMED', 'max_ttl_ms', ' ms'],
+        ]
+        const table = document.getElementById('overlay-rows')
+        for (const [label, rule, key, unit] of rows) {
+          const params = rules[rule]?.parameters
+          if (!params) continue
+          const tr = document.createElement('tr')
+          tr.innerHTML =
+            `<td>${label}</td><td>${params.normal[key]}${unit}</td>` +
+            `<td>→ ${params.degraded[key]}${unit}</td>`
+          table.appendChild(tr)
+        }
+        document.getElementById('overlay').hidden = false
+      }
+
+      window.__demo = { done: false }
+
+      ;(async () => {
+        const card = params.get('card')
+        if (card) {
+          await showCard(card, params.get('kicker') ?? 'reflex', params.get('sub') ?? '', 4200)
+        }
+
+        const response = await fetch(`/capture/${capture}.json`)
+        const spec = await response.json()
+        document.getElementById('bar-title').textContent = spec.bar ?? 'reflex — ~/reflex-physical-ai'
+        if (spec.title) document.title = spec.title
+
+        const commands = spec.commands ?? [{ command: spec.command, lines: spec.lines }]
+        await typeCommand(spec.prompt ?? 'user@edge:~$ ', commands[0].command)
+
+        const perLine = Number(params.get('pace') ?? spec.pace ?? 90)
+        // One command, or a short transcript of them: each entry is a real invocation and the lines
+        // that command really printed. Nothing is typed that was not run.
+        for (const [index, entry] of commands.entries()) {
+          if (index > 0) await typeCommand(spec.prompt ?? 'user@edge:~$ ', entry.command)
+          for (const line of entry.lines) {
+            addLine(line)
+            await new Promise((r) => setTimeout(r, perLine))
+          }
+        }
+        addLine('')
+        addLine(spec.prompt ?? 'user@edge:~$ ', 'caret')
+        window.__demo.done = true
+
+        if (params.get('overlay') === '1') await overlayFromInfo()
+      })()
+    </script>
+  </body>
+</html>

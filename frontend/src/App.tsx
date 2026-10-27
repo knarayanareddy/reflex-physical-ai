@@ -22,6 +22,12 @@
  * "simulate replay" control posts the decision to `POST /v1/replay` and animates the two
  * trajectories the backend returns. The browser never simulates anything itself: a canvas that
  * computed its own collisions would be a second, unaudited safety model.
+ *
+ * **Static replay (GitHub Pages).** With `--mode pages` there is no backend, so the page loads
+ * `replay/bundle.json` — the recorded output of the real session — and the ledger column becomes a
+ * timeline scrubber. Rule 1 is unchanged: the browser still only *replays* decisions that were made
+ * by `app.envelope.evaluate`. See `staticReplay.ts` for why the bundle exists instead of a
+ * client-side envelope.
  */
 
 import {
@@ -42,6 +48,14 @@ import {
   fetchHeadlineStatistics,
   fetchReplay,
 } from './api'
+import {
+  STATIC_REPLAY,
+  type StaticBundle,
+  firstVetoIndex,
+  initialStep,
+  loadBundle,
+  wantsAutoplay,
+} from './staticReplay'
 import type {
   Decision,
   EnvelopeInfo,
@@ -169,6 +183,12 @@ export default function App() {
 
   const [replayOf, setReplayOf] = useState<Decision | null>(null)
 
+  // Static replay (GitHub Pages) only: the recorded session and the scrub position. In live mode
+  // these stay unused and the page behaves exactly as before.
+  const [bundle, setBundle] = useState<StaticBundle | null>(null)
+  const [step, setStep] = useState(0)
+  const [playing, setPlaying] = useState(false)
+
   const [ledger, setLedger] = useState<Decision[]>([])
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const [overlay, setOverlay] = useState<'shipped' | 'intended'>('shipped')
@@ -191,6 +211,31 @@ export default function App() {
 
   useEffect(() => {
     void loadInfo()
+
+    if (STATIC_REPLAY) {
+      // One fetch, one render: the rule table and the headline numbers travel inside the bundle, so
+      // the three live-mode requests below would only produce 404s to display as errors.
+      void (async () => {
+        const loaded = await loadBundle()
+        if (!loaded.ok) return // loadInfo() already surfaced the reason through infoError
+        setBundle(loaded.value)
+        // The headline bar is the page's central claim; in the static build its numbers travel in
+        // the bundle, so the bar must leave its loading state here or it would spin forever.
+        if (loaded.value.headline) {
+          setStats(loaded.value.headline)
+          setStatsError(null)
+        } else {
+          setStats(null)
+          setStatsError('the static bundle was built without runs/headline_statistics.json')
+        }
+        setStatsLoading(false)
+        const start = initialStep(loaded.value)
+        setStep(start)
+        setPlaying(wantsAutoplay() && start === 0)
+      })()
+      return
+    }
+
     void (async () => {
       setStatsLoading(true)
       const headline = await fetchHeadlineStatistics()
@@ -215,6 +260,23 @@ export default function App() {
       }
     })()
   }, [loadInfo])
+
+  // The timeline plays at the session's own cadence (10 Hz), which is what the recording was made
+  // at: a faster play would misrepresent how the proposals arrived.
+  useEffect(() => {
+    if (!playing || !bundle) return
+    const period = 1000 / bundle.session.hz
+    const handle = window.setInterval(() => {
+      setStep((current) => {
+        if (current >= bundle.decisions.length - 1) {
+          setPlaying(false)
+          return current
+        }
+        return current + 1
+      })
+    }, period)
+    return () => window.clearInterval(handle)
+  }, [playing, bundle])
 
   const run = useCallback(async () => {
     if (!fixtureName) return
@@ -245,7 +307,11 @@ export default function App() {
     )
   }, [fixtureName])
 
-  const selected = selectedIndex === null ? null : (ledger[selectedIndex] ?? null)
+  const selected = STATIC_REPLAY
+    ? (bundle?.decisions[step] ?? null)
+    : selectedIndex === null
+      ? null
+      : (ledger[selectedIndex] ?? null)
   const trace = selected?.rule_trace ?? EMPTY_TRACE
 
   const rules = useMemo(
@@ -258,7 +324,9 @@ export default function App() {
       <div className="gate">
         <div className="panel">
           <p className="panel__title">Connecting</p>
-          <p className="gate__body mono">GET /v1/envelope/info…</p>
+          <p className="gate__body mono">
+            {STATIC_REPLAY ? 'loading replay/bundle.json…' : 'GET /v1/envelope/info…'}
+          </p>
         </div>
       </div>
     )
@@ -270,17 +338,32 @@ export default function App() {
         <div className="gate__card">
           <h1 className="gate__title">No rule table — nothing to show</h1>
           <p className="gate__body">
-            The dashboard could not load <code>GET /v1/envelope/info</code>, so it has no rule
-            table, no calibration profile and no rig geometry. It will not render a placeholder:
-            a safety screen that invents its limits is worse than one that is blank.
+            The dashboard could not load{' '}
+            {STATIC_REPLAY ? (
+              <code>replay/bundle.json</code>
+            ) : (
+              <code>GET /v1/envelope/info</code>
+            )}
+            , so it has no rule table, no calibration profile and no rig geometry. It will not render
+            a placeholder: a safety screen that invents its limits is worse than one that is blank.
           </p>
           <p className="gate__body mono">
             {infoError ?? 'unknown error'}
           </p>
           <p className="gate__body">
-            Start the API from the repository root with <code>make demo</code> (uvicorn on :8000),
-            then retry. This page talks to the API through a same-origin proxy, so no host or port
-            needs to be configured here.
+            {STATIC_REPLAY ? (
+              <>
+                This is the static build, so there is no API to start. The bundle is produced by{' '}
+                <code>make pages-data</code> and deployed with the site; without it there is nothing
+                to replay.
+              </>
+            ) : (
+              <>
+                Start the API from the repository root with <code>make demo</code> (uvicorn on
+                :8000), then retry. This page talks to the API through a same-origin proxy, so no
+                host or port needs to be configured here.
+              </>
+            )}
           </p>
           <button className="btn btn--primary" onClick={() => void loadInfo()} type="button">
             Retry
@@ -292,7 +375,7 @@ export default function App() {
 
   return (
     <div className="shell">
-      <Header info={info} onRetry={() => void loadInfo()} />
+      <Header info={info} onRetry={() => void loadInfo()} staticMode={STATIC_REPLAY} />
 
       <HeadlineBar stats={stats} error={statsError} loading={statsLoading} />
 
@@ -307,6 +390,11 @@ export default function App() {
             <p className="scene__caption">
               <span>x-y plane, millimetres, from the rig's own calibration</span>
               <span>keep-out x {formatParam(info.rig.keep_out_volume.x)} mm</span>
+              {selected?.sensor_snapshot_inline?.keep_out_occupied && (
+                <span className="scene__alarm">
+                  keep-out occupied — marker position is schematic, occupancy is what the envelope sees
+                </span>
+              )}
             </p>
             <Legend />
           </div>
@@ -379,6 +467,21 @@ export default function App() {
         </section>
 
         <section className="column column--ledger" aria-label="Telemetry and veto ledger">
+          {STATIC_REPLAY && (
+            <TimelinePanel
+              bundle={bundle}
+              step={step}
+              playing={playing}
+              onScrub={(next) => {
+                setPlaying(false)
+                setStep(next)
+              }}
+              onTogglePlay={() => setPlaying((current) => !current)}
+              onSimulateReplay={() => setReplayOf(bundle?.decisions[step] ?? null)}
+            />
+          )}
+
+          {!STATIC_REPLAY && (
           <div className="panel">
             <div className="panel__head">
               <h2 className="panel__title">Evaluate a committed fixture</h2>
@@ -423,7 +526,11 @@ export default function App() {
             </p>
           </div>
 
+          )}
+
           <TelemetryPanel decision={selected} />
+
+          {!STATIC_REPLAY && (
           <LedgerPanel
             decisions={ledger}
             selectedIndex={selectedIndex}
@@ -441,6 +548,7 @@ export default function App() {
             }}
             overlay={overlay}
           />
+          )}
         </section>
       </main>
 
@@ -455,9 +563,238 @@ export default function App() {
   )
 }
 
+/* ---------------------------------------------------------- static timeline */
+
+/**
+ * The recorded session, scrubbable — the static build's stand-in for the veto ledger.
+ *
+ * Every frame is a decision the real envelope made on a build machine: the tool tip advances 1.5 mm
+ * per frame, the keep-out intrusion lands at t=4.0 s, V2 vetoes and the interlock latches, and the
+ * 59 frames after it are refused by V1. The browser computes none of that — the strip is a
+ * recording, and the transport only moves a cursor through it.
+ *
+ * The two-arm replay is the recorded one too (`app.replay.compare` on that exact decision). Pressing
+ * "simulate replay" opens the same canvas the live dashboard opens; the word "simulate" is about the
+ * *rig*, which does not exist, not about the browser, which is not allowed to invent a trajectory.
+ */
+function TimelinePanel({
+  bundle,
+  step,
+  playing,
+  onScrub,
+  onTogglePlay,
+  onSimulateReplay,
+}: {
+  bundle: StaticBundle | null
+  step: number
+  playing: boolean
+  onScrub: (index: number) => void
+  onTogglePlay: () => void
+  onSimulateReplay: () => void
+}) {
+  if (!bundle) {
+    return (
+      <div className="panel">
+        <div className="panel__head">
+          <h2 className="panel__title">Timeline · recorded session</h2>
+        </div>
+        <p className="panel__note mono">loading replay/bundle.json…</p>
+      </div>
+    )
+  }
+
+  const { decisions, frames, session, checks } = bundle
+  const frame = frames[step]
+  const decision = decisions[step]
+  const vetoIndex = firstVetoIndex(bundle)
+  const replay = bundle.replays[decision.decision_id]
+  const snapshot = decision.sensor_snapshot_inline
+  const clamp = decision.clamp_applied
+
+  return (
+    <div className="panel" data-testid="timeline-panel">
+      <div className="panel__head">
+        <h2 className="panel__title">Timeline · recorded session</h2>
+        <span className="muted mono" style={{ fontSize: 10 }}>
+          {frames.length} frames · {session.hz} Hz · no backend
+        </span>
+      </div>
+
+      <div className="timeline__transport">
+        <button
+          className="btn btn--primary"
+          type="button"
+          onClick={onTogglePlay}
+          data-testid="timeline-play"
+        >
+          {playing ? 'pause' : 'play'}
+        </button>
+        <button
+          className="btn"
+          type="button"
+          onClick={() => onScrub(Math.max(0, step - 1))}
+          title="previous frame"
+        >
+          ‹ prev
+        </button>
+        <button
+          className="btn"
+          type="button"
+          onClick={() => onScrub(Math.min(frames.length - 1, step + 1))}
+          title="next frame"
+        >
+          next ›
+        </button>
+        <button
+          className="btn"
+          type="button"
+          data-testid="timeline-jump-veto"
+          disabled={vetoIndex < 0}
+          onClick={() => onScrub(vetoIndex)}
+          title={vetoIndex < 0 ? 'this session never refused anything' : 'the frame V2 fired'}
+        >
+          veto
+        </button>
+        <span className="mono muted timeline__clock" data-testid="timeline-clock">
+          frame {step + 1} / {frames.length} · t = {frame.t_s.toFixed(1)} s
+        </span>
+      </div>
+
+      <input
+        className="timeline__range"
+        type="range"
+        min={0}
+        max={frames.length - 1}
+        step={1}
+        value={step}
+        aria-label="Session frame"
+        onChange={(event) => onScrub(Number(event.target.value))}
+      />
+
+      <div className="timeline__strip" role="group" aria-label="Every frame in the session">
+        {frames.map((item, index) => {
+          const outcome = decisions[index].outcome
+          return (
+            <button
+              key={item.index}
+              type="button"
+              className={[
+                'timeline__tick',
+                `timeline__tick--${outcome.toLowerCase().replace('_', '-')}`,
+                index === step ? 'is-current' : '',
+                index === vetoIndex ? 'is-veto' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              onClick={() => onScrub(index)}
+              aria-label={`frame ${index + 1}, ${outcome} at ${item.t_s.toFixed(1)} seconds`}
+              title={`t=${item.t_s.toFixed(1)} s · x=${item.x_mm.toFixed(1)} mm · ${outcome}${
+                decisions[index].rule_id ? ` ${decisions[index].rule_id}` : ''
+              }`}
+            />
+          )
+        })}
+      </div>
+
+      <dl className="kv kv--dense timeline__readout">
+        <dt>tool tip</dt>
+        <dd data-testid="timeline-x">
+          x = {frame.x_mm.toFixed(1)} mm · y = {frame.y_mm.toFixed(1)} mm
+        </dd>
+        <dt>keep-out</dt>
+        <dd>
+          {frame.keep_out_occupied ? (
+            <Chip tone="chip--veto">occupied</Chip>
+          ) : (
+            <Chip tone="chip--muted">clear</Chip>
+          )}
+        </dd>
+        <dt>outcome</dt>
+        <dd data-testid="timeline-outcome">
+          <Chip tone={OUTCOME_TONE[decision.outcome]}>{decision.outcome}</Chip>{' '}
+          <span className="timeline__rule">{decision.rule_id ?? '—'}</span>
+        </dd>
+        <dt>interlock</dt>
+        <dd>
+          {decision.interlock_relay_opened ? 'relay opened by this decision' : snapshot?.relay_state === false ? 'open (latched)' : 'closed'}
+        </dd>
+        {snapshot && (
+          <>
+            <dt>cloud</dt>
+            <dd>
+              {snapshot.network.cloud_reachable ? 'reachable' : 'unreachable'} ·{' '}
+              {decision.parameter_set} parameters
+            </dd>
+          </>
+        )}
+        {clamp && (
+          <>
+            <dt>clamped</dt>
+            <dd>{clamp.rule_id}</dd>
+          </>
+        )}
+        <dt>latency</dt>
+        <dd>{decision.latency_us.toFixed(0)} µs (measured on the build machine)</dd>
+      </dl>
+
+      <p className="panel__note">{OUTCOME_SENTENCE[decision.outcome]}</p>
+
+      <div className="timeline__replay">
+        <button
+          className="btn"
+          type="button"
+          data-testid="simulate-replay"
+          onClick={onSimulateReplay}
+          title="Play the recorded two-arm replay: envelope OFF vs envelope ON"
+        >
+          simulate replay
+        </button>
+        <span className="mono muted timeline__replay-note">
+          {replay
+            ? `off: ${replay.envelope_off.outcome} · on: ${replay.envelope_on.outcome}` +
+              (replay.envelope_off.collision
+                ? ` at (${replay.envelope_off.collision.contact_point.x.toFixed(1)}, ` +
+                  `${replay.envelope_off.collision.contact_point.y.toFixed(1)}) mm`
+                : '')
+            : 'no recorded replay'}
+        </span>
+      </div>
+
+      <div className="timeline__checks">
+        <p className="panel__title" style={{ fontSize: 11 }}>
+          what the build checked before publishing this recording
+        </p>
+        <ul>
+          {checks.map((item) => (
+            <li key={item.claim}>
+              <span className="timeline__check-claim">{item.claim}</span>
+              <span className="muted mono">{item.evidence}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <p className="panel__note">
+        Recorded by <span className="mono">{bundle.generated_by}</span> from{' '}
+        <span className="mono">jobs/offline_demo.py</span>: {session.seconds} s at {session.hz} Hz,{' '}
+        {session.model_calls} model calls, {session.hardware ? 'hardware attached' : 'no hardware'}.
+        The page replays decisions that were already made; it cannot evaluate a new one.
+      </p>
+    </div>
+  )
+}
+
 /* ------------------------------------------------------------------- header */
 
-function Header({ info, onRetry }: { info: EnvelopeInfo; onRetry: () => void }) {
+function Header({
+  info,
+  onRetry,
+  staticMode,
+}: {
+  info: EnvelopeInfo
+  onRetry: () => void
+  staticMode: boolean
+}) {
   return (
     <header className="header">
       <div>
@@ -492,11 +829,23 @@ function Header({ info, onRetry }: { info: EnvelopeInfo; onRetry: () => void }) 
         ) : (
           <Chip tone="chip--allow">measured profile</Chip>
         )}
-        <span className="connection connection--ok" role="status">
-          <Radio size={12} aria-hidden />
-          <span className="connection__dot" aria-hidden />
-          /v1/envelope/info
-        </span>
+        {staticMode ? (
+          <span
+            className="connection connection--static"
+            role="status"
+            title="This build ships a recording of the 10-second demo session; there is no API behind it."
+          >
+            <Radio size={12} aria-hidden />
+            <span className="connection__dot" aria-hidden />
+            replay/bundle.json · recorded, not live
+          </span>
+        ) : (
+          <span className="connection connection--ok" role="status">
+            <Radio size={12} aria-hidden />
+            <span className="connection__dot" aria-hidden />
+            /v1/envelope/info
+          </span>
+        )}
         <button className="btn" type="button" onClick={onRetry} title="Reload the rule table">
           reload
         </button>
@@ -566,6 +915,10 @@ function Scene({ info, decision, overlay }: SceneProps) {
 
   const showIntended = overlay === 'intended'
   const intendedIsVeto = decision?.outcome === 'VETO'
+  // Occupancy is a boolean in the contract: the envelope knows the volume is occupied, not where the
+  // body is standing. The marker is therefore a schematic at the volume's near edge — the point the
+  // envelope-off arm reaches when it collides — and never a measured position.
+  const intruder = snapshot?.keep_out_occupied ?? false
 
   return (
     <div className="scene">
@@ -607,6 +960,31 @@ function Scene({ info, decision, overlay }: SceneProps) {
           strokeDasharray="3 2"
           vectorEffect="non-scaling-stroke"
         />
+
+        {intruder && (
+          <g>
+            <circle cx={sx(keepOut.x[0])} cy={sy(0)} r={4.5} fill="var(--color-veto)" opacity={0.9} />
+            <circle
+              cx={sx(keepOut.x[0])}
+              cy={sy(0)}
+              r={7}
+              fill="none"
+              stroke="var(--color-veto)"
+              strokeWidth={1}
+              strokeDasharray="2 2"
+              vectorEffect="non-scaling-stroke"
+            />
+            <text
+              x={sx(keepOut.x[0]) + 9}
+              y={sy(0) - 7}
+              fontSize={2.8}
+              fill="var(--color-veto)"
+              fontFamily="var(--font-mono)"
+            >
+              intruder · keep-out occupied
+            </text>
+          </g>
+        )}
 
         {/* The rail: the only axis the actuator drives. */}
         <line
@@ -1462,10 +1840,21 @@ function drawReplay(
     context.restore()
   }
   if (onEnd && on.length <= 1) {
+    // Below the marker, not beside it: after a veto both arms share the same point, so a label to
+    // the right printed straight through the red ✕ and the keep-out border. The plate keeps it
+    // readable over the volume's fill.
+    const label = 'shipped: no motion'
     context.save()
-    context.fillStyle = colour('--color-text-secondary', '#94A3B8')
     context.font = '12px ui-monospace, monospace'
-    context.fillText('shipped: no motion', px(onEnd.x) + 10, py(onEnd.y) + 4)
+    const width = context.measureText(label).width
+    const x = px(onEnd.x) + 12
+    const y = py(onEnd.y) + 18
+    context.fillStyle = colour('--color-bg-primary', '#0F172A')
+    context.globalAlpha = 0.85
+    context.fillRect(x - 4, y - 11, width + 8, 16)
+    context.globalAlpha = 1
+    context.fillStyle = colour('--color-text-secondary', '#94A3B8')
+    context.fillText(label, x, y + 1)
     context.restore()
   }
 }

@@ -1,11 +1,13 @@
 name: CI
 
-# Runs what `make check` runs, on every push and pull request.
+# Runs what `make check` runs, on every push and pull request, plus the frontend job that D-T27
+# listed as NOT_DONE #5. Two jobs, because the Python gate must stay fast and independent of npm:
 #
-# Deliberately NOT included yet: a frontend job. The dashboard exists and `npm run build`
-# succeeds locally (tsc + vite, 176 kB), but this workflow does not install Node — so
-# `make demo` on a CI runner would take its documented UI-skipped path. Adding
-# `actions/setup-node` + `npm ci && npm run build` is a ticket of its own (D-T27 NOT_DONE #5).
+#   check     — the Python gate (`make check`): lint, types, contracts, calibration, tests;
+#   frontend  — typecheck, the dev build, the Pages build, and the committed replay bundle.
+#
+# The Pages workflow deploys on push to main; this one fails the pull request first. Without it a
+# TypeScript error would only surface after merge, on a workflow whose failure pages nobody.
 
 on:
   push:
@@ -105,3 +107,57 @@ jobs:
           assert client.get("/v1/info").json()["build"]["taxonomy_rules"] == 10
           print("smoke: ok")
           PY
+
+  frontend:
+    name: frontend typecheck, builds and replay bundle
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: cd frontend && npm ci
+
+      - name: Typecheck (tsc --noEmit)
+        run: cd frontend && npm run typecheck
+
+      - name: Dev build (base '/', the build `make demo` serves)
+        run: cd frontend && npm run build
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.3.2
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+
+      - name: Set up Python 3.12
+        run: uv python install 3.12
+
+      - name: Install backend dependencies from the lockfile
+        run: cd backend && uv sync --frozen --python 3.12
+
+      - name: Committed replay bundle still matches the envelope
+        # Regenerates the bundle from the current code and fails if any of its seven invariants
+        # break. It deliberately does not compare bytes with the committed file: `latency_us` is a
+        # real measurement and changes run to run. The *claims* must hold, the microseconds need not.
+        run: make pages-data
+
+      - name: Static replay invariants on the committed bundle
+        run: make pages-check
+
+      - name: Pages build (base '/reflex-physical-ai/')
+        run: cd frontend && npm run build -- --mode pages
+
+      - name: The Pages tree carries the bundle under the project sub-path
+        run: |
+          set -euo pipefail
+          test -f frontend/dist/replay/bundle.json
+          grep -q '/reflex-physical-ai/assets/' frontend/dist/index.html
+          echo "pages build: ok"

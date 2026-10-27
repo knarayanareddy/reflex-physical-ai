@@ -63,3 +63,11 @@ runs/replay_pack/
 # Local calibration output and caches
 data/calibration/captures/
 data/fixtures/snapshots/.cache/
+
+# Generated: `make pages-data` writes the static replay bundle that the Pages build embeds.
+# Rebuilt by `make build-pages` and by the Deploy Pages workflow; committing it would add a 700 kB
+# artifact whose measured latencies change on every run.
+frontend/public/replay/
+
+# Generated: the demo recorder's scratch space (captured stdout, the raw take, encoder temp).
+.record-tmp/

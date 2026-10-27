@@ -7,8 +7,8 @@ target is 2:45 so the last line lands before the cut-off. Timecodes below sum to
 in this build, so nothing is marked `[rig]` — the checklist's "≥ 1 minute of the key application modules
 in action" is covered by shots 2–4 (90 s of the envelope, the dashboard and the replay canvas running).
 
-**Spoken word budget.** 295 words over 165 s — 1.8 words/second (counted from the spoken column below). Rehearse to that; if a take runs long,
-cut words, not shots.
+**Spoken word budget.** 307 words over 165 s — 1.9 words/second, 112 words/minute (counted from the
+spoken column below). Rehearse to that; if a take runs long, cut words, not shots.
 
 | # | Timecode | Shot | On screen | Spoken line |
 |---|---|---|---|---|
@@ -16,7 +16,7 @@ cut words, not shots.
 | 2 | `0:15 – 0:45` | The veto, live (`make demo`) | The 10-second timeline scrolling: `ALLOW` frames, then `t= 4.0 s VETO V2_KEEP_OUT_OCCUPIED`, then `interlock relay : opened = True` and the `V1_EMERGENCY_STOP` hold | "Ten seconds at ten hertz. The tool tip advances fifteen millimetres a second. At second four an intruder appears in the keep-out volume. V-two vetoes, the interlock opens, nothing ships — and every later proposal is refused by the interlock rule, so asking again does not restart the machine." |
 | 3 | `0:45 – 1:15` | Split-screen control room (dashboard) | http://127.0.0.1:5173 — three columns: scene left, the ten interlocks centre, telemetry and the veto ledger right. Camera holds on the headline bar | "The same decision in the operator view: scene on the left, all ten interlocks in the middle, telemetry and the veto ledger on the right. The headline bar reads one thousand actions planned, four hundred and twenty vetoes enforced, two hundred and forty-eight prevented, zero collisions shipped. The calibration is synthetic, so the badge says simulation — and it stays on screen." |
 | 4 | `1:15 – 1:45` | Simulate replay, per ledger row | Click **simulate replay**. Canvas: red path advances and stops at the keep-out edge with the ✕ contact marker; green path stays as a single point. Then `runs/headline_statistics.json` on screen | "Press simulate replay on any row. Red is the planner's action with the envelope off: it enters the keep-out volume at a hundred and fifty millimetres. Green is what shipped: no motion. Across the thousand-action session, two hundred and forty-eight adverse end states were preventable — a hundred and seventy contacts and seventy-eight boundary excursions. Both arms re-derive offline." |
-| 5 | `1:45 – 2:10` | Network cut | A terminal POSTing `cloud_reachable: false`; response shows `parameter_set: degraded` and a veto. Overlay: three degraded values | "Cut the network and nothing fails open. The cloud becomes unreachable, the envelope switches to degraded parameters — slower, longer hold, wider swept volume — and it keeps vetoing. Sixty tests pin that a degraded value is never less conservative than its normal one." |
+| 5 | `1:45 – 2:10` | Network cut | A terminal POSTing the same 3-second plan twice: cloud reachable → `ALLOW`, `normal`; `cloud_reachable: false` → `VETO V9_PLAN_MALFORMED`, `degraded`, "ttl_ms 3000 exceeds the 2000.0 ms ceiling". Overlay: five normal → degraded values | "Cut the network and nothing fails open. The plan that was legal a second ago is now refused — the envelope tightened its TTL ceiling and its speed limit before the plan arrived. Every degraded value moves the conservative way; a profile where one does not is refused at load." |
 | 6 | `2:10 – 2:30` | What is not done | `LIMITATIONS.md` §3, scrolled slowly; the 0-calls row and the 22-synthetic-values row visible | "What is not done: no hardware, so veto-to-stop latency is unmeasured. No API key, so not one model call is in the ledger. The planner is a library with no endpoint. The limitations file lists each one with its number." |
 | 7 | `2:30 – 2:45` | Close | Architecture card: *cloud proposes · edge decides · ledger proves*; then the headline banner | "A safety layer that consults the network is not a safety layer. This one is local, deterministic, and keeps receipts." |
 
@@ -26,7 +26,11 @@ cut words, not shots.
 2. `cd frontend && npm install` once (the only step that needs the registry), then `make demo`.
 3. `make batch` so `runs/headline_statistics.json` exists — the headline bar reads it, and without it
    the bar correctly says *"run `python jobs/batch_1000_eval.py`"* instead of showing zeros.
-4. Start from a clean terminal at 120 columns so the ledger line does not wrap mid-number.
+4. `make build-pages` (this also runs `make pages-data`, which records the session the video replays),
+   then `node scripts/record-demo.ts`. The recorder captures its own terminal output, so the take is
+   reproducible: it fails rather than records if `make demo` does not print `DEMO PASS`, or if the
+   network cut does not turn an `ALLOW` into a `VETO`.
+5. Start from a clean terminal at 120 columns so the ledger line does not wrap mid-number.
 
 ## What the voiceover must not claim
 

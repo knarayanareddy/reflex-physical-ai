@@ -1,0 +1,13 @@
+{
+  "name": "reflex-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Build-time scripts that are not part of the API or the dashboard: the GitHub Pages static server and the demo-video recorder.",
+  "scripts": {
+    "record": "node record-demo.ts",
+    "serve-pages": "node serve-pages.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.64.1"
+  }
+}
