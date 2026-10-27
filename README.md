@@ -35,7 +35,14 @@ JSON's field name.
 no model was called. The "collisions" are swept-volume intersections in a 2-D model, not contact
 dynamics — see [LIMITATIONS.md](LIMITATIONS.md) §2.
 
+**Live, no install:** <https://knarayanareddy.github.io/reflex-physical-ai/> — the recorded
+10-second session, replayed in the browser with no backend. The page says so in its header
+(`replay/bundle.json · recorded, not live`) because the browser is not allowed to decide: every frame
+it scrubs through was produced by `app.envelope.evaluate` at build time. **Video:** 2:45, seven shots,
+in `docs/media/reflex-demo.mp4` — regenerated from `video/script.md` by `node scripts/record-demo.ts`.
+
 [![CI](https://github.com/knarayanareddy/reflex-physical-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/knarayanareddy/reflex-physical-ai/actions/workflows/ci.yml)
+[![Deploy Pages](https://github.com/knarayanareddy/reflex-physical-ai/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/knarayanareddy/reflex-physical-ai/actions/workflows/deploy-pages.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Track](https://img.shields.io/badge/Track-Physical-green.svg)](docs/SUBMISSION-CHECKLIST.md)
 
@@ -56,6 +63,8 @@ built and tested; the hardware and the cloud job runner are not.
 | Verifiable replay pack (network-off) | **Done** | `python -m app.sandbox.replay_pack verify ../runs/replay_pack` |
 | 10-second offline demo (V2 veto, interlock, ledger line) | **Done** | `make demo` |
 | Operator dashboard (headline bar, ledger, replay canvas) | **Done** | `make demo` → http://127.0.0.1:5173/ |
+| Static dashboard with no backend (GitHub Pages) | **Done** | <https://knarayanareddy.github.io/reflex-physical-ai/> — replays the recorded session; `make pages-check` validates the bundle |
+| Demo video, 2:45, seven shots | **Done** | `docs/media/reflex-demo.mp4`; regenerate with `node scripts/record-demo.ts` |
 | Ultra planner (library, 38 tests) | **Done — not served** | `backend/app/plan/ultra.py`; no endpoint calls it yet |
 | Cloud planner reachable from the API | **Not started** | nowhere to call it from |
 | Measured calibration (22 values) | **Not started** — all `synthetic` | `make params` prints 22/22 synthetic; `make params-strict` fails until a rig is measured |
@@ -72,13 +81,18 @@ built and tested; the hardware and the cloud job runner are not.
 git clone https://github.com/knarayanareddy/reflex-physical-ai.git
 cd reflex-physical-ai
 
-make check   # lint, types, contracts, taxonomy, calibration, fixtures, 417 tests (~15 s)
+make check   # lint, types, contracts, taxonomy, calibration, fixtures, 431 tests (~17 s)
 make demo    # 10-second simulated session, then API on :8000 and dashboard on :5173
 ```
 
 `make check` needs [uv](https://docs.astral.sh/uv/) and Python 3.11+. `make demo` needs Node 18+ for
 the dashboard; if `frontend/node_modules` is missing the demo prints the one command that installs it
 (`cd frontend && npm install`, the only step that needs the registry) and serves the API anyway.
+
+**No install at all?** Open <https://knarayanareddy.github.io/reflex-physical-ai/>. That build has no
+backend: it replays `replay/bundle.json`, recorded at build time by running the real session through
+the real envelope. Scrub the timeline to frame 41 to see the veto, and press **simulate replay** for
+the two-arm counterfactual. The page cannot evaluate a new proposal, and says so.
 
 What `make demo` prints, in order (verbatim except the latency line, which is measured per run):
 
@@ -105,15 +119,20 @@ Use `make demo-check` for the same checks without leaving a server running.
 
 | Command | Needs a key? | What it actually does |
 |---|:---:|---|
-| `make check` | No | Everything CI runs: ruff, mypy, `$ref` resolution, every schema law, taxonomy strictness, calibration invariants, 20 fixtures, 417 tests |
+| `make check` | No | Everything CI runs: ruff, mypy, `$ref` resolution, every schema law, taxonomy strictness, calibration invariants, 20 fixtures, 431 tests |
 | `make demo` | No | The 10-second session (V2 veto → interlock → ledger line → both replay arms), then serves API :8000 and dashboard :5173 |
 | `make demo-check` | No | The same session and HTTP probes, then exits 0 and stops the servers |
 | `make sample` | No | The contract and ledger fixture tests only |
 | `make verify-envelope` | No | Import-graph purity, 500-snapshot determinism, 20 rule fixtures, calibration invariants |
 | `make replay` | No | Replays the fixture corpus through both arms into `runs/replay/` |
 | `make batch` | No | 1,000-action session, both arms per action, `runs/headline_statistics.json`, and a verifiable pack in `runs/replay_pack/` |
+| `python scripts/network_cut.py` | No | Posts the demo's plan twice — cloud reachable, then 9 s unreachable — and fails unless it is allowed then refused |
 | `make params` | No | Prints every normal→degraded value and fails if a degraded value is less conservative |
 | `make serve` | No | The API alone on :8000 |
+| `make build-pages` | No | Records the 10-second session to `replay/bundle.json`, then builds the static site (base `/reflex-physical-ai/`) |
+| `make pages-serve` | No | Serves that build under `/reflex-physical-ai/`, the way GitHub Pages does |
+| `make pages-check` | No | Re-validates the generated bundle's seven invariants without rewriting it |
+| `node scripts/record-demo.ts` | No | Records the 2:45 video from `video/script.md` into `docs/media/` (needs Playwright + ffmpeg) |
 
 ---
 
@@ -253,12 +272,23 @@ deterministic and cannot be talked out of a decision by a prompt.
 │   ├── sandbox/replay_pack.py     build/verify a pack that re-derives offline
 │   ├── gate/gate.py               evidence-quote checker (not the envelope)
 │   └── main.py                    /health, /v1/info, /v1/envelope/{info,evaluate}
-├── backend/tests/                 417 tests across 17 files
-├── frontend/                      React dashboard: headline bar, interlock list, replay canvas
+├── backend/tests/                 431 tests across 18 files
+├── frontend/
+│   ├── src/App.tsx                dashboard + static timeline (three columns, replay canvas)
+│   ├── src/staticReplay.ts        the Pages build's only data source: the recorded session
+│   └── public/replay/             generated by `make pages-data` (gitignored)
 ├── jobs/
 │   ├── offline_demo.py            the 10-second demo (`make demo`)
 │   ├── batch_1000_eval.py         the 1,000-action session (`make batch`)
+│   ├── export_static_replay.py    records the session for the static site (`make pages-data`)
 │   └── replay_all.py              fixture corpus through both arms (`make replay`)
+├── scripts/
+│   ├── network_cut.py             the video's shot 5, runnable: allow → refused after the cut
+│   ├── record-demo.ts             records docs/media/reflex-demo.{mp4,webm} from video/script.md
+│   ├── serve-pages.mjs            serves the Pages build under its real sub-path
+│   └── stage/                     the recorder's title, terminal, limitations and close cards
+├── docs/media/                    the 2:45 demo video + a JSON summary of the take
+├── docs/DEVPOST_{SUBMISSION,FEEDBACK}.md  the submission text, and what the form got wrong
 ├── reports/                       one TASK_REPORT per ticket: claims, pasted output, NOT_DONE
 └── docs/                          protocol, discrepancies, judging rubric, submission checklist
 ```
@@ -268,6 +298,11 @@ deterministic and cannot be talked out of a decision by a prompt.
 [LIMITATIONS.md](LIMITATIONS.md) is the honest list: synthetic parameters, a 2-D single-axis
 simulator that is not contact dynamics, no hardware, no measured veto-to-stop latency, no model call
 recorded, and the exact numbers for each. Read it before quoting anything above.
+
+Two limits are specific to the publishing work and worth naming here: the Pages site is a
+**recording**, so it cannot answer a proposal it was not built with; and the video has **no voiceover
+track** — `video/script.md` is the narrated shot list, and the recorded take carries its spoken column
+as on-screen text.
 
 Corrections of earlier documentation errors, and every open verification item with an owner, are in
 [docs/DISCREPANCIES.md](docs/DISCREPANCIES.md).

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reflex — close</title>
+    <!--
+      Shot 7: the architecture card and the headline banner.
+
+      The three figures are read from `replay/bundle.json` at record time — the same recording the
+      dashboard replays — so the closing card cannot show a number the site does not show. The two
+      caveats under the line are not decoration: they are the difference between this project and a
+      demo reel.
+    -->
+    <style>
+      :root {
+        --bg: #0f172a;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --border: #334155;
+        --veto: #ff1744;
+        --safe: #00e676;
+        --telemetry: #38bdf8;
+        --hazard: #ffea00;
+        --mono: ui-monospace, "DejaVu Sans Mono", "Liberation Mono", Menlo, monospace;
+        --body: "Inter", "Open Sans", system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; background: radial-gradient(circle at 25% 15%, #16233b 0%, #0f172a 62%); color: var(--text); font-family: var(--body); }
+      .wrap { display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 0 100px; gap: 54px; }
+      .chain { display: flex; align-items: center; gap: 26px; font-size: 62px; letter-spacing: -0.02em; }
+      .chain b { font-weight: 650; }
+      .chain .arrow { color: var(--border); font-size: 46px; }
+      .chain .cloud { color: var(--telemetry); }
+      .chain .edge { color: var(--safe); }
+      .chain .ledger { color: var(--hazard); }
+      .rule { width: 260px; height: 5px; background: var(--veto); }
+      .banner {
+        display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 34px;
+        padding: 30px 38px; background: var(--color-bg-secondary, #1e293b);
+        border: 1px solid var(--border); border-left: 5px solid var(--safe); border-radius: 10px;
+        font-family: var(--mono); font-size: 30px;
+      }
+      .banner b { font-size: 40px; }
+      .banner .veto { color: var(--veto); }
+      .banner .safe { color: var(--safe); }
+      .banner .tel { color: var(--telemetry); }
+      .meta { color: var(--muted); font-family: var(--mono); font-size: 20px; }
+      .caveats { margin: 0; padding-left: 22px; color: var(--muted); font-size: 22px; line-height: 1.5; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="rule"></div>
+      <div class="chain">
+        <span class="cloud">cloud <b>proposes</b></span>
+        <span class="arrow">→</span>
+        <span class="edge">edge <b>decides</b></span>
+        <span class="arrow">→</span>
+        <span class="ledger">ledger <b>proves</b></span>
+      </div>
+
+      <div class="banner">
+        <span><b id="actions">–</b> actions planned</span>
+        <span class="veto"><b id="vetoes">–</b> vetoes enforced</span>
+        <span class="tel"><b id="prevented">–</b> adverse end states prevented</span>
+        <span class="safe"><b id="shipped">–</b> shipped</span>
+      </div>
+
+      <ul class="caveats">
+        <li id="split">
+          248 = <b id="contacts">170</b> contacts + <b id="excursions">78</b> boundary excursions — not 248
+          collisions
+        </li>
+        <li id="caveat-1">simulated · synthetic calibration · no hardware</li>
+        <li id="caveat-2">a safety layer that consults the network is not a safety layer</li>
+      </ul>
+
+      <div class="meta" id="meta">
+        github.com/knarayanareddy/reflex-physical-ai · live at knarayanareddy.github.io/reflex-physical-ai
+      </div>
+    </div>
+
+    <script>
+      const integer = new Intl.NumberFormat('en-US')
+      window.__demo = { done: false }
+      ;(async () => {
+        try {
+          const bundle = await (await fetch('/reflex-physical-ai/replay/bundle.json')).json()
+          const headline = bundle.headline
+          if (headline) {
+            document.getElementById('contacts').textContent = integer.format(headline.prevented.collisions)
+            document.getElementById('excursions').textContent = integer.format(
+              headline.prevented.boundary_excursions,
+            )
+            document.getElementById('actions').textContent = integer.format(headline.headline.actions_planned)
+            document.getElementById('vetoes').textContent = integer.format(headline.headline.vetoes_enforced)
+            document.getElementById('prevented').textContent = integer.format(headline.prevented.total)
+            document.getElementById('shipped').textContent = integer.format(
+              headline.headline.collisions_shipped_under_envelope,
+            )
+            document.getElementById('meta').textContent =
+              `seed ${headline.session.seed} · ${headline.headline.actions_planned} actions · ` +
+              `envelope ${headline.determinism.envelope_version.slice(0, 12)} · ` +
+              `${bundle.session.model_calls} model calls`
+          } else {
+            // No statistics file at build time: say so rather than printing zeros on the closing card.
+            for (const id of ['actions', 'vetoes', 'prevented', 'shipped']) {
+              document.getElementById(id).textContent = 'n/a'
+            }
+            document.getElementById('caveat-1').textContent = 'headline statistics were absent at build time'
+          }
+        } finally {
+          window.__demo.done = true
+        }
+      })()
+    </script>
+  </body>
+</html>

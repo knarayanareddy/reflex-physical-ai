@@ -1,0 +1,65 @@
+{
+  "shots": [
+    {
+      "shot": "hook + `make demo`",
+      "start_s": 0,
+      "end_s": 15
+    },
+    {
+      "shot": "the veto, live (timeline)",
+      "start_s": 15,
+      "end_s": 45
+    },
+    {
+      "shot": "split-screen control room",
+      "start_s": 45,
+      "end_s": 75
+    },
+    {
+      "shot": "two-arm replay",
+      "start_s": 75,
+      "end_s": 105
+    },
+    {
+      "shot": "network cut",
+      "start_s": 105,
+      "end_s": 130
+    },
+    {
+      "shot": "what is not done",
+      "start_s": 130,
+      "end_s": 150
+    },
+    {
+      "shot": "close",
+      "start_s": 150,
+      "end_s": 165
+    }
+  ],
+  "runtime_s": {
+    "target": 165,
+    "mp4": 164.77,
+    "webm": 164.77
+  },
+  "raw_take_s": 165.004,
+  "lead_in_s": 0,
+  "files": {
+    "mp4": {
+      "bytes": 10668327
+    },
+    "webm": {
+      "bytes": 14265403
+    }
+  },
+  "viewport": {
+    "output": "1920x1080",
+    "zoom": 1.25,
+    "layout_viewport": "1536x864"
+  },
+  "captured": {
+    "demo_lines": 70,
+    "network_outcome": "VETO",
+    "network_rule": "V9_PLAN_MALFORMED"
+  },
+  "audio": "none — the spoken column of video/script.md is on-screen text; see docs/DEVPOST_SUBMISSION.md"
+}

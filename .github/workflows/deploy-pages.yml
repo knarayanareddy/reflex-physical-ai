@@ -1,0 +1,102 @@
+name: Deploy Pages
+
+# Publishes the static dashboard to https://knarayanareddy.github.io/reflex-physical-ai/
+#
+# What gets deployed is `frontend/dist` from `make build-pages`, which does two things in order:
+#
+#   1. `pages-data` runs the real 10-second demo session through the real envelope and writes
+#      `replay/bundle.json` — the recording the static page replays. Building the site therefore
+#      re-runs the safety code; the deployed page cannot show numbers that the code no longer
+#      produces. The job fails if any of the seven invariants in `jobs/export_static_replay.py`
+#      fails, so a broken envelope cannot be published as a demo.
+#   2. `vite build --mode pages` emits the site under `/reflex-physical-ai/` (a project page is not
+#      served from the domain root) and switches the client to static replay.
+#
+# The site has no backend. Every panel is fed from the bundle; `POST /v1/envelope/evaluate` is not
+# reachable and the page says so instead of pretending.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # a manual re-deploy after a Pages setting change
+
+permissions:
+  contents: read
+  pages: write # deploy-pages
+  id-token: write # OIDC, required by deploy-pages v4
+
+concurrency:
+  group: pages
+  # Not cancel-in-progress: two overlapping deploys of the same site can publish an artifact from
+  # the older commit after the newer one, which is worse than waiting.
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: build the static site
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.3.2  # pin: no moving v10 major tag exists
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend/uv.lock
+
+      - name: Set up Python 3.12
+        run: uv python install 3.12
+
+      - name: Install backend dependencies from the lockfile
+        run: cd backend && uv sync --frozen --python 3.12
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: cd frontend && npm ci
+
+      - name: Build the site (session recording + Pages build)
+        run: make build-pages
+
+      - name: The deployed tree really contains what the page fetches
+        # The failure this guards: a green build whose `dist/replay/` is empty because the bundle
+        # was written to the wrong directory. Pages would serve a working page with no data.
+        run: |
+          set -euo pipefail
+          test -f frontend/dist/index.html
+          test -f frontend/dist/replay/bundle.json
+          test -f frontend/dist/replay/index.json
+          grep -q '/reflex-physical-ai/assets/' frontend/dist/index.html
+          python3 - <<'PY'
+          import json, pathlib
+          index = json.loads(pathlib.Path("frontend/dist/replay/index.json").read_text())
+          bundle = json.loads(pathlib.Path("frontend/dist/replay/bundle.json").read_text())
+          assert bundle["schema"] == "reflex.static_replay/1", bundle["schema"]
+          assert len(bundle["frames"]) == index["frames"] == 100, index["frames"]
+          assert len(bundle["replays"]) == 100
+          vetoes = [d for d in bundle["decisions"] if d["outcome"] == "VETO"]
+          assert vetoes and vetoes[0]["rule_id"] == "V2_KEEP_OUT_OCCUPIED"
+          print(f"dist: {index['bytes']} byte bundle, {index['checks']} recorded checks, "
+                f"{len(vetoes)} vetoes")
+          PY
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/dist
+
+  deploy:
+    name: deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -797,3 +797,144 @@ select:disabled {
   font-size: 11px;
   line-height: 1.5;
 }
+
+/* --------------------------------------------------------- static timeline */
+
+/* The GitHub Pages build swaps the fixture evaluator for a scrubber over the recorded session.
+   Everything here is presentation: the strip shows what each frame decided, and the transport only
+   moves a cursor. No colour is invented — the three outcome tones reuse the chips' palette. */
+
+.connection--static .connection__dot {
+  background: var(--color-telemetry);
+}
+
+.scene__alarm {
+  color: var(--color-veto);
+  font-weight: 700;
+}
+
+.timeline__transport {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.timeline__transport .btn {
+  padding: 5px 10px;
+}
+
+.timeline__clock {
+  margin-left: auto;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.timeline__range {
+  width: 100%;
+  margin: 0 0 6px;
+  accent-color: var(--color-veto);
+  cursor: pointer;
+}
+
+.timeline__strip {
+  display: flex;
+  gap: 1px;
+  height: 26px;
+  margin-bottom: 12px;
+  padding: 2px;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.timeline__tick {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 1px;
+  background: var(--color-text-muted);
+  cursor: pointer;
+  opacity: 0.55;
+}
+
+.timeline__tick:hover {
+  opacity: 0.9;
+}
+
+.timeline__tick--allow {
+  background: var(--color-safe);
+}
+
+.timeline__tick--allow-clamped {
+  background: var(--color-hazard);
+}
+
+.timeline__tick--veto {
+  background: var(--color-veto);
+}
+
+.timeline__tick.is-veto {
+  outline: 1px solid var(--color-text-primary);
+  opacity: 1;
+}
+
+.timeline__tick.is-current {
+  opacity: 1;
+  box-shadow: inset 0 0 0 2px var(--color-text-primary);
+}
+
+.timeline__readout {
+  margin-top: 4px;
+}
+
+.timeline__rule {
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.timeline__replay {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.timeline__replay-note {
+  font-size: 11px;
+}
+
+.timeline__checks {
+  margin-top: 12px;
+  padding: 8px 10px;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.timeline__checks ul {
+  display: grid;
+  gap: 3px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline__checks li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.timeline__check-claim::before {
+  content: '✓ ';
+  color: var(--color-safe);
+}

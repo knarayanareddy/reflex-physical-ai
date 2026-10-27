@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reflex — what is not done</title>
+    <!--
+      Shot 6: LIMITATIONS.md §3, scrolled slowly.
+
+      The text is fetched at record time from the repository's own LIMITATIONS.md and rendered
+      verbatim in monospace. It is not a summary written for the video: if the file changes, the shot
+      changes with it, and if the file disagrees with the product the video shows the disagreement.
+    -->
+    <style>
+      :root {
+        --bg: #0f172a;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --border: #334155;
+        --hazard: #ffea00;
+        --telemetry: #38bdf8;
+        --mono: ui-monospace, "DejaVu Sans Mono", "Liberation Mono", Menlo, monospace;
+        --body: "Inter", "Open Sans", system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: var(--body); }
+      header {
+        display: flex; align-items: baseline; justify-content: space-between;
+        padding: 30px 56px 18px; border-bottom: 1px solid var(--border);
+      }
+      header h1 { margin: 0; font-family: var(--mono); font-size: 30px; letter-spacing: 0.02em; }
+      header .path { color: var(--muted); font-family: var(--mono); font-size: 20px; }
+      header .badge {
+        color: var(--hazard); border: 1px solid var(--hazard); border-radius: 4px;
+        padding: 3px 12px; font-family: var(--mono); font-size: 17px; letter-spacing: 0.14em;
+      }
+      #scroller { height: calc(100% - 150px); overflow: hidden; padding: 26px 56px 10px; }
+      table { width: 100%; border-collapse: collapse; font-size: 21px; line-height: 1.45; }
+      th {
+        padding: 0 18px 10px 0; text-align: left; color: var(--telemetry);
+        font-family: var(--mono); font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase;
+        border-bottom: 1px solid var(--border);
+      }
+      td { padding: 14px 22px 14px 0; vertical-align: top; color: #dbe4f0; border-bottom: 1px solid #1e293b; }
+      td:first-child { color: var(--text); font-weight: 600; width: 22%; }
+      /* The first row renders under the sticky header line for a moment while the page settles;
+         give the table a little air at the top so row 1 is never clipped. */
+      #scroller table { margin-top: 8px; }
+      tr.row-strong td { background: rgba(56, 189, 248, 0.06); }
+      strong { color: var(--hazard); font-weight: 700; }
+      code { padding: 1px 5px; background: #1e293b; border-radius: 3px; font-family: var(--mono); font-size: 18px; color: var(--telemetry); }
+      .footnote {
+        position: fixed; left: 0; right: 0; bottom: 0; padding: 12px 56px;
+        background: var(--bg); border-top: 1px solid var(--border);
+        color: var(--muted); font-family: var(--mono); font-size: 17px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>LIMITATIONS.md</h1>
+        <div class="path" id="path">§3 · what does not work yet, with numbers</div>
+      </div>
+      <span class="badge">MEASURED, NOT ESTIMATED</span>
+    </header>
+    <div id="scroller"><pre id="text">loading…</pre></div>
+    <div class="footnote">every row is a claim the repository can check · <span id="sha">…</span></div>
+
+    <script>
+      const params = new URLSearchParams(location.search)
+      window.__demo = { done: false }
+
+      /**
+       * Render §3 as a table, not as markdown source.
+       *
+       * The raw file is the deliverable; this is the same rows, laid out so a viewer can read them.
+       * Only `**bold**` and `` `code` `` are interpreted — no other markdown, and nothing is
+       * rewritten. Every cell's text is the file's text.
+       */
+      const inline = (cell) => {
+        // `code` first, then **bold** around/inside it: the file mixes the two (`**\`ReplayResult\` records**`),
+        // and a naive alternation renders the backticks literally.
+        const fragment = document.createDocumentFragment()
+        const pattern = /\*\*(.+?)\*\*|`([^`]+)`/g
+        let last = 0
+        for (const match of cell.matchAll(pattern)) {
+          fragment.append(document.createTextNode(cell.slice(last, match.index)))
+          if (match[1] !== undefined) {
+            const strong = document.createElement('strong')
+            strong.replaceChildren(...inline(match[1]).childNodes)
+            fragment.append(strong)
+          } else {
+            const code = document.createElement('code')
+            code.textContent = match[2]
+            fragment.append(code)
+          }
+          last = match.index + match[0].length
+        }
+        fragment.append(document.createTextNode(cell.slice(last)))
+        return fragment
+      }
+
+      const render = (markdown) => {
+        // §3 only: the rows about what does not work. Everything else is a different shot.
+        const start = markdown.indexOf('## 3.')
+        const end = markdown.indexOf('## 4.')
+        const section = markdown.slice(start, end === -1 ? undefined : end)
+        const rows = section
+          .split('\n')
+          .filter((line) => line.startsWith('|'))
+          .map((line) => line.slice(1, -1).split('|').map((cell) => cell.trim()))
+          .filter((cells) => !cells.every((cell) => /^:?-+:?$/.test(cell)))
+
+        const table = document.createElement('table')
+        const head = document.createElement('thead')
+        const headRow = document.createElement('tr')
+        for (const cell of rows[0]) {
+          const th = document.createElement('th')
+          th.textContent = cell
+          headRow.append(th)
+        }
+        head.append(headRow)
+        const body = document.createElement('tbody')
+        for (const cells of rows.slice(1)) {
+          const tr = document.createElement('tr')
+          if (/Hardware|Token Factory|latency \/ distance|Dashboard|Cloud planner|Replay pack/.test(cells.join(' '))) {
+            tr.className = 'row-strong'
+          }
+          for (const cell of cells) {
+            const td = document.createElement('td')
+            td.append(inline(cell))
+            tr.append(td)
+          }
+          body.append(tr)
+        }
+        table.append(head, body)
+        const text = document.getElementById('text')
+        text.replaceWith(table)
+        table.id = 'text'
+      }
+
+      ;(async () => {
+        const response = await fetch('/capture/limitations.md')
+        const markdown = await response.text()
+        render(markdown)
+        const scroller = document.getElementById('scroller')
+        const distance = Math.max(0, scroller.scrollHeight - scroller.clientHeight)
+        const seconds = Number(params.get('seconds') ?? 18)
+        // Two beats on the header before the scroll starts: the first rows are the ones the voiceover
+        // names, and a camera that is already moving has missed them.
+        await new Promise((resolve) => setTimeout(resolve, 2200))
+        const started = performance.now()
+        // Linear, slow, continuous: a reader should be able to read every row as it passes.
+        const step = (now) => {
+          const t = Math.min(1, (now - started) / (seconds * 1000))
+          scroller.scrollTop = distance * t
+          if (t < 1) requestAnimationFrame(step)
+          else window.__demo.done = true
+        }
+        requestAnimationFrame(step)
+        document.getElementById('sha').textContent =
+          'file fetched at record time · ' + new TextEncoder().encode(markdown).length + ' bytes'
+      })()
+    </script>
+  </body>
+</html>
