@@ -365,8 +365,12 @@ def test_an_empty_goal_is_rejected_before_the_model_is_called():
 # ------------------------------------------------------------------ abstention
 
 
-def test_the_model_may_abstain_and_the_abstention_is_recorded():
-    """Abstention is a result, not an exception: the caller must be able to log it."""
+def test_the_model_may_abstain_and_the_abstention_is_recorded(no_telemetry):
+    """Abstention is a result, not an exception: the caller must be able to log it.
+
+    ``no_telemetry`` matters here: without it this test writes a *fixture* model call into the
+    repository's real ``runs/ledger.jsonl``, where a reader would take it for a call that happened.
+    """
     plan = _planner({"proposals": [], "abstain_reason": "the goal needs a second axis"}).plan(
         GOALS[0], plan_id="plan_abstain"
     )

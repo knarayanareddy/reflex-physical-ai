@@ -2,10 +2,10 @@ name: CI
 
 # Runs what `make check` runs, on every push and pull request.
 #
-# Deliberately NOT included yet: a frontend build job. `frontend/` currently contains a
-# package.json and a design-token stylesheet with no entry point, so `npm run build`
-# exits 1 by definition. Add the job (blocking, not continue-on-error) in the same PR
-# that adds index.html + src/main.tsx — see REVIEW.md R-16.
+# Deliberately NOT included yet: a frontend job. The dashboard exists and `npm run build`
+# succeeds locally (tsc + vite, 176 kB), but this workflow does not install Node — so
+# `make demo` on a CI runner would take its documented UI-skipped path. Adding
+# `actions/setup-node` + `npm ci && npm run build` is a ticket of its own (D-T27 NOT_DONE #5).
 
 on:
   push:
