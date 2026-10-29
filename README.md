@@ -1,6 +1,7 @@
 # Reflex — a deterministic veto layer for robot actions, with receipts
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-2ea44f?style=for-the-badge)](https://knarayanareddy.github.io/reflex-physical-ai/)
+[![Submission Status](https://img.shields.io/badge/Submission-READY-success?style=for-the-badge)](docs/DEVPOST_SUBMISSION.md)
 
 **▶ [Open the live demo](https://knarayanareddy.github.io/reflex-physical-ai/)** — the dashboard, in a
 browser, with nothing installed. It replays a 10-second session recorded from the real envelope: scrub
